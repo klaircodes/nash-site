@@ -617,7 +617,7 @@
   .s3 .cmp .snd::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;border-left:2px solid #fff;
                        border-top:2px solid #fff;transform:translate(-50%,-30%) rotate(45deg)}
   @media(max-width:860px){.s3 .grid2{grid-template-columns:1fr;gap:34px}}
-  @media(max-width:560px){.s3 .cmp .mdl{display:none}}
+
 
   .s4{background:var(--sunken);padding:88px 0;text-align:center}
   .s4 .rule{font-size:clamp(24px,2.9vw,34px);font-weight:300;letter-spacing:-1.5px;line-height:1.12;
@@ -722,7 +722,13 @@
   .crole .cluster .tag2{position:absolute;transform:translate(-50%,0);font-size:11px;font-weight:500;letter-spacing:.04em;
                         text-transform:uppercase;color:var(--t1);background:var(--app);border:1px solid var(--border-2);
                         border-radius:999px;padding:4px 10px;box-shadow:0 6px 16px rgba(22,24,28,.07)}
-  @media(max-width:900px){.crole .wrap2{grid-template-columns:1fr;gap:40px}.crole .cluster{height:260px;max-width:360px;margin:0 auto}}
+  @media(max-width:900px){
+    .crole .wrap2{grid-template-columns:1fr;gap:36px}
+    .crole .cluster{height:auto;max-width:none;margin:0;display:flex;flex-wrap:wrap;gap:10px}
+    .crole .cluster .av,.crole .cluster .av.adm{position:static;transform:none;width:44px;height:44px;font-size:0}
+    .crole .cluster .av.adm{box-shadow:0 0 0 2px var(--sunken),0 0 0 4px var(--t1)}
+    .crole .cluster .tag2{display:none}
+  }
 
   /* B pricing — the numbers a team actually sees */
   .c5 .stats{display:flex;gap:44px;margin-top:34px;flex-wrap:wrap}
@@ -748,21 +754,22 @@
   .s3 .cmp .snd{width:30px;height:30px;border-radius:50%;background:var(--t1);position:relative}
   .s3 .cmp .snd::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;border-left:2px solid #fff;
                        border-top:2px solid #fff;transform:translate(-50%,-30%) rotate(45deg)}
-  @media(max-width:560px){.s3 .cmp .mdl{display:none}}
+  @media(max-width:560px){.s3 .cmp .mdl{display:none}.s3 .cmp{border-radius:20px;align-items:flex-start}
+    .s3 .cmp .txt{white-space:normal;padding:5px 0}.s3 .cmp .mic,.s3 .cmp .snd{margin-top:3px}}
 
   /* C roles — twelve people, two of them dark */
   .s4 .stack{display:flex;justify-content:center;margin:44px 0 12px;padding-left:12px}
   .s4 .stack .av{width:46px;height:46px;border-radius:50%;background:var(--surface);color:var(--t2);display:grid;place-items:center;
                  font-size:12.5px;font-weight:500;margin-left:-12px;border:3px solid var(--sunken)}
   .s4 .stack .av.adm{position:relative;z-index:1;transform:translateY(-6px);box-shadow:0 0 0 3px var(--sunken),0 0 0 5px var(--t1)}
-  @media(max-width:560px){.s4 .stack .av{width:36px;height:36px;font-size:10px;margin-left:-9px}}
+  @media(max-width:560px){.s4 .stack{flex-wrap:wrap;row-gap:8px;padding-left:9px}.s4 .stack .av{width:36px;height:36px;margin-left:-9px}}
 
   /* C open source — back to the left, the wash sits right */
   .s6{text-align:left;background:radial-gradient(48% 62% at 74% 50%,#F1F2F4 0,rgba(241,242,244,0) 66%)}
   .s6 .fine{margin-left:0}
 
   /* C pricing — the team grows with the slider */
-  .s7 .heads{display:flex;justify-content:center;margin:0 0 26px;padding-left:8px;min-height:32px}
+  .s7 .heads{display:flex;flex-wrap:wrap;row-gap:6px;justify-content:center;margin:0 0 26px;padding-left:8px;min-height:32px}
   .s7 .heads .hd{width:30px;height:30px;border-radius:50%;background:var(--surface);color:var(--t2);display:grid;place-items:center;
                  font-size:10px;font-weight:500;margin-left:-8px;border:2px solid var(--sunken)}
   .s7 .heads .hd.more{background:var(--t1);color:#fff;font-size:10.5px}
