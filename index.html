@@ -634,15 +634,22 @@
 
   .s6{padding:100px 0 88px;text-align:center;
       background:radial-gradient(80% 62% at 50% 42%,#F3F4F6 0,rgba(243,244,246,0) 64%)}
+  .s6 .split{display:grid;grid-template-columns:minmax(0,44%) minmax(0,56%);gap:0 72px;align-items:center}
   .s6 .ladder{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .s6 .tree{font-family:var(--mono);font-size:13.5px;line-height:2.05;color:var(--t2);margin:0;letter-spacing:.01em}
+  .s6 .tree .ln{display:flex;gap:0 22px;white-space:nowrap}
+  .s6 .tree .ln.root{color:var(--t1);font-weight:500;margin-bottom:6px}
+  .s6 .tree .ln.root b{font-weight:500}
+  .s6 .tree .br{color:var(--border-3)}
+  .s6 .tree .k{color:var(--t1)}
+  .s6 .tree .c{color:var(--t4);font-family:var(--f);font-size:13.5px;letter-spacing:0}
+  @media(max-width:900px){.s6 .split{grid-template-columns:1fr;gap:40px}.s6 .tree .ln{gap:0 14px}.s6 .tree .c{display:none}}
   .s6 .ladder p{margin:0;line-height:1.08;letter-spacing:-.04em;color:var(--t1)}
   .s6 .l1{font-size:clamp(32px,4vw,46px);font-weight:600}
   .s6 .l2{font-size:clamp(24px,2.8vw,32px);font-weight:500;color:var(--t2)}
   .s6 .l3{font-size:clamp(18px,2vw,23px);font-weight:400;color:var(--t3)}
   .s6 .l4{font-size:clamp(15px,1.6vw,19px);font-weight:300;color:var(--t4)}
-  .s6 .path{font-family:var(--mono);font-size:14px;color:var(--t3);margin:48px 0 0;letter-spacing:.02em}
-  .s6 .path b{color:var(--t1);font-weight:500}
-  .s6 .fine{font-size:14.5px;line-height:1.62;color:var(--t3);margin:12px auto 0;max-width:46ch}
+  .s6 .fine{font-size:14.5px;line-height:1.62;color:var(--t3);margin:32px 0 0;max-width:40ch}
 
   .s7{background:var(--sunken);padding:88px 0 96px;text-align:center}
   .s7 .intro{font-size:clamp(17px,1.8vw,20px);font-weight:300;letter-spacing:-.5px;color:var(--t2);margin:0 auto 56px;max-width:32ch}
@@ -670,6 +677,8 @@
     .s2 .tl.in .ev{opacity:1}
     .s2 .tl.in .ev:nth-of-type(1){transition-delay:.15s}.s2 .tl.in .ev:nth-of-type(2){transition-delay:.45s}
     .s2 .tl.in .ev:nth-of-type(3){transition-delay:.75s}.s2 .tl.in .ev:nth-of-type(4){transition-delay:1.3s}
+    .s6 .tree .ln{opacity:0;transform:translateX(-6px);transition:opacity .4s var(--e),transform .4s var(--e)}
+    .s6 .split.in .tree .ln{opacity:1;transform:none}
     .s5 .key .ch{opacity:0;transition:opacity .18s linear}
     .s5 .key.in .ch{opacity:1}
   }
@@ -738,7 +747,7 @@
   @media(max-width:560px){.s4 .stack .av{width:36px;height:36px;font-size:10px;margin-left:-9px}}
 
   /* C open source — back to the left, the wash sits right */
-  .s6{text-align:left;background:radial-gradient(60% 70% at 78% 45%,#F0F1F3 0,rgba(240,241,243,0) 64%)}
+  .s6{text-align:left;background:radial-gradient(48% 62% at 74% 50%,#F1F2F4 0,rgba(241,242,244,0) 66%)}
   .s6 .fine{margin-left:0}
 
   /* C pricing — the team grows with the slider */
@@ -1310,15 +1319,29 @@
   </div></section>
 
   <section class="s6"><div class="shell">
-    <p class="slbl">Open source</p>
-    <div class="ladder">
-      <p class="l1">Open source.</p>
-      <p class="l2">MIT licensed.</p>
-      <p class="l3">Every line public.</p>
-      <p class="l4">Leave whenever you like.</p>
+    <div class="split">
+      <div>
+        <p class="slbl">Open source</p>
+        <div class="ladder">
+          <p class="l1">Open source.</p>
+          <p class="l2">MIT licensed.</p>
+          <p class="l3">Every line public.</p>
+          <p class="l4">Leave whenever you like.</p>
+        </div>
+        <p class="fine">The deployment sits beside the code. Most teams stay because running it yourself is work. The point is that leaving is always possible.</p>
+      </div>
+      <div class="tree" aria-label="Repository contents">
+        <div class="ln root"><span>github.com/<b>Backboard-io/Nash</b></span></div>
+        <div class="ln" style="transition-delay:.05s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">api/</span></span><span class="c">the server</span></div>
+        <div class="ln" style="transition-delay:.12s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">client/</span></span><span class="c">the app you just used</span></div>
+        <div class="ln" style="transition-delay:.19s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">packages/</span></span><span class="c">shared code</span></div>
+        <div class="ln" style="transition-delay:.26s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">terraform/</span></span><span class="c">everything needed to run it yourself</span></div>
+        <div class="ln" style="transition-delay:.33s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">docs/</span></span><span class="c">how it fits together</span></div>
+        <div class="ln" style="transition-delay:.40s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">docker-compose.yml</span></span><span class="c">run it locally</span></div>
+        <div class="ln" style="transition-delay:.47s"><span><span class="br">&#9500;&#9472;&#9472;</span> <span class="k">LICENSE</span></span><span class="c">MIT</span></div>
+        <div class="ln" style="transition-delay:.54s"><span><span class="br">&#9492;&#9472;&#9472;</span> <span class="k">README.md</span></span><span class="c">start here</span></div>
+      </div>
     </div>
-    <p class="path">github.com/<b>Backboard-io/Nash</b></p>
-    <p class="fine">The deployment sits beside the code. Most teams stay because running it yourself is work. The point is that leaving is always possible.</p>
   </div></section>
 
   <section class="s7"><div class="shell">
