@@ -564,7 +564,7 @@
   .s2 .tl .ln{position:absolute;left:0;right:0;top:86px;height:1px;background:var(--border-3);transform-origin:left}
   .s2 .ev{position:absolute;top:0;height:100%;width:0}
   .s2 .ev .av{position:absolute;top:70px;left:0;transform:translateX(-50%);width:32px;height:32px;border-radius:50%;
-              background:var(--t1);color:#fff;display:grid;place-items:center;font-size:11.5px;font-weight:500}
+              background:var(--t1);color:#fff;display:grid;place-items:center;font-size:9.5px;font-weight:500;letter-spacing:.02em}
   .s2 .ev.ask .av{background:var(--app);color:var(--t1);border:1.5px solid var(--t1)}
   .s2 .ev .said{position:absolute;left:0;transform:translateX(-50%);width:168px;text-align:center;
                 font-size:14.5px;line-height:1.4;color:var(--t1);letter-spacing:-.2px}
@@ -808,7 +808,7 @@
   <div class="hero">
     <div>
       <h1>One place for your whole team to use AI.</h1>
-      <p class="sub">Every major model, the tools you already use, and everything your team has figured out — together in one workspace.</p>
+      <p class="sub">Every major model, the tools you already use, and a memory that follows you from one conversation to the next. One workspace for the whole team.</p>
       <div class="hbtns">
         <button class="btn solid">Get started</button>
         <button class="btn" data-go="pricing">Talk to sales</button>
@@ -906,8 +906,8 @@
       <div class="seat"><span class="av">J</span><span class="who">Jules</span><span class="tag">Invited</span></div>
     </div>
     <div>
-      <h2>One workspace, and you can see it all.<span class="l2">No surprises at the end of the month.</span></h2>
-      <p class="body">Everyone shares the same context, so nobody explains the same project twice. Set a monthly limit per person, choose what's available, and see who's using what — all from one screen.</p>
+      <h2>One workspace. Everyone&rsquo;s own conversations.<span class="l2">No surprises at the end of the month.</span></h2>
+      <p class="body">Each person&rsquo;s chats and memory are their own, and stay that way. Set a monthly limit per person, choose what&rsquo;s available, and see who is using what. Usage, never conversations.</p>
     </div>
   </div>
 </section>
@@ -998,7 +998,7 @@
         <div class="d">For teams that think together</div>
         <ul>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Everything in Starter</li>
-          <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Shared team memory</li>
+          <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Private memory for every seat</li>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>More usage, pooled across your team</li>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Admin controls: models on/off, per-person spend caps</li>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Team usage analytics</li>
@@ -1060,20 +1060,20 @@
     <div class="grid">
       <div>
         <p class="slbl">Memory</p>
-        <p class="q">&ldquo;Will it remember what we told it?&rdquo;</p>
+        <p class="q">&ldquo;Will it remember what I told it?&rdquo;</p>
         <p class="askq">&ldquo;Where did we land on the launch date?&rdquo;</p>
         <p class="ans">14 October.</p>
-        <p class="said">Asked this morning by somebody who was <b>not in any of those conversations</b>. Answered without anyone repeating themselves.</p>
+        <p class="said">Asked this morning in a fresh chat, <b>on a different model</b>. Answered without repeating a word.</p>
       </div>
 
       <div>
-        <p class="lab">Answered from</p>
+        <p class="lab">Remembered from</p>
         <div class="src">
-          <div class="r"><span class="w"><i class="av">M</i>Marco &middot; 4 Mar</span><span class="f">The launch moved to 14 October</span></div>
-          <div class="r"><span class="w"><i class="av">P</i>Priya &middot; 11 Mar</span><span class="f">Support onboarding belongs to her</span></div>
-          <div class="r"><span class="w"><i class="av">J</i>Jules &middot; 2 Apr</span><span class="f">The pricing page still needs legal sign-off</span></div>
+          <div class="r"><span class="w">GPT 4.1 &middot; 4 Mar</span><span class="f">The launch moved to 14 October</span></div>
+          <div class="r"><span class="w">Claude &middot; 11 Mar</span><span class="f">Support onboarding is Priya&rsquo;s</span></div>
+          <div class="r"><span class="w">Gemini &middot; 2 Apr</span><span class="f">The pricing page still needs legal sign-off</span></div>
         </div>
-        <p class="note">Three conversations, weeks apart, none of them repeated. Most AI chats forget you the moment the tab closes.</p>
+        <p class="note">Three chats, three models, weeks apart. Your memory is yours: it follows you across every model, and nobody else on the team can see it.</p>
       </div>
     </div>
   </div></section>
@@ -1131,7 +1131,7 @@
             <span class="who">Admins</span>
             <div>
               <p class="does">decide <b>what that is</b> &mdash; which models are on, what each person can spend, which tools reach everyone.</p>
-              <p class="more">And they see usage across all twelve people, not just their own.</p>
+              <p class="more">And they see usage across all twelve people. Usage, never conversations.</p>
             </div>
           </div>
         </div>
@@ -1195,7 +1195,7 @@
         <span class="l"><b>$69</b> when IT gets involved.</span>
       </div>
       <div>
-        <p class="after"><b>Every plan includes every model.</b> Team adds shared memory, admin controls and a spend cap per person; Business adds single sign-on, audit logs and role-based access. Enterprise is a conversation.</p>
+        <p class="after"><b>Every plan includes every model.</b> Team adds admin controls, pooled usage and a spend cap per person; Business adds single sign-on, audit logs and role-based access. Enterprise is a conversation.</p>
         <div class="stats">
           <div class="st"><div class="n">12</div><div class="l">people on Team</div></div>
           <div class="st"><div class="n">$588</div><div class="l">a month, all in</div></div>
@@ -1223,35 +1223,35 @@
 
   <section class="s2"><div class="shell">
     <p class="slbl">Memory</p>
-    <p class="intro">Three things said months apart. <b>One question this morning.</b></p>
+    <p class="intro">Three things you said, months apart, to three different models. <b>One question this morning.</b></p>
 
     <div class="tl" aria-label="Timeline">
       <span class="ln"></span>
       <div class="ev up first" style="left:1.5%">
         <span class="said">&ldquo;Let&rsquo;s go with <b>14 October</b>.&rdquo;</span>
-        <span class="av">M</span>
-        <span class="who">Marco &middot; 4 March</span>
+        <span class="av">You</span>
+        <span class="who">You &middot; 4 March &middot; GPT 4.1</span>
       </div>
       <div class="ev down" style="left:25%">
-        <span class="av">P</span>
-        <span class="who">Priya &middot; 11 March</span>
+        <span class="av">You</span>
+        <span class="who">You &middot; 11 March &middot; Claude</span>
         <span class="said">&ldquo;Support needs <b>a week&rsquo;s notice</b>.&rdquo;</span>
       </div>
       <div class="ev up" style="left:48%">
         <span class="said">&ldquo;Pricing page is <b>still with legal</b>.&rdquo;</span>
-        <span class="av">J</span>
-        <span class="who">Jules &middot; 2 April</span>
+        <span class="av">You</span>
+        <span class="who">You &middot; 2 April &middot; Gemini</span>
       </div>
       <span class="gap">nothing repeated in between</span>
       <div class="ev ask up last" style="left:100%">
         <span class="said">&ldquo;Where did we land on the launch date?&rdquo;</span>
-        <span class="av">KT</span>
-        <span class="who">Kit &middot; joined last week</span>
+        <span class="av">You</span>
+        <span class="who">You &middot; this morning &middot; a fresh chat</span>
       </div>
     </div>
 
-    <p class="now">Kit was in none of those conversations, and gets <b>14 October.</b></p>
-    <p class="then">Nash keeps what the team decided, and when you want it to, keeps it for everyone.</p>
+    <p class="now">A fresh chat on a fourth model, and it still gets <b>14 October.</b></p>
+    <p class="then">Your memory is yours. It follows you across every model and every session, and nobody else on the team can see it.</p>
   </div></section>
 
   <section class="s3"><div class="shell">
@@ -1291,7 +1291,7 @@
       </div>
       <div>
         <p class="who">Admins</p>
-        <p>Which models are on, what each person can spend a month, which tools reach everyone &mdash; and <b>usage across the whole team</b>.</p>
+        <p>Which models are on, what each person can spend a month, which tools reach everyone &mdash; and <b>usage across the whole team</b>, never anyone&rsquo;s conversations.</p>
       </div>
     </div>
   </div></section>
@@ -1330,7 +1330,7 @@
       <p class="out" id="cout"></p>
       <input id="cseats" type="range" min="1" max="200" value="12" step="1" aria-label="Team size">
     </div>
-    <p class="rest">Team adds shared memory, admin controls and a spend cap per person. Business adds single sign-on, audit logs and role-based access. Enterprise is a conversation.</p>
+    <p class="rest">Team adds admin controls, pooled usage and a spend cap per person. Business adds single sign-on, audit logs and role-based access. Enterprise is a conversation.</p>
     <div class="go">
       <button class="btn solid">Get started</button>
       <button class="btn" data-go="pricing">See it in full</button>
@@ -1375,6 +1375,7 @@
     <div class="shell">
       <h2 style="max-width:14ch">Just as important: what never happens.</h2>
       <div class="never-list">
+        <div class="n"><span class="x"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></span><div><div class="t">No one else reading your chats</div><div class="d">Each person&rsquo;s conversations and memory are private to them, including from admins. Admins see usage, never content.</div></div></div>
         <div class="n"><span class="x"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></span><div><div class="t">No shared company key</div><div class="d">If you bring your own key, it is encrypted and used only for you. There is no quiet fallback to a shared one when something goes wrong.</div></div></div>
         <div class="n"><span class="x"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></span><div><div class="t">No training on your conversations</div><div class="d">Not by us, and not by the providers you route to on your own account.</div></div></div>
         <div class="n"><span class="x"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></span><div><div class="t">No one at Nash reading your chats</div><div class="d">Support cannot browse your workspace. If we need something to help you, we ask.</div></div></div>
@@ -1449,7 +1450,7 @@
         <div class="d">For teams that think together</div>
         <ul>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Everything in Starter</li>
-          <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Shared team memory</li>
+          <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Private memory for every seat</li>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>More usage, pooled across your team</li>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Admin controls and spend caps</li>
           <li><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg>Team usage analytics</li>
@@ -1496,7 +1497,7 @@
           <tbody>
             <tr><td>Every AI model</td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td></tr>
             <tr><td>Personal memory</td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td></tr>
-            <tr><td>Shared team memory</td><td class="c">—</td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td></tr>
+            <tr><td>Anyone else able to read your chats</td><td class="c">—</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr>
             <tr><td>Pooled usage</td><td class="c">—</td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c">Custom</td></tr>
             <tr><td>Admin controls and spend caps</td><td class="c">—</td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td></tr>
             <tr><td>Usage analytics</td><td class="c">—</td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td><td class="c"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.2 12 13 4.8"/></svg></td></tr>
@@ -1565,7 +1566,7 @@
 
     <div class="lede-two">
       <p class="body">Most teams got to AI the same way: one person expensed a subscription, then another, then four. Now the work is spread across tools that do not know about each other, on accounts nobody can see, with context that disappears every time a tab closes.</p>
-      <p class="body">Nash is the opposite arrangement. One place, every model, shared context, and controls that belong to the organisation rather than to whoever set it up first — and all of it open source, so nobody has to take our word for how it works.</p>
+      <p class="body">Nash is the opposite arrangement. One place, every model, a memory that is yours alone, and controls that belong to the organisation rather than to whoever set it up first — and all of it open source, so nobody has to take our word for how it works.</p>
     </div>
   </div>
 
