@@ -566,16 +566,16 @@
   .s2 .ev .av{position:absolute;top:70px;left:0;transform:translateX(-50%);width:32px;height:32px;border-radius:50%;
               background:var(--t1);color:#fff;display:grid;place-items:center;font-size:11.5px;font-weight:500}
   .s2 .ev.ask .av{background:var(--app);color:var(--t1);border:1.5px solid var(--t1)}
-  .s2 .ev .said{position:absolute;left:0;transform:translateX(-50%);width:172px;text-align:center;
+  .s2 .ev .said{position:absolute;left:0;transform:translateX(-50%);width:168px;text-align:center;
                 font-size:14.5px;line-height:1.4;color:var(--t1);letter-spacing:-.2px}
   .s2 .ev .said b{font-weight:600}
-  .s2 .ev .who{position:absolute;left:0;transform:translateX(-50%);width:172px;text-align:center;
+  .s2 .ev .who{position:absolute;left:0;transform:translateX(-50%);width:168px;text-align:center;
                font-family:var(--mono);font-size:11.5px;color:var(--t4);white-space:nowrap}
   .s2 .ev.up .said{top:14px}      .s2 .ev.up .who{top:114px}
   .s2 .ev.down .said{top:114px}   .s2 .ev.down .who{top:44px}
   .s2 .ev.first .said,.s2 .ev.first .who{transform:none;text-align:left}
   .s2 .ev.last .said,.s2 .ev.last .who{transform:translateX(-100%);text-align:right}
-  .s2 .gap{position:absolute;top:79px;left:62%;transform:translateX(-50%);font-size:12.5px;color:var(--t4);
+  .s2 .gap{position:absolute;top:79px;left:75%;transform:translateX(-50%);font-size:12.5px;color:var(--t4);
            background:var(--sunken);padding:0 14px;white-space:nowrap}
   .s2 .now{font-size:clamp(26px,3.8vw,46px);font-weight:300;letter-spacing:-1.4px;line-height:1.16;
            color:var(--t3);margin:56px 0 0 auto;max-width:22ch;text-align:right}
@@ -704,11 +704,19 @@
   .c5 .st .n{font-size:30px;font-weight:600;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
   .c5 .st .l{font-size:12.5px;color:var(--t4);margin-top:6px}
 
-  /* C models — the name does the switching */
+  /* C models — the name switches on the left, its count on the right */
   .s1{text-align:left}
-  .s1 .cyc{text-align:left;font-size:clamp(52px,10vw,136px)}
+  .s1 .two{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 56px;align-items:center}
+  .s1 .cyc{text-align:left;font-size:clamp(52px,9.6vw,128px)}
   .s1 .dots{justify-content:flex-start}
   .s1 .after{margin-left:0}
+  .s1 .cnt{text-align:right}
+  .s1 .num{font-size:clamp(64px,12vw,168px);font-weight:300;letter-spacing:-.06em;line-height:.9;margin:0;
+           color:var(--t3);font-variant-numeric:tabular-nums;transition:opacity .22s var(--e)}
+  .s1 .num.out{opacity:0}
+  .s1 .numl{font-size:14px;color:var(--t4);margin:14px 0 0;letter-spacing:.02em}
+  @media(max-width:860px){.s1 .two{grid-template-columns:1fr;gap:28px}.s1 .cnt{text-align:left}
+    .s1 .num{font-size:clamp(56px,16vw,96px)}}
 
   /* C tools — the composer, as the object it is */
   .s3 .cmp{display:flex;align-items:center;gap:10px;max-width:640px;margin-top:36px;padding:8px 8px 8px 12px;
@@ -1211,11 +1219,19 @@
 <div class="var" data-var="c">
 
   <section class="s1"><div class="shell">
-    <p class="slbl">Models</p>
-    <p class="line">Eight providers. <b>Switching is a dropdown.</b></p>
-    <p class="cyc" id="cyc">OpenAI</p>
-    <div class="dots" id="cycdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <p class="after">When a better model ships next month it is already here. No new subscription, no new tool for anyone to learn.</p>
+    <div class="two">
+      <div>
+        <p class="slbl">Models</p>
+        <p class="line">Eight providers. <b>Switching is a dropdown.</b></p>
+        <p class="cyc" id="cyc">OpenAI</p>
+        <div class="dots" id="cycdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="after">When a better model ships next month it is already here. No new subscription, no new tool for anyone to learn.</p>
+      </div>
+      <div class="cnt" aria-hidden="true">
+        <p class="num" id="cycnum">35</p>
+        <p class="numl">models, and counting</p>
+      </div>
+    </div>
   </div></section>
 
   <section class="s2"><div class="shell">
@@ -1224,17 +1240,17 @@
 
     <div class="tl" aria-label="Timeline">
       <span class="ln"></span>
-      <div class="ev up first" style="left:1%">
+      <div class="ev up first" style="left:1.5%">
         <span class="said">&ldquo;Let&rsquo;s go with <b>14 October</b>.&rdquo;</span>
         <span class="av">M</span>
         <span class="who">Marco &middot; 4 March</span>
       </div>
-      <div class="ev down" style="left:16%">
+      <div class="ev down" style="left:25%">
         <span class="av">P</span>
         <span class="who">Priya &middot; 11 March</span>
         <span class="said">&ldquo;Support needs <b>a week&rsquo;s notice</b>.&rdquo;</span>
       </div>
-      <div class="ev up" style="left:31%">
+      <div class="ev up" style="left:48%">
         <span class="said">&ldquo;Pricing page is <b>still with legal</b>.&rdquo;</span>
         <span class="av">J</span>
         <span class="who">Jules &middot; 2 April</span>
@@ -1788,18 +1804,18 @@
   if (cyc && cdots) {
     var P = ["OpenAI","Anthropic","Google","xAI","AWS Bedrock","Cohere","Cerebras","OpenRouter"], ci = 0;
     var ds = cdots.querySelectorAll("i");
-    var mrs = document.querySelectorAll("#cycmenu .mr");
+    var cn = document.getElementById("cycnum"), N = [35,15,12,16,39,11,10,373];
     var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setInterval(function(){
       ci = (ci + 1) % P.length;
       var go = function(){
         cyc.textContent = P[ci];
         ds.forEach(function(d,k){ d.classList.toggle("on", k === ci); });
-        mrs.forEach(function(r,k){ r.classList.toggle("on", k === ci); });
+        if (cn) { cn.textContent = N[ci]; cn.classList.remove("out"); }
         cyc.classList.remove("out");
       };
       if (still) { go(); return; }
-      cyc.classList.add("out");
+      cyc.classList.add("out"); if (cn) cn.classList.add("out");
       setTimeout(go, 220);
     }, 1900);
   }
