@@ -722,12 +722,15 @@
   .crole .cluster .tag2{position:absolute;transform:translate(-50%,0);font-size:11px;font-weight:500;letter-spacing:.04em;
                         text-transform:uppercase;color:var(--t1);background:var(--app);border:1px solid var(--border-2);
                         border-radius:999px;padding:4px 10px;box-shadow:0 6px 16px rgba(22,24,28,.07)}
+  /* phones keep the scatter: the box keeps its desktop proportions and scales with the screen */
   @media(max-width:900px){
-    .crole .wrap2{grid-template-columns:1fr;gap:36px}
-    .crole .cluster{height:auto;max-width:none;margin:0;display:flex;flex-wrap:wrap;gap:10px}
-    .crole .cluster .av,.crole .cluster .av.adm{position:static;transform:none;width:44px;height:44px;font-size:0}
-    .crole .cluster .av.adm{box-shadow:0 0 0 2px var(--sunken),0 0 0 4px var(--t1)}
-    .crole .cluster .tag2{display:none}
+    .crole .wrap2{grid-template-columns:1fr;gap:44px}
+    .crole .cluster{width:100%;max-width:340px;height:auto;aspect-ratio:320/340;margin:0 auto}
+  }
+  @media(max-width:380px){
+    .crole .cluster .av{width:40px;height:40px}
+    .crole .cluster .av.adm{width:50px;height:50px}
+    .crole .cluster .tag2{font-size:10px;padding:3px 8px}
   }
 
   /* B pricing — the numbers a team actually sees */
