@@ -560,35 +560,29 @@
   .s2{background:var(--sunken);padding:88px 0 96px}
   .s2 .intro{font-size:clamp(17px,1.8vw,20px);font-weight:300;letter-spacing:-.5px;color:var(--t2);margin:0;max-width:34ch}
   .s2 .intro b{color:var(--t1);font-weight:600}
-  .s2 .tl{position:relative;height:172px;margin:64px 0 0}
-  .s2 .tl .ln{position:absolute;left:0;right:0;top:86px;height:1px;background:var(--border-3);transform-origin:left}
+  .s2 .tl{position:relative;height:132px;margin:56px 0 0}
+  .s2 .tl .ln{position:absolute;left:0;right:0;top:6px;height:1px;background:var(--border-3);transform-origin:left}
   .s2 .ev{position:absolute;top:0;height:100%;width:0}
-  .s2 .ev .av{position:absolute;top:70px;left:0;transform:translateX(-50%);width:32px;height:32px;border-radius:50%;
-              background:var(--t1);color:#fff;display:grid;place-items:center;font-size:9.5px;font-weight:500;letter-spacing:.02em}
-  .s2 .ev.ask .av{background:var(--app);color:var(--t1);border:1.5px solid var(--t1)}
-  .s2 .ev .said{position:absolute;left:0;transform:translateX(-50%);width:168px;text-align:center;
-                font-size:14.5px;line-height:1.4;color:var(--t1);letter-spacing:-.2px}
+  .s2 .ev .av{position:absolute;top:1.5px;left:0;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;
+              background:var(--t1);font-size:0}
+  .s2 .ev.ask .av{width:12px;height:12px;top:.5px;background:var(--app);border:1.5px solid var(--t1)}
+  .s2 .ev .who{position:absolute;left:0;top:28px;width:200px;font-family:var(--mono);font-size:11.5px;color:var(--t4);
+               white-space:nowrap}
+  .s2 .ev .said{position:absolute;left:0;top:50px;width:200px;font-size:14px;line-height:1.45;color:var(--t1);
+                letter-spacing:-.15px}
   .s2 .ev .said b{font-weight:600}
-  .s2 .ev .who{position:absolute;left:0;transform:translateX(-50%);width:168px;text-align:center;
-               font-family:var(--mono);font-size:11.5px;color:var(--t4);white-space:nowrap}
-  .s2 .ev.up .said{top:14px}      .s2 .ev.up .who{top:114px}
-  .s2 .ev.down .said{top:114px}   .s2 .ev.down .who{top:44px}
-  .s2 .ev.first .said,.s2 .ev.first .who{transform:none;text-align:left}
   .s2 .ev.last .said,.s2 .ev.last .who{transform:translateX(-100%);text-align:right}
-  .s2 .gap{position:absolute;top:79px;left:75%;transform:translateX(-50%);font-size:12.5px;color:var(--t4);
-           background:var(--sunken);padding:0 14px;white-space:nowrap}
-  .s2 .now{font-size:clamp(19px,2.1vw,25px);font-weight:300;letter-spacing:-.9px;line-height:1.24;
-           color:var(--t3);margin:56px 0 0 auto;max-width:22ch;text-align:right}
+  .s2 .now{font-size:clamp(19px,2.1vw,25px);font-weight:300;letter-spacing:-.7px;line-height:1.3;
+           color:var(--t3);margin:36px 0 0;max-width:34ch}
   .s2 .now b{font-weight:600;color:var(--t1)}
-  .s2 .then{font-size:14.5px;line-height:1.65;color:var(--t3);margin:22px 0 0 auto;max-width:46ch;text-align:right}
+  .s2 .then{font-size:14.5px;line-height:1.65;color:var(--t3);margin:14px 0 0;max-width:46ch}
   @media(max-width:860px){
-    .s2 .tl{height:auto;margin-top:44px}
-    .s2 .tl .ln,.s2 .gap{display:none}
-    .s2 .ev{position:static;width:auto;height:auto;display:grid;grid-template-columns:32px 1fr;gap:4px 14px;
+    .s2 .tl{height:auto;margin-top:40px}
+    .s2 .tl .ln{display:none}
+    .s2 .ev{position:static;width:auto;height:auto;display:grid;grid-template-columns:14px 1fr;gap:3px 12px;
             align-items:center;padding:14px 0;border-top:1px solid var(--border-2)}
     .s2 .ev .av,.s2 .ev .said,.s2 .ev .who{position:static;transform:none;width:auto;text-align:left}
     .s2 .ev .av{grid-row:1/3}
-    .s2 .now,.s2 .then{text-align:left;margin-left:0}
   }
 
   .s3{padding:88px 0 96px}
@@ -671,12 +665,11 @@
   /* C's motion: the line draws, the key types itself. Both are skipped under reduced motion. */
   @media(prefers-reduced-motion:no-preference){
     .s2 .tl .ln{transform:scaleX(0);transition:transform 1.3s var(--e) .1s}
-    .s2 .tl .ev,.s2 .tl .gap{opacity:0;transition:opacity .45s var(--e)}
+    .s2 .tl .ev{opacity:0;transition:opacity .45s var(--e)}
     .s2 .tl.in .ln{transform:scaleX(1)}
-    .s2 .tl.in .ev,.s2 .tl.in .gap{opacity:1}
-    .s2 .tl.in .ev:nth-of-type(1){transition-delay:.15s}.s2 .tl.in .ev:nth-of-type(2){transition-delay:.4s}
-    .s2 .tl.in .ev:nth-of-type(3){transition-delay:.65s}.s2 .tl.in .gap{transition-delay:.9s}
-    .s2 .tl.in .ev:nth-of-type(4){transition-delay:1.25s}
+    .s2 .tl.in .ev{opacity:1}
+    .s2 .tl.in .ev:nth-of-type(1){transition-delay:.15s}.s2 .tl.in .ev:nth-of-type(2){transition-delay:.45s}
+    .s2 .tl.in .ev:nth-of-type(3){transition-delay:.75s}.s2 .tl.in .ev:nth-of-type(4){transition-delay:1.3s}
     .s5 .key .ch{opacity:0;transition:opacity .18s linear}
     .s5 .key.in .ch{opacity:1}
   }
@@ -1234,30 +1227,29 @@
 
   <section class="s2"><div class="shell">
     <p class="slbl">Memory</p>
-    <p class="intro">Three things you said, months apart, to three different models. <b>One question this morning.</b></p>
+    <p class="intro">Three things you said, months apart, to three models. <b>One question this morning.</b></p>
 
     <div class="tl" aria-label="Timeline">
       <span class="ln"></span>
-      <div class="ev up first" style="left:1.5%">
+      <div class="ev first" style="left:0.5%">
+        <span class="av"></span>
+        <span class="who">4 March &middot; GPT 4.1</span>
         <span class="said">&ldquo;Let&rsquo;s go with <b>14 October</b>.&rdquo;</span>
-        <span class="av">You</span>
-        <span class="who">You &middot; 4 March &middot; GPT 4.1</span>
       </div>
-      <div class="ev down" style="left:25%">
-        <span class="av">You</span>
-        <span class="who">You &middot; 11 March &middot; Claude</span>
+      <div class="ev" style="left:24%">
+        <span class="av"></span>
+        <span class="who">11 March &middot; Claude</span>
         <span class="said">&ldquo;Support needs <b>a week&rsquo;s notice</b>.&rdquo;</span>
       </div>
-      <div class="ev up" style="left:48%">
+      <div class="ev" style="left:48%">
+        <span class="av"></span>
+        <span class="who">2 April &middot; Gemini</span>
         <span class="said">&ldquo;Pricing page is <b>still with legal</b>.&rdquo;</span>
-        <span class="av">You</span>
-        <span class="who">You &middot; 2 April &middot; Gemini</span>
       </div>
-      <span class="gap">nothing repeated in between</span>
-      <div class="ev ask up last" style="left:100%">
+      <div class="ev ask last" style="left:100%">
+        <span class="av"></span>
+        <span class="who">This morning &middot; a fresh chat</span>
         <span class="said">&ldquo;Where did we land on the launch date?&rdquo;</span>
-        <span class="av">You</span>
-        <span class="who">You &middot; this morning &middot; a fresh chat</span>
       </div>
     </div>
 
