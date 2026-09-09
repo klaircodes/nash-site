@@ -592,16 +592,27 @@
   }
 
   .s3{padding:88px 0 96px}
-  .s3 .grid2{display:grid;grid-template-columns:minmax(0,36%) minmax(0,64%);gap:0 56px;align-items:center}
-  .s3 .steps{margin:0;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
-  .s3 .step{font-size:clamp(19px,2.1vw,24px);font-weight:600;letter-spacing:-.9px;line-height:1.2;
-            color:var(--t1);margin:0;text-align:right}
-  .s3 .step em{font-style:normal;font-weight:300;color:var(--t4)}
-  .s3 .step:nth-child(2){padding-right:8%}
-  .s3 .step:nth-child(3){padding-right:16%}
-  .s3 .step:nth-child(4){padding-right:24%}
-  .s3 .after{font-size:15px;line-height:1.62;color:var(--t3);margin:14px 0 0;max-width:36ch}
-  @media(max-width:860px){.s3 .grid2{grid-template-columns:1fr;gap:28px}.s3 .steps{align-items:flex-start}.s3 .step{text-align:left;padding-right:0!important}}
+  .s3 .grid2{display:grid;grid-template-columns:minmax(0,42%) minmax(0,58%);gap:0 64px;align-items:center}
+  .s3 .steps{margin:22px 0 0;display:flex;flex-direction:column;gap:12px}
+  .s3 .step{font-size:clamp(19px,2.1vw,24px);font-weight:600;letter-spacing:-.6px;line-height:1.25;margin:0;
+            color:var(--t4);transition:color .35s var(--e)}
+  .s3 .step em{font-style:normal;font-weight:300}
+  .s3 .step.on{color:var(--t1)}
+  .s3 .after{font-size:14.5px;line-height:1.62;color:var(--t3);margin:22px 0 0;max-width:40ch}
+  .s3 .cmp{display:flex;align-items:center;gap:9px;padding:6px 6px 6px 10px;
+           background:var(--app);border:1px solid var(--border-2);border-radius:999px;
+           box-shadow:0 1px 2px rgba(22,24,28,.04),0 16px 40px rgba(22,24,28,.08)}
+  .s3 .cmp .plus{width:28px;height:28px;display:grid;place-items:center;color:var(--t3);font-size:18px;font-weight:300;flex:0 0 28px}
+  .s3 .cmp .txt{flex:1;font-size:14px;color:var(--t1);white-space:nowrap;overflow:hidden;min-height:1.5em;line-height:1.5}
+  .s3 .cmp .txt::after{content:"";display:inline-block;width:1.5px;height:1em;background:var(--t1);margin-left:2px;
+                       vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  .s3 .cmp .mdl{font-size:12.5px;color:var(--t3);white-space:nowrap}
+  .s3 .cmp .mic{width:30px;height:30px;border-radius:50%;background:var(--surface);flex:0 0 30px}
+  .s3 .cmp .snd{width:30px;height:30px;border-radius:50%;background:var(--t1);position:relative;flex:0 0 30px}
+  .s3 .cmp .snd::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;border-left:2px solid #fff;
+                       border-top:2px solid #fff;transform:translate(-50%,-30%) rotate(45deg)}
+  @media(max-width:860px){.s3 .grid2{grid-template-columns:1fr;gap:34px}}
+  @media(max-width:560px){.s3 .cmp .mdl{display:none}}
 
   .s4{background:var(--sunken);padding:88px 0;text-align:center}
   .s4 .rule{font-size:clamp(24px,2.9vw,34px);font-weight:300;letter-spacing:-1.5px;line-height:1.12;
@@ -1258,21 +1269,23 @@
     <div class="grid2">
       <div>
         <p class="slbl">Connected tools</p>
-        <p class="after">Each person connects their own accounts. You decide by role what the team can reach. In practice it just looks like asking.</p>
+        <div class="steps" id="verbs">
+          <p class="step on">Reads the email <em>Priya sent.</em></p>
+          <p class="step">Finds the deck <em>in the shared drive.</em></p>
+          <p class="step">Knows what is <em>on Monday.</em></p>
+          <p class="step">Catches you up <em>on the channel.</em></p>
+        </div>
       </div>
-      <div class="steps">
-        <p class="step">Reads the email <em>Priya sent.</em></p>
-        <p class="step">Finds the deck <em>in the shared drive.</em></p>
-        <p class="step">Knows what is <em>on Monday.</em></p>
-        <p class="step">Catches you up <em>on the channel.</em></p>
+      <div>
+        <div class="cmp" aria-hidden="true">
+          <span class="plus">+</span>
+          <span class="txt" id="cmptxt">What did Priya say about the launch date?</span>
+          <span class="mdl">GPT 4.1 &#8964;</span>
+          <span class="mic"></span>
+          <span class="snd"></span>
+        </div>
+        <p class="after">Each person connects their own accounts, and you decide by role what the team can reach. In practice it just looks like asking.</p>
       </div>
-    </div>
-    <div class="cmp" aria-hidden="true">
-      <span class="plus">+</span>
-      <span class="txt">Catch me up on the launch channel since Thursday</span>
-      <span class="mdl">GPT 4.1 &#8964;</span>
-      <span class="mic"></span>
-      <span class="snd"></span>
     </div>
   </div></section>
 
@@ -1827,6 +1840,26 @@
       });
     })(ck);
     ck.querySelectorAll(".ch").forEach(function(sp, k){ sp.style.transitionDelay = (k * 38) + "ms"; });
+  }
+
+  /* C: the composer types each ask, and the verb it belongs to lights up */
+  var tx = document.getElementById("cmptxt"), verbs = document.querySelectorAll("#verbs .step");
+  if (tx && verbs.length) {
+    var ASKS = ["What did Priya say about the launch date?",
+                "Pull up the pricing deck from the shared drive",
+                "What am I walking into on Monday?",
+                "Catch me up on the launch channel since Thursday"];
+    var quiet = window.matchMedia("(prefers-reduced-motion: reduce)").matches, vi = 0;
+    function light(i){ verbs.forEach(function(v,k){ v.classList.toggle("on", k === i); }); }
+    if (quiet) { tx.textContent = ASKS[0]; light(0); }
+    else (function run(){
+      light(vi);
+      var t = ASKS[vi], k = 0; tx.textContent = "";
+      var iv = setInterval(function(){
+        tx.textContent = t.slice(0, ++k);
+        if (k >= t.length) { clearInterval(iv); setTimeout(function(){ vi = (vi + 1) % ASKS.length; run(); }, 1800); }
+      }, 34);
+    })();
   }
 
   /* C: seats × the Team price */
