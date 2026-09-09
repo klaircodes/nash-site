@@ -470,7 +470,7 @@
   /* ── C: question led, every answer shaped differently ─────── */
   .c1{padding:110px 0 92px;text-align:center}
   .c1 .q{font-family:var(--mono);font-size:13px;color:var(--t4);margin:0 0 22px}
-  .c1 .a{font-size:clamp(34px,5.6vw,62px);font-weight:600;letter-spacing:-2px;line-height:1.06;margin:0}
+  .c1 .a{font-size:clamp(34px,5.6vw,62px);font-weight:600;letter-spacing:-2px;line-height:1.06;margin:0 auto;max-width:15ch}
   .c1 .a em{font-style:normal;color:var(--t4)}
   .c1 .sub{font-size:16.5px;line-height:1.62;color:var(--t2);margin:26px auto 0;max-width:46ch}
 
@@ -656,10 +656,10 @@
   /* B models — floating model pills around the answer */
   .c1 .shell{position:relative}
   .c1 .pill{position:absolute;padding:9px 15px;border-radius:999px;background:var(--app);border:1px solid var(--border-2);
-            font-size:13.5px;font-weight:500;color:var(--t1);white-space:nowrap;
+            font-size:13.5px;font-weight:500;color:var(--t1);white-space:nowrap;pointer-events:none;
             box-shadow:0 1px 2px rgba(22,24,28,.04),0 10px 26px rgba(22,24,28,.08);animation:bob 8s ease-in-out infinite}
   .c1 .pill.dim{color:var(--t3);font-weight:400}
-  @media(max-width:960px){.c1 .pill{display:none}}
+  @media(max-width:1180px){.c1 .pill{display:none}}
   @media(prefers-reduced-motion:reduce){.c1 .pill{animation:none}}
 
   /* B memory — who said it */
@@ -694,12 +694,10 @@
   .s1 .menu{background:var(--app);border:1px solid var(--border-2);border-radius:14px;padding:6px;
             box-shadow:0 2px 6px rgba(22,24,28,.04),0 24px 56px rgba(22,24,28,.1)}
   .s1 .menu .mh{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.09em;color:var(--t4);padding:10px 12px 8px}
-  .s1 .menu .mr{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;font-size:13.5px;color:var(--t2);
+  .s1 .menu .mr{display:flex;align-items:center;padding:9px 12px;border-radius:9px;font-size:13.5px;color:var(--t2);
                 transition:background .25s var(--e),color .25s var(--e)}
-  .s1 .menu .mr i{width:7px;height:7px;border-radius:50%;background:var(--border-3);transition:background .25s var(--e)}
   .s1 .menu .mr span{margin-left:auto;font-size:11.5px;color:var(--t4);font-variant-numeric:tabular-nums}
   .s1 .menu .mr.on{background:var(--surface);color:var(--t1);font-weight:500}
-  .s1 .menu .mr.on i{background:var(--t1)}
   @media(max-width:900px){.s1 .two{grid-template-columns:1fr;gap:40px}.s1 .menu{max-width:320px}}
 
   /* C memory — the two people on the line */
@@ -1041,12 +1039,12 @@
   <section class="c1"><div class="shell">
     <p class="slbl">Models</p>
     <p class="q">&ldquo;Which models can we actually use?&rdquo;</p>
-    <span class="pill" style="left:3%;top:34%;animation-delay:-1s">GPT 4.1</span>
-    <span class="pill dim" style="left:9%;top:70%;animation-delay:-4s">Command</span>
-    <span class="pill dim" style="left:20%;top:12%;animation-delay:-2.5s">Grok</span>
-    <span class="pill" style="right:4%;top:30%;animation-delay:-3s">Claude Sonnet</span>
-    <span class="pill dim" style="right:10%;top:68%;animation-delay:-.5s">Gemini</span>
-    <span class="pill dim" style="right:22%;top:10%;animation-delay:-5s">Bedrock</span>
+    <span class="pill dim" style="left:4%;top:22%;animation-delay:-2.5s">Grok</span>
+    <span class="pill" style="left:1%;top:48%;animation-delay:-1s">GPT 4.1</span>
+    <span class="pill dim" style="left:6%;top:74%;animation-delay:-4s">Command</span>
+    <span class="pill dim" style="right:4%;top:20%;animation-delay:-5s">Bedrock</span>
+    <span class="pill" style="right:0;top:47%;animation-delay:-3s">Claude Sonnet</span>
+    <span class="pill dim" style="right:7%;top:73%;animation-delay:-.5s">Gemini</span>
     <p class="a">All of them.<em> From eight providers, in one window.</em></p>
     <p class="sub">Moving between GPT, Claude and Gemini is a dropdown, not a migration &mdash; and when a better one ships next month, it is already there.</p>
   </div></section>
@@ -1219,14 +1217,14 @@
       </div>
       <div class="menu" id="cycmenu" aria-hidden="true">
         <div class="mh">Model</div>
-        <div class="mr on"><i></i>OpenAI<span>35</span></div>
-        <div class="mr"><i></i>Anthropic<span>15</span></div>
-        <div class="mr"><i></i>Google<span>12</span></div>
-        <div class="mr"><i></i>xAI<span>16</span></div>
-        <div class="mr"><i></i>AWS Bedrock<span>39</span></div>
-        <div class="mr"><i></i>Cohere<span>11</span></div>
-        <div class="mr"><i></i>Cerebras<span>10</span></div>
-        <div class="mr"><i></i>OpenRouter<span>373</span></div>
+        <div class="mr on">OpenAI<span>35</span></div>
+        <div class="mr">Anthropic<span>15</span></div>
+        <div class="mr">Google<span>12</span></div>
+        <div class="mr">xAI<span>16</span></div>
+        <div class="mr">AWS Bedrock<span>39</span></div>
+        <div class="mr">Cohere<span>11</span></div>
+        <div class="mr">Cerebras<span>10</span></div>
+        <div class="mr">OpenRouter<span>373</span></div>
       </div>
     </div>
   </div></section>
