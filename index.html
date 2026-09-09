@@ -704,19 +704,13 @@
   .c5 .st .n{font-size:30px;font-weight:600;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
   .c5 .st .l{font-size:12.5px;color:var(--t4);margin-top:6px}
 
-  /* C models — the name switches on the left, its count on the right */
-  .s1{text-align:left}
-  .s1 .two{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 56px;align-items:center}
-  .s1 .cyc{text-align:left;font-size:clamp(52px,9.6vw,128px)}
-  .s1 .dots{justify-content:flex-start}
-  .s1 .after{margin-left:0}
-  .s1 .cnt{text-align:right}
-  .s1 .num{font-size:clamp(64px,12vw,168px);font-weight:300;letter-spacing:-.06em;line-height:.9;margin:0;
-           color:var(--t3);font-variant-numeric:tabular-nums;transition:opacity .22s var(--e)}
-  .s1 .num.out{opacity:0}
-  .s1 .numl{font-size:14px;color:var(--t4);margin:14px 0 0;letter-spacing:.02em}
-  @media(max-width:860px){.s1 .two{grid-template-columns:1fr;gap:28px}.s1 .cnt{text-align:left}
-    .s1 .num{font-size:clamp(56px,16vw,96px)}}
+  /* C models — one name, full width, switching */
+  .s1{text-align:center;padding:120px 0 108px;
+      background:radial-gradient(70% 55% at 50% 48%,#F4F5F7 0,rgba(244,245,247,0) 66%)}
+  .s1 .line{margin:0 auto}
+  .s1 .cyc{font-size:clamp(56px,11.5vw,160px);margin-top:30px}
+  .s1 .dots{justify-content:center;margin-top:40px}
+  .s1 .after{margin:44px auto 0}
 
   /* C tools — the composer, as the object it is */
   .s3 .cmp{display:flex;align-items:center;gap:10px;max-width:640px;margin-top:36px;padding:8px 8px 8px 12px;
@@ -1219,19 +1213,11 @@
 <div class="var" data-var="c">
 
   <section class="s1"><div class="shell">
-    <div class="two">
-      <div>
-        <p class="slbl">Models</p>
-        <p class="line">Eight providers. <b>Switching is a dropdown.</b></p>
-        <p class="cyc" id="cyc">OpenAI</p>
-        <div class="dots" id="cycdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <p class="after">When a better model ships next month it is already here. No new subscription, no new tool for anyone to learn.</p>
-      </div>
-      <div class="cnt" aria-hidden="true">
-        <p class="num" id="cycnum">35</p>
-        <p class="numl">models, and counting</p>
-      </div>
-    </div>
+    <p class="slbl">Models</p>
+    <p class="line">Eight providers. <b>Switching is a dropdown.</b></p>
+    <p class="cyc" id="cyc">OpenAI</p>
+    <div class="dots" id="cycdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="after">When a better model ships next month it is already here. No new subscription, no new tool for anyone to learn.</p>
   </div></section>
 
   <section class="s2"><div class="shell">
@@ -1804,7 +1790,7 @@
   if (cyc && cdots) {
     var P = ["OpenAI","Anthropic","Google","xAI","AWS Bedrock","Cohere","Cerebras","OpenRouter"], ci = 0;
     var ds = cdots.querySelectorAll("i");
-    var cn = document.getElementById("cycnum"), N = [35,15,12,16,39,11,10,373];
+    var cn = null;
     var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setInterval(function(){
       ci = (ci + 1) % P.length;
