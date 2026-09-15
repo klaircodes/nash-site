@@ -2368,7 +2368,6 @@
   var app=document.getElementById("dapp"),home=document.getElementById("p-product");
   if(!app||!home) return;
   var body=document.body,mode="app",toured=false,still=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  try{ if(sessionStorage.getItem("nash-dmode")==="site") mode="site"; toured=!!sessionStorage.getItem("nash-toured"); }catch(e){}
 
   /* the greeting follows the clock, like the product */
   var h=new Date().getHours();
@@ -2388,7 +2387,7 @@
     if(!inApp) endTour(false);
   }
   function setMode(m){
-    mode=m; try{sessionStorage.setItem("nash-dmode",m)}catch(e){}
+    mode=m;
     sync();
     if(m==="site") window.scrollTo({top:0,behavior:"auto"});
   }
@@ -2477,7 +2476,7 @@
     clearTimeout(autoT); clearTimeout(idleT); card.classList.remove("run");
     tour.classList.remove("on"); tour.setAttribute("aria-hidden","true");
     composer.classList.remove("open"); plus.setAttribute("aria-expanded","false");
-    if(remember!==false){ toured=true; try{sessionStorage.setItem("nash-toured","1")}catch(e){} }
+    if(remember!==false) toured=true;
   }
   /* it plays itself: each step holds, then moves on; the last one lets go */
   function arm(){
