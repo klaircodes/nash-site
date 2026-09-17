@@ -1,0 +1,65 @@
+/* lucide-react paths, the ones the product's client imports, plus the three Figma glyphs it draws itself */
+const P = {
+  plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  'panel-left': '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  bookmark: '<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  ellipsis: '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+  'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+  'chevron-right': '<path d="m9 18 6-6-6-6"/>',
+  'chevron-left': '<path d="m15 18-6-6 6-6"/>',
+  folder: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  'folder-open': '<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>',
+  pin: '<line x1="12" x2="12" y1="17" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/>',
+  'building-2': '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  paperclip: '<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+  image: '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+  settings: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
+  mic: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+  'arrow-up': '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
+  'square-pen': '<path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/>',
+  library: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
+  database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>',
+  'link-2': '<path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/>',
+  'trash-2': '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
+};
+
+export function I({ name, size = 16, className }) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+      dangerouslySetInnerHTML={{ __html: P[name] }} />
+  );
+}
+
+const S = { stroke: 'currentColor', strokeWidth: 1.41667, strokeLinecap: 'round', strokeLinejoin: 'round' };
+export const TempIcon = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 17 17" fill="none" aria-hidden="true">
+    <path d="M14.875 8.14585C14.8687 9.16222 14.6052 10.1605 14.1091 11.0475C13.613 11.9346 12.9004 12.6817 12.0377 13.2191C11.1751 13.7565 10.1904 14.0668 9.17541 14.121C8.16047 14.1752 7.14833 13.9716 6.23329 13.5292L2.47913 14.5208L3.47079 10.8375C3.06387 10.0251 2.84611 9.13105 2.83384 8.22248C2.82158 7.3139 3.01512 6.41433 3.39996 5.5912C3.7848 4.76806 4.35096 4.0427 5.05601 3.4695C5.76106 2.89629 6.5867 2.4901 7.47106 2.28137C8.35542 2.07264 9.27556 2.06678 10.1625 2.26424C11.0494 2.4617 11.8802 2.85735 12.5925 3.42154C13.3048 3.98572 13.8801 4.70381 14.2754 5.52199C14.6707 6.34016 14.8757 7.23719 14.875 8.14585Z" {...S} />
+    <path d="M8.5 4.95831V7.79165L10.2708 8.85415" {...S} />
+  </svg>
+);
+export const WaveIcon = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 17 17" fill="none" aria-hidden="true">
+    <path d="M2.83337 7.08333V9.91667M5.66671 4.60417V12.3958M8.50004 6.375V10.625M11.3334 3.1875V13.8125M14.1667 7.08333V9.91667" {...S} />
+  </svg>
+);
+export const ServerIcon = ({ size = 17 }) => (
+  <svg width={size} height={size} viewBox="0 0 17 17" fill="none" aria-hidden="true">
+    <path d="M13.4583 2.125H3.54167C2.75926 2.125 2.125 2.75926 2.125 3.54167V5.66667C2.125 6.44907 2.75926 7.08333 3.54167 7.08333H13.4583C14.2407 7.08333 14.875 6.44907 14.875 5.66667V3.54167C14.875 2.75926 14.2407 2.125 13.4583 2.125Z" {...S} />
+    <path d="M13.4583 9.91669H3.54167C2.75926 9.91669 2.125 10.551 2.125 11.3334V13.4584C2.125 14.2408 2.75926 14.875 3.54167 14.875H13.4583C14.2407 14.875 14.875 14.2408 14.875 13.4584V11.3334C14.875 10.551 14.2407 9.91669 13.4583 9.91669Z" {...S} />
+    <path d="M4.95833 5.31248C5.34953 5.31248 5.66667 4.99535 5.66667 4.60415C5.66667 4.21294 5.34953 3.89581 4.95833 3.89581C4.56713 3.89581 4.25 4.21294 4.25 4.60415C4.25 4.99535 4.56713 5.31248 4.95833 5.31248Z" {...S} />
+    <path d="M4.95833 13.1042C5.34953 13.1042 5.66667 12.787 5.66667 12.3958C5.66667 12.0046 5.34953 11.6875 4.95833 11.6875C4.56713 11.6875 4.25 12.0046 4.25 12.3958C4.25 12.787 4.56713 13.1042 4.95833 13.1042Z" {...S} />
+  </svg>
+);
+/* PlusMinusIcon: two bars, the vertical one folds away when the tools are open */
+export const PlusMinus = ({ open }) => (
+  <span className="pm" aria-hidden="true">
+    <span className="bar" />
+    <span className="bar v" style={{ transform: open ? 'rotate(0deg)' : 'rotate(90deg)', opacity: open ? 0 : 1 }} />
+  </span>
+);

@@ -1,0 +1,342 @@
+/* Nash product UI — ported from Nash-main/client (light tokens from style.css), scoped to .nashapp */
+  /* ── the product itself: Nash-main/client, light tokens from style.css, scoped ── */
+.nashapp{--brand-purple:#635BFF;--brand-purple-hover:#7B74FF;--brand-purple-pressed:#4F48D9;--text-primary:#131211;--text-secondary:#535250;--text-secondary-alt:#605D59;--text-tertiary:#6A6662;--text-accent:#4F48D9;--surface-active:#E6E5E4;--surface-active-alt:#DFDEDD;--surface-hover:#EEEEED;--surface-overlay:#FFFFFF;--surface-hover-alt:#E6E5E4;--surface-primary:#FFFFFF;--surface-primary-alt:#FCFCFB;--surface-secondary:#EFEFEE;--surface-control:#F6F6F6;--surface-secondary-alt:#E1E0DE;--surface-tertiary:#EFEFEE;--surface-dialog:#FFFFFF;--surface-submit:#635BFF;--surface-submit-hover:#4F48D9;--surface-chat:#FDFDFC;--border-light:#DFDEDD;--border-subtle:#ECECEB;--border-medium:#CCCAC9;--border-control:#87827D;--border-heavy:#A2A1A0;--ring:#635BFF;--nash-ease:cubic-bezier(.16,1,.3,1);--hover:160ms;--swap:260ms;--move:380ms;display:flex;position:relative;height:100%;width:100%;background:var(--surface-primary);color:var(--text-primary);font-family:Poppins,Inter,sans-serif;font-size:14px;line-height:1.5;font-weight:400;-webkit-font-smoothing:antialiased;overflow:hidden;flex-direction:row}
+.nashapp *,.nashapp *::before,.nashapp *::after{box-sizing:border-box}
+.nashapp button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;border-radius:0;height:auto;box-shadow:none;text-align:left}
+.nashapp input,.nashapp textarea{font:inherit;color:inherit;background:none;border:0;outline:0;margin:0}
+.nashapp a{color:inherit;text-decoration:none}
+.nashapp h1,.nashapp h2,.nashapp p{margin:0}
+.nashapp svg{flex:0 0 auto;display:block}
+.nashapp [hidden]{display:none!important}
+.nashapp /* ── Nav.tsx ── */
+.navwrap{position:relative;flex:0 0 auto;overflow:hidden;border-right:1px solid var(--border-light);box-shadow:none;background:var(--surface-primary-alt);width:clamp(288px,20vw,360px);transition:width 320ms var(--nash-ease)}
+.nashapp .navwrap.collapsed{width:60px}
+.nashapp .rail{position:absolute;left:0;top:0;z-index:0;display:flex;height:100%;width:60px;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 0 0 14px;opacity:0;pointer-events:none;transition:opacity var(--hover) var(--nash-ease)}
+.nashapp .navwrap.collapsed .rail{opacity:1;pointer-events:auto}
+.nashapp .railbtn{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .railbtn:hover{background:var(--surface-hover);color:var(--text-primary)}
+.nashapp .nav{--surface-secondary:#F2F2F1;--surface-hover:#EDEDEC;--surface-active:#E8E7E6;--surface-active-alt:#E4E3E2;--surface-hover-alt:#E8E7E6;position:relative;z-index:10;display:block;height:100%;width:clamp(288px,20vw,360px);padding:0;gap:0;border:0;border-radius:0;box-shadow:none;background:var(--surface-primary-alt);transition:transform 320ms var(--nash-ease)}
+.nashapp .navwrap.collapsed .nav{transform:translateX(-100%)}
+.nashapp .navin{display:flex;height:100%;flex-direction:column;gap:2px;padding:6px 10px 8px}
+.nashapp .navtop{display:flex;flex:1;min-height:0;flex-direction:column;gap:2px;overflow:hidden}
+.nashapp .brandrow{display:flex;height:44px;flex:0 0 auto;align-items:center;justify-content:space-between;padding:2px 8px 0}
+.nashapp .wordmark{user-select:none;font-size:17px;font-weight:600;line-height:27px;letter-spacing:-.2px;color:var(--text-primary)}
+.nashapp .closenav{display:grid;place-items:center;height:32px;width:32px;margin-right:-7px;border-radius:8px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease)}
+.nashapp .closenav:hover{background:var(--surface-hover)}
+.nashapp .sp12{height:6px;flex:0 0 auto}
+.nashapp .sp14{height:8px;flex:0 0 auto}
+.nashapp .sp6{height:6px;flex:0 0 auto}
+.nashapp .orgbtn{display:flex;height:40px;width:100%;flex:0 0 auto;align-items:center;gap:9px;border-radius:10px;background:var(--surface-secondary);padding:0 11px;font-size:12.5px;line-height:19.5px;color:var(--text-secondary);
+  transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .orgbtn:hover,.nashapp .orgbtn[aria-expanded=true]{background:var(--surface-hover);color:var(--text-primary)}
+.nashapp .orgbtn svg{color:var(--text-secondary)}
+.nashapp .orgbtn > svg:last-child{transition:transform var(--swap) var(--nash-ease)}
+.nashapp .orgbtn[aria-expanded=true] > svg:last-child{transform:rotate(180deg)}
+.nashapp .orglabel{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.nashapp .searchbar{position:relative;display:flex;height:40px;flex:0 0 auto;align-items:center;gap:9px;border-radius:10px;background:var(--surface-secondary);padding:0 11px;color:var(--text-primary)}
+.nashapp .searchbar > svg{color:var(--text-secondary)}
+.nashapp .searchbar input{width:100%;padding:0;font-size:12.5px;line-height:19.5px}
+.nashapp .searchbar input::placeholder{color:var(--text-secondary-alt)}
+.nashapp .sclear{position:absolute;right:9px;display:flex;height:20px;width:20px;align-items:center;justify-content:center;border-radius:999px;opacity:0;transition:opacity var(--hover) var(--nash-ease);color:var(--text-secondary)}
+.nashapp .searchbar.has .sclear{opacity:1}
+.nashapp .navrow{display:flex;height:34px;width:100%;flex:0 0 auto;align-items:center;gap:11px;border-radius:8px;padding:0 9px;font-size:12.5px;line-height:18.75px;color:var(--text-primary);
+  transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .navrow:hover,.nashapp .navrow[aria-expanded=true]{background:var(--surface-hover);color:var(--text-primary)}
+.nashapp .navrow.active{background:var(--surface-active);color:var(--text-primary)}
+.nashapp .navrow svg{color:var(--text-secondary)}
+.nashapp .navscroll{display:flex;min-height:0;flex:1;flex-direction:column;gap:2px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+.nashapp .navscroll::-webkit-scrollbar{width:3px}
+.nashapp .navscroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}
+.nashapp .navlinks{display:flex;flex-direction:column;gap:2px}
+.nashapp .chatshead-wrap{padding:4px 0 2px}
+.nashapp .chatshead{display:flex;height:32px;width:100%;align-items:center;justify-content:space-between;border-radius:8px;padding:0 9px;font-size:11px;font-weight:500;line-height:16.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);
+  transition:background var(--hover) var(--nash-ease)}
+.nashapp .chatshead:hover{background:var(--surface-hover)}
+.nashapp .chatshead svg{color:var(--text-secondary);transition:transform var(--swap) var(--nash-ease)}
+.nashapp .chats:not(.open) ~ * .chatshead svg,.nashapp .chatshead[aria-expanded=false] svg{transform:rotate(-90deg)}
+.nashapp .fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows var(--move) var(--nash-ease),opacity 180ms var(--nash-ease);opacity:1}
+.nashapp .fold > *{min-height:0;overflow:hidden}
+.nashapp .chats:not(.open) > .fold,.nashapp .folders:not(.open) > .fold,.nashapp .folder:not(.open) > .fold{grid-template-rows:0fr;opacity:0}
+.nashapp .chatsin{display:flex;flex-direction:column}
+.nashapp .fhead{display:flex;height:32px;flex:0 0 auto;align-items:center;gap:6px;border-radius:8px;padding:0 9px;margin-bottom:4px;transition:background var(--hover) var(--nash-ease)}
+.nashapp .fhead:hover{background:var(--surface-hover)}
+.nashapp .flabel{height:100%;flex:1;user-select:none;text-align:left;font-size:11px;font-weight:500;line-height:16.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary)}
+.nashapp .fadd{display:grid;height:22px;width:22px;flex:0 0 auto;place-items:center;border-radius:6px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .fadd:hover{background:var(--surface-active);color:var(--text-primary)}
+.nashapp .fhchev{display:grid;height:22px;width:14px;flex:0 0 auto;place-items:center;color:var(--text-secondary)}
+.nashapp .fhchev svg{transition:transform var(--hover) var(--nash-ease)}
+.nashapp .folders:not(.open) .fhchev svg{transform:rotate(-90deg)}
+.nashapp .flist{display:flex;flex-direction:column;gap:2px}
+.nashapp .frow{display:flex;height:34px;width:100%;flex:0 0 auto;align-items:center;gap:11px;border-radius:8px;padding:0 9px;cursor:pointer;transition:background var(--hover) var(--nash-ease)}
+.nashapp .frow:hover{background:var(--surface-hover)}
+.nashapp .frow > svg{color:var(--text-secondary)}
+.nashapp .folder .ico-open{display:none}
+.nashapp .folder.open .ico-open{display:block}
+.nashapp .folder.open .ico-closed{display:none}
+.nashapp .fname{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px;line-height:20.25px;color:var(--text-primary)}
+.nashapp .fshare,.nashapp .fdel{flex:0 0 auto;border-radius:4px;padding:2px;opacity:0;transition:opacity var(--hover) var(--nash-ease),background var(--hover) var(--nash-ease);color:var(--text-secondary);display:grid;place-items:center}
+.nashapp .frow:hover .fshare,.nashapp .frow:hover .fdel{opacity:1}
+.nashapp .fshare:hover,.nashapp .fdel:hover{background:var(--surface-tertiary)}
+.nashapp .fchev{display:grid;height:22px;width:14px;flex:0 0 auto;place-items:center;color:var(--text-secondary)}
+.nashapp .fchev svg{transition:transform 380ms var(--nash-ease)}
+.nashapp .folder.open .fchev svg{transform:rotate(90deg)}
+.nashapp .fchats{display:flex;flex-direction:column;gap:4px}
+.nashapp .fchat{padding-left:22px}
+.nashapp .convos{display:flex;flex-direction:column;gap:4px;padding-bottom:8px}
+.nashapp .dgroup{display:flex;flex-direction:column;gap:4px}
+.nashapp .dgroup + .dgroup{padding-top:12px}
+.nashapp .dlabel{display:flex;height:32px;align-items:center;padding:0 9px;font-size:11px;font-weight:500;line-height:16.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary-alt)}
+.nashapp .dgroup:has(> .dlabel:only-child){display:none}
+.nashapp .convo{position:relative;display:flex;height:32px;width:100%;align-items:center;border-radius:8px;padding-right:9px;cursor:pointer;outline:none;transition:background var(--hover) var(--nash-ease)}
+.nashapp .convo:hover{background:var(--surface-hover)}
+.nashapp .convo.active,.nashapp .convo.menu{background:var(--surface-active)}
+.nashapp .convo[hidden]{display:none}
+.nashapp .clink{position:relative;display:flex;height:100%;min-width:0;flex:1;align-items:center;gap:8px;overflow:hidden;border-radius:8px 0 0 8px;padding-left:9px}
+.nashapp .ctitle{position:relative;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;line-height:19.5px;color:var(--text-primary)}
+.nashapp .cpin{order:2;margin-right:-8px;display:flex;height:26px;width:26px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:7px;color:var(--text-tertiary);opacity:0;pointer-events:none;
+  transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease),opacity var(--hover) var(--nash-ease)}
+.nashapp .cpin svg{fill:transparent;transition:fill var(--swap) var(--nash-ease)}
+.nashapp .convo:hover .cpin{opacity:1;pointer-events:auto}
+.nashapp .cpin:hover{background:var(--surface-secondary);color:var(--text-primary)}
+.nashapp .cpin.on{opacity:1;pointer-events:auto;color:var(--text-secondary)}
+.nashapp .cpin.on svg{fill:currentColor}
+.nashapp .cpin.on:hover svg{fill:transparent}
+.nashapp .copts{order:1;margin-left:8px;display:flex;width:74px;flex:0 0 auto;align-items:center;justify-content:flex-end;overflow:hidden;opacity:0;pointer-events:none;transition:opacity var(--hover) var(--nash-ease)}
+.nashapp .fchat .copts{margin-right:-4px}
+.nashapp .convo:hover .copts,.nashapp .convo.menu .copts{opacity:1;pointer-events:auto}
+.nashapp .cdots{display:inline-flex;height:24px;width:24px;align-items:center;justify-content:center;border-radius:6px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease)}
+.nashapp .cdots:hover{background:var(--surface-hover)}
+.nashapp .nothing{display:flex;flex:1;align-items:center;justify-content:center;padding:16px 0;color:var(--text-secondary);font-size:14px}
+.nashapp .rulehr{height:1px;width:100%;flex:0 0 auto;background:var(--border-light)}
+.nashapp .account{display:flex;height:48px;width:100%;flex:0 0 auto;align-items:center;gap:10px;border-radius:9px;padding:0 9px;transition:background var(--hover) var(--nash-ease)}
+.nashapp .account:hover,.nashapp .account[aria-expanded=true]{background:var(--surface-hover)}
+.nashapp .avatar{display:flex;height:30px;width:30px;flex:0 0 auto;align-items:center;justify-content:center;overflow:hidden;border-radius:999px;background:var(--surface-hover)}
+.nashapp .avatar span{font-size:12px;font-weight:500;line-height:18px;color:var(--text-secondary)}
+.nashapp .acct{display:flex;min-width:0;flex:1;flex-direction:column;gap:1px;text-align:left}
+.nashapp .aname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:500;line-height:18.75px;color:var(--text-primary)}
+.nashapp .aplan{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;line-height:16.5px;color:var(--text-secondary-alt)}
+.nashapp .account > svg{color:var(--text-secondary);flex:0 0 auto}
+.nashapp /* ── Root: the main column,.nashapp Header.tsx,.nashapp ChatView.tsx landing,.nashapp Landing.tsx ── */
+.main{position:relative;display:flex;height:100%;min-width:0;max-width:100%;flex:1;flex-direction:column;overflow:hidden;background:var(--surface-primary)}
+.nashapp .mobilenav{display:none}
+.nashapp .hdr{position:absolute;top:0;z-index:10;display:flex;height:52px;width:100%;align-items:center;background:var(--surface-primary);padding:0 22px;font-weight:600;color:var(--text-primary)}
+.nashapp .navwrap.collapsed ~ .main .hdr{padding-left:52px}
+.nashapp .hdrmid{position:absolute;left:50%;transform:translateX(-50%);font-weight:400}
+.nashapp .hdrright{margin-left:auto;margin-right:-9px;display:flex;align-items:center;gap:10px}
+.nashapp .hmenu{display:inline-flex;height:36px;width:36px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:999px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .hmenu:hover{background:var(--surface-hover);color:var(--text-primary)}
+.nashapp .signin{height:32px;padding:0 16px;border-radius:999px;background:var(--text-primary);color:#fff;font-size:13px;font-weight:500;white-space:nowrap;transition:opacity 180ms var(--nash-ease)}
+.nashapp .signin:hover{opacity:.88}
+.nashapp .landingcol{display:flex;flex:1;flex-direction:column;align-items:center;overflow-y:auto;min-height:0}
+.nashapp .landing{display:flex;min-height:0;width:100%;flex:1;align-items:center;justify-content:center;padding-bottom:30px}
+.nashapp .greetwrap{display:flex;height:100%;flex-direction:column;align-items:center;justify-content:center;padding:8px 8px 72px}
+.nashapp .greet{font-size:30px;line-height:1.2;letter-spacing:-.5px;font-weight:600;color:var(--text-primary);padding-bottom:.2em;margin-bottom:-.2em;text-align:center}
+.nashapp .gdesc{margin-top:8px;max-width:520px;text-align:center;font-size:13.5px;line-height:20px;color:var(--text-secondary-alt)}
+.nashapp .gdesc:empty{display:none}
+.nashapp .formcol{width:100%;max-width:768px;transition:max-width var(--hover) var(--nash-ease);padding-bottom:56px}
+@media (min-width:1280px){.nashapp .formcol{max-width:896px}
+}
+.nashapp /* ── ChatForm.tsx,.nashapp desktop card ── */
+.cform{margin:0 auto;display:flex;width:100%;flex-direction:row;gap:12px;max-width:clamp(736px,50vw,900px);padding:0 8px}
+.nashapp .ccard{--surface-active:#F2F1F0;--surface-active-alt:#EAE9E8;--surface-hover:#F2F1F0;--surface-hover-alt:#EAE9E8;position:relative;display:flex;width:100%;flex-direction:column;justify-content:space-between;overflow:hidden;color:var(--text-primary);background:var(--surface-chat);border-radius:20px;box-shadow:inset 0 0 0 1px var(--border-subtle),0 1px 2px rgba(28,24,20,.03),0 10px 28px rgba(28,24,20,.05);
+  transition:border-radius 380ms var(--nash-ease),background var(--hover) var(--nash-ease),border-color var(--hover) var(--nash-ease);border:1px solid transparent}
+.nashapp .ccard[data-tools=closed]{border-radius:22px}
+.nashapp .ccard.temp{background:var(--surface-chat)}
+.nashapp .crow{display:flex;width:100%;flex-wrap:wrap;align-items:center;gap:12px;padding:14px}
+.nashapp .tog{display:inline-flex;height:34px;width:34px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:999px;background:transparent;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .tog:hover{background:var(--surface-hover);color:var(--text-primary)}
+.nashapp .tog:active{background:var(--surface-active)}
+.nashapp .pm{position:relative;display:inline-flex;width:17px;height:17px;align-items:center;justify-content:center}
+.nashapp .pm .bar{position:absolute;width:17px;height:1.6px;border-radius:999px;background:currentColor}
+.nashapp .pm .bar.v{transform:rotate(90deg);opacity:1;transform-origin:center;transition:transform 280ms var(--nash-ease),opacity 200ms var(--nash-ease) 60ms}
+.nashapp .ccard[data-tools=open] .pm .bar.v{transform:rotate(0deg);opacity:0}
+.nashapp .crow textarea{margin:0;min-width:0;flex:1;resize:none;background:transparent;padding:0;font-size:14px;line-height:22px;height:22px;max-height:168px;overflow-y:auto;color:var(--text-primary);display:block;
+  scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+.nashapp .crow textarea::placeholder{color:var(--text-secondary-alt)}
+.nashapp .ccard.multi .crow textarea{order:-1;width:100%;flex:1 0 100%}
+.nashapp .modelpick{display:flex;max-width:224px;flex:0 0 auto;align-items:center;gap:12px;background:transparent;margin-left:auto;font-size:13px;line-height:19.5px;color:var(--text-secondary-alt);transition:color var(--hover) var(--nash-ease)}
+.nashapp .modelpick:hover{color:var(--text-primary)}
+.nashapp .modelpick .mname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.nashapp .modelpick svg{color:var(--text-secondary);transition:transform var(--swap) var(--nash-ease)}
+.nashapp .modelpick[aria-expanded=true] svg{transform:rotate(180deg)}
+.nashapp .mic{position:relative;display:inline-flex;height:34px;width:34px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-active);color:var(--text-secondary);transition:background var(--hover) var(--nash-ease)}
+.nashapp .mic:hover{background:var(--surface-active-alt);color:var(--text-primary)}
+.nashapp .mic:active{background:var(--surface-hover)}
+.nashapp .send{display:inline-flex;height:34px;width:34px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-submit);color:#fff;transition:background var(--hover) var(--nash-ease),opacity var(--hover) var(--nash-ease)}
+.nashapp .send:hover{background:var(--surface-submit-hover)}
+.nashapp .send:disabled{cursor:not-allowed;opacity:.4}
+.nashapp .send:disabled:hover{background:var(--surface-submit)}
+.nashapp .tools{display:grid;grid-template-rows:1fr;transition:grid-template-rows var(--move) var(--nash-ease),opacity 180ms var(--nash-ease)}
+.nashapp .ccard[data-tools=closed] .tools{grid-template-rows:0fr;opacity:0}
+.nashapp .tools > *{min-height:0;overflow:hidden}
+.nashapp .trow{display:flex;width:100%;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 14px}
+.nashapp .tleft{display:flex;min-width:0;align-items:center;gap:10px}
+.nashapp .tright{display:flex;flex:0 0 auto;align-items:center;gap:10px}
+.nashapp .pill{display:inline-flex;height:34px;flex:0 0 auto;align-items:center;gap:8px;border-radius:17px;background:var(--surface-hover);padding:0 14px 0 12px;font-size:13px;line-height:19.5px;color:var(--text-secondary);
+  transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease),opacity var(--hover) var(--nash-ease)}
+.nashapp .pill:hover{background:var(--surface-active);color:var(--text-primary)}
+.nashapp .pill.img[aria-pressed=true]{background:var(--text-primary);color:var(--surface-primary)}
+.nashapp .pill.img[aria-pressed=true]:hover{background:var(--text-primary);color:var(--surface-primary);opacity:.9}
+.nashapp .rbtn{position:relative;display:inline-flex;height:34px;width:34px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-active);color:var(--text-secondary);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .rbtn:hover{background:var(--surface-active-alt);color:var(--text-primary)}
+.nashapp .rbtn:active{background:var(--surface-hover)}
+.nashapp .rbtn.mcp:hover,.nashapp .rbtn.voice:hover,.nashapp .rbtn.mcp[aria-expanded=true]{background:var(--surface-hover)}
+.nashapp .rbtn.settings{background:var(--surface-active)}
+.nashapp .rbtn.settings:hover{background:var(--surface-active-alt)}
+.nashapp .rbtn.temp[aria-pressed=true]{background:var(--text-primary);color:var(--surface-primary)}
+.nashapp .rbtn.temp[aria-pressed=true]:hover{background:var(--text-primary);color:var(--surface-primary);opacity:.9}
+.nashapp .mcpcount{position:absolute;right:0;top:0;display:flex;height:14px;min-width:14px;align-items:center;justify-content:center;border-radius:999px;background:var(--brand-purple);padding:0 3px;font-size:10.5px;font-weight:500;line-height:1;color:#fff}
+.nashapp .mcpcount:empty{display:none}
+.nashapp .disclaimer{padding:9px 8px 18px;text-align:center;font-size:10.5px;letter-spacing:.1px;color:var(--text-tertiary)}
+.nashapp /* ── flyouts: .popover-ui / .nash-menu light,.nashapp OrgSwitcher rows,.nashapp More menu,.nashapp MCPSelect panel,.nashapp account menu ── */
+.flyveil{position:fixed;inset:0;z-index:120}
+.nashapp .fly{position:fixed;z-index:125;display:flex;flex-direction:column;border-radius:14px;background:#FFFFFF;color:var(--text-primary);padding:6px;
+  box-shadow:inset 0 0 0 1px var(--border-subtle),0 1px 2px rgba(28,24,20,.03),0 10px 28px rgba(28,24,20,.06);
+  opacity:0;transform:translateX(-10px) scale(.98);transform-origin:left center;transition:opacity 180ms var(--nash-ease),transform 320ms var(--nash-ease)}
+.nashapp .fly.on{opacity:1;transform:none}
+.nashapp .fly.down{transform:translateY(-8px) scale(.98);transform-origin:top center}
+.nashapp .fly.up{transform:translateY(8px) scale(.98);transform-origin:bottom center}
+.nashapp .fly.down.on,.nashapp .fly.up.on{transform:none}
+.nashapp .fly.org{width:272px;max-width:calc(100vw - 2rem)}
+.nashapp .fly.more{width:206px}
+.nashapp .fly.acct{width:244px;max-width:calc(100vw - 2rem)}
+.nashapp .orgrow{display:flex;width:100%;cursor:pointer;align-items:center;gap:10px;border-radius:10px;padding:7px 10px;text-align:left;outline:none;transition:background var(--hover) var(--nash-ease)}
+.nashapp .orgrow:hover{background:var(--surface-active)}
+.nashapp .orgrow > svg{color:var(--text-tertiary);flex:0 0 auto}
+.nashapp .orgrow .ot{min-width:0;flex:1;text-align:left}
+.nashapp .orgrow .oname{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:var(--text-secondary);transition:color var(--hover) var(--nash-ease)}
+.nashapp .orgrow:hover .oname{color:var(--text-primary)}
+.nashapp .orgrow .ocap{margin-top:2px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;color:var(--text-tertiary)}
+.nashapp .orgrow .ocap.cap{text-transform:capitalize}
+.nashapp .orgrow .tick{color:var(--text-primary);flex:0 0 auto}
+.nashapp .osep{margin:6px 0;border-bottom:1px solid var(--border-light)}
+.nashapp .olabel{padding:4px 12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.025em;color:var(--text-secondary)}
+.nashapp .morerow{display:flex;width:100%;cursor:pointer;align-items:center;gap:10px;border-radius:8px;padding:8px 10px;font-size:13.5px;line-height:20px;font-weight:400;color:var(--text-primary);transition:background var(--hover) var(--nash-ease)}
+.nashapp .morerow:hover{background:var(--surface-hover)}
+.nashapp .morerow svg{color:var(--text-secondary-alt);flex:0 0 auto}
+.nashapp .anote{display:flex;flex-direction:column;gap:1px;padding:7px 10px}
+.nashapp .anote .amail{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:17px;color:var(--text-secondary-alt)}
+.nashapp .anote .ameta{display:flex;min-width:0;align-items:center;gap:4px;font-size:10.5px;line-height:15.75px;color:var(--text-tertiary)}
+.nashapp .selitem{display:flex;cursor:pointer;align-items:center;gap:10px;border-radius:8px;padding:8px 10px;font-size:13.5px;line-height:20px;color:var(--text-primary);width:100%;transition:background var(--hover) var(--nash-ease)}
+.nashapp .selitem:hover{background:var(--surface-hover)}
+.nashapp .selitem svg{color:var(--text-secondary-alt);flex:0 0 auto}
+.nashapp .fly.mcpp{width:328px;max-width:calc(100vw - 2rem);padding:0;overflow:hidden;background:#FFFFFF;box-shadow:inset 0 0 0 1px var(--border-subtle),0 1px 2px rgba(28,24,20,.03),0 10px 28px rgba(28,24,20,.06);transform-origin:bottom center;transform:scale(.95)}
+.nashapp .fly.mcpp.on{transform:none}
+.nashapp .mcphead{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border-light);padding:14px 16px}
+.nashapp .mcphead b{font-size:14px;font-weight:600;line-height:21px;color:var(--text-primary)}
+.nashapp .mcpmanage{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;border-radius:7px;padding:3px 6px;font-size:12.5px;line-height:18px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .mcpmanage:hover{background:var(--surface-active);color:var(--text-primary)}
+.nashapp .mcpsearch{position:relative;padding:12px 12px 0}
+.nashapp .mcpsearch svg{position:absolute;left:24px;top:50%;transform:translateY(-50%);margin-top:6px;color:var(--text-secondary);pointer-events:none}
+.nashapp .mcpsearch input{height:40px;width:100%;border-radius:10px;padding:0 12px 0 40px;font-size:13px;background:var(--surface-control);color:var(--text-primary)}
+.nashapp .mcpsearch input::placeholder{color:var(--text-tertiary)}
+.nashapp .mcplist{display:flex;max-height:320px;flex-direction:column;gap:4px;overflow-y:auto;overscroll-behavior:contain;padding:8px;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+.nashapp .mcprow{display:flex;height:52px;width:100%;flex:0 0 auto;align-items:center;gap:12px;border-radius:10px;padding:0 10px}
+.nashapp .mcpico{display:flex;height:22px;width:22px;flex:0 0 auto;align-items:center;justify-content:center;color:var(--text-secondary)}
+.nashapp .mcpico svg{fill:currentColor}
+.nashapp .mcpico svg[fill=none]{fill:none}
+.nashapp .mcprow .mt{display:flex;min-width:0;flex:1;flex-direction:column}
+.nashapp .mcprow .mn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px;font-weight:500;line-height:19px;color:var(--text-primary)}
+.nashapp .mcprow .mm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:17px;color:var(--text-tertiary)}
+.nashapp .sw{position:relative;display:inline-flex;height:22px;width:38px;flex:0 0 auto;cursor:pointer;align-items:center;border-radius:999px;background:var(--surface-active);transition:background var(--hover) var(--nash-ease)}
+.nashapp .sw i{position:absolute;height:16px;width:16px;border-radius:999px;background:var(--text-primary);transform:translateX(3px);transition:transform var(--hover) var(--nash-ease),background var(--hover) var(--nash-ease)}
+.nashapp .sw[aria-checked=true]{background:var(--brand-purple)}
+.nashapp .sw[aria-checked=true] i{transform:translateX(19px);background:var(--surface-primary)}
+.nashapp .mcpadd{display:flex;height:52px;width:100%;align-items:center;gap:12px;border-radius:10px;padding:0 10px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease)}
+.nashapp .mcpadd:hover{background:var(--surface-active)}
+.nashapp .mcpadd .mn{font-size:13.5px;font-weight:500;color:var(--text-primary)}
+.nashapp .mcpaddform{display:flex;height:52px;align-items:center;gap:12px;padding:0 10px}
+.nashapp .mcpaddform input{height:40px;flex:1;min-width:0;border-radius:10px;padding:0 12px;font-size:13px;background:var(--surface-control);color:var(--text-primary)}
+.nashapp .mcpadd .mt{display:flex;min-width:0;flex:1;flex-direction:column;text-align:left}
+.nashapp .mcpadd .mm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:17px;color:var(--text-tertiary);font-weight:400}
+.nashapp .mcpaddform input::placeholder{color:var(--text-tertiary)}
+.nashapp /* ── DesktopModelModal.tsx ── */
+.mscrim{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(28,24,20,.42);opacity:0;transition:opacity 180ms var(--nash-ease)}
+.nashapp .mscrim.on{opacity:1}
+.nashapp .mscrimx{position:absolute;inset:0;height:100%;width:100%;cursor:default;background:transparent}
+.nashapp .mpanel{position:relative;z-index:61;display:flex;height:min(620px,82vh);width:472px;max-width:calc(100vw - 48px);flex-direction:column;gap:10px;overflow:hidden;border-radius:16px;background:#fff;padding:16px 18px;
+  box-shadow:0 6px 16px rgba(28,24,20,.08),0 2px 6px rgba(28,24,20,.05),inset 0 0 0 1px var(--border-light);text-align:left;
+  transform:translateY(10px) scale(.99);transition:transform 380ms var(--nash-ease)}
+.nashapp .mscrim.on .mpanel{transform:none}
+.nashapp .mhead{display:flex;flex:0 0 auto;align-items:flex-start;justify-content:space-between;gap:12px}
+.nashapp .mhead .mtitle{display:flex;min-width:0;flex-direction:column;gap:4px}
+.nashapp .mhead .mtrow{display:flex;align-items:center;gap:8px}
+.nashapp .mback{color:var(--text-secondary);display:flex;transition:color var(--hover) var(--nash-ease)}
+.nashapp .mback:hover{color:var(--text-primary)}
+.nashapp .mhead h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px;font-weight:600;line-height:25px;letter-spacing:-.2px;color:var(--text-primary)}
+.nashapp .mhead p{font-size:12px;line-height:18px;color:var(--text-secondary-alt)}
+.nashapp .mclose{display:flex;height:32px;width:32px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:8px;color:var(--text-secondary-alt);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .mclose:hover{background:var(--surface-active);color:var(--text-primary)}
+.nashapp .msearch{position:relative;min-width:0;flex:0 0 auto}
+.nashapp .msearch svg{pointer-events:none;position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-secondary-alt)}
+.nashapp .msearch input{height:42px;width:100%;border-radius:10px;background:var(--surface-secondary);padding:0 16px 0 44px;font-size:13.5px;line-height:20px;color:var(--text-primary)}
+.nashapp .msearch input::placeholder{color:var(--text-tertiary)}
+.nashapp .mfilters{margin-bottom:12px;display:flex;flex:0 0 auto;align-items:center;gap:6px;padding:0 4px}
+.nashapp .mfilters .fl{margin-right:4px;font-size:12.5px;line-height:18.75px;color:var(--text-secondary-alt)}
+.nashapp .chip{flex:0 0 auto;border-radius:9px;padding:6px 11px;font-size:12.5px;font-weight:500;line-height:17px;background:transparent;color:var(--text-secondary-alt);transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease)}
+.nashapp .chip:hover{background:var(--surface-active);color:var(--text-primary)}
+.nashapp .chip.on{background:var(--border-light);color:var(--text-primary)}
+.nashapp .chip.on:hover{background:var(--surface-hover)}
+.nashapp .mbody{margin:0 -16px;min-height:0;flex:1;overflow-y:auto;padding:0 8px;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+.nashapp .mbody::-webkit-scrollbar{width:3px}
+.nashapp .mbody::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}
+.nashapp .mlabel{padding:0 14px 4px;font-size:10.5px;font-weight:500;text-transform:uppercase;line-height:16px;letter-spacing:.07em;color:var(--text-secondary-alt)}
+.nashapp .mlist{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
+.nashapp .mrow{display:flex;width:100%;align-items:center;gap:12px;border-radius:10px;padding:0 14px;text-align:left;transition:background var(--hover) var(--nash-ease)}
+.nashapp .mrow:hover{background:var(--surface-active)}
+.nashapp .mrow.h62{height:62px}
+.nashapp .mrow.h52{height:52px}
+.nashapp .mrow.h44{height:44px}
+.nashapp .mrow .mt{display:flex;min-width:0;flex:1;flex-direction:column}
+.nashapp .mrow .mn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:500;line-height:21px;color:var(--text-primary)}
+.nashapp .mrow .mm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:18px;color:var(--text-secondary-alt)}
+.nashapp .mrow .mcnt{flex:0 0 auto;font-size:12px;line-height:18px;color:var(--text-tertiary)}
+.nashapp .mrow .mname13{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px;line-height:20px;color:var(--text-primary)}
+.nashapp .mrow > svg{color:var(--text-secondary);flex:0 0 auto}
+.nashapp .mrow .tick{color:var(--text-primary)}
+.nashapp .mpin{display:flex;height:26px;width:26px;flex:0 0 auto;align-items:center;justify-content:center;border-radius:7px;color:var(--text-tertiary);opacity:0;pointer-events:none;transition:background var(--hover) var(--nash-ease),color var(--hover) var(--nash-ease),opacity var(--hover) var(--nash-ease)}
+.nashapp .mpin svg{fill:transparent;transition:fill var(--swap) var(--nash-ease)}
+.nashapp .mrow:hover .mpin{opacity:1;pointer-events:auto}
+.nashapp .mpin:hover{background:var(--surface-secondary);color:var(--text-primary)}
+.nashapp .mpin.on{opacity:1;pointer-events:auto;color:var(--text-secondary)}
+.nashapp .mpin.on svg{fill:currentColor}
+.nashapp .mpin.on:hover svg{fill:transparent}
+.nashapp .mempty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:32px 12px;text-align:center}
+.nashapp .mempty b{font-size:13.5px;font-weight:500;color:var(--text-primary)}
+.nashapp .mempty p{font-size:12.5px;line-height:19px;color:var(--text-secondary-alt)}
+.nashapp .mempty button{margin-top:6px;border-radius:8px;padding:8px 12px;font-size:12.5px;font-weight:500;color:var(--brand-purple);transition:background var(--hover) var(--nash-ease)}
+.nashapp .mempty button:hover{background:var(--surface-active)}
+.nashapp /* ── phone: Nav drawer + mask,.nashapp MobileNav bar,.nashapp the small-screen ChatForm ── */
+.navmask{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,.5);opacity:0;transition:opacity 320ms var(--nash-ease)}
+.nashapp .navmask.on{opacity:1}
+@media (max-width:768px){.nashapp .navwrap{position:fixed;left:0;top:0;z-index:110;height:100%;width:min(92vw,440px)!important;border-radius:0 20px 20px 0;background:var(--surface-primary-alt);overflow:visible;
+    transform:translateX(-100%);transition:transform 320ms var(--nash-ease);box-shadow:0 0 24px rgba(16,18,24,.10),0 0 2px rgba(16,18,24,.06)}
+.nashapp .navwrap.drawer{transform:none}
+.nashapp .rail{display:none}
+.nashapp .nav{width:100%;transform:none!important;border-radius:0 20px 20px 0;overflow:hidden}
+.nashapp .navin{padding:0 10px 16px}
+.nashapp .navrow,.nashapp .frow{height:52px;font-size:15px;line-height:22px}
+.nashapp .convo{height:52px}
+.nashapp .ctitle{font-size:15px;line-height:22px}
+.nashapp .cpin,.nashapp .copts{opacity:1;pointer-events:auto}
+.nashapp .copts{width:auto}
+.nashapp .account{height:56px;gap:12px;border-radius:10px;padding:0 10px}
+.nashapp .avatar{height:36px;width:36px}
+.nashapp .aname{font-size:15px;line-height:22px}
+.nashapp .aplan{font-size:12.5px;line-height:18px}
+.nashapp .hdr{display:none}
+.nashapp .mobilenav{position:sticky;top:0;z-index:10;display:flex;height:44px;flex:0 0 auto;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-primary);padding:2px 12px 0}
+.nashapp .mnbtn{margin-left:-10px;display:inline-flex;height:40px;width:40px;align-items:center;justify-content:center;border-radius:999px;color:var(--text-secondary);transition:background var(--hover) var(--nash-ease)}
+.nashapp .mnbtn:hover{background:var(--surface-active-alt)}
+.nashapp .greet{font-size:26px}
+.nashapp .cform{gap:6px;padding:0 16px 4px;max-width:none}
+.nashapp .ccard,.nashapp .ccard[data-tools=closed]{border-radius:18px}
+.nashapp .crow{gap:8px;padding:16px 12px 20px}
+.nashapp .tog,.nashapp .mic,.nashapp .send{height:40px;width:40px}
+.nashapp .crow textarea{max-height:132px}
+.nashapp .modelpick{min-height:40px;font-size:14px;line-height:21px;gap:8px}
+.nashapp .tools{display:none}
+.nashapp .disclaimer{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+.nashapp .mpanel{height:min(560px,78vh)}
+}
+
