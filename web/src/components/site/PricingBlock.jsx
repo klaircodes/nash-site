@@ -45,6 +45,14 @@ function Roll({ text }) {
   );
 }
 
+const TICK = <svg viewBox="0 0 16 16"><path d="m3.5 8.5 3 3 6-7"/></svg>;
+const TIERS = [
+  { n: 'Starter', amt: '$25', per: 'a month', d: 'On your own. Every model, a memory that follows you.', li: ['Every AI model', 'Memory that follows you', 'Generous monthly usage', '1 GB of documents a month'], b: 'Get started' },
+  { n: 'Team', amt: '$49', per: 'a person a month', d: 'For the team. One bill, pooled usage, a cap per person.', li: ['Everything in Starter', 'Admin controls and spend caps', 'Pooled usage, 5 GB of documents', 'Usage analytics'], b: 'Start a team', lead: true, pop: 'Most teams' },
+  { n: 'Business', amt: '$69', per: 'a person a month', d: 'When IT gets involved. Identity, audit, allow-lists.', li: ['Everything in Team', 'Single sign-on and role-based access', 'Audit logs', 'Model allow-listing, 20 GB of documents'], b: 'Talk to sales' },
+  { n: 'Enterprise', amt: 'Talk to us', per: '', d: 'For the whole company, on your terms.', li: ['Everything in Business', 'Private deployment', 'Custom usage and retention', 'A person to call'], b: 'Talk to sales', words: true },
+];
+
 /* The pricing block layouts B and C shared: four numerals, a seat slider, the copy. */
 export default function PricingBlock({ full = false }) {
   const signIn = useSignIn();
@@ -66,12 +74,27 @@ export default function PricingBlock({ full = false }) {
     <section className="s7 dpr"><div className="shell">
       {!full && <Reveal as="p" className="slbl">Pricing</Reveal>}
       <Reveal as="p" className="intro"><b>Every plan includes every model.</b> The price is about how many of you there are.</Reveal>
+      {full ? (
+        <Stagger className="tiers">
+          {TIERS.map((t) => (
+            <Item key={t.n} className={`tier${t.lead ? ' lead' : ''}`}>
+              {t.pop && <span className="pop">{t.pop}</span>}
+              <p className="n">{t.n}</p>
+              <p className={`price${t.words ? ' words' : ''}`}><span className="amt">{t.amt}</span>{t.per && <span className="per">{t.per}</span>}</p>
+              <p className="d">{t.d}</p>
+              <ul>{t.li.map((x) => <li key={x}>{TICK}{x}</li>)}</ul>
+              <button className="b" type="button" onClick={() => signIn('', t.b === 'Talk to sales' ? 'Talk to sales' : 'Sign in to get started')}>{t.b}</button>
+            </Item>
+          ))}
+        </Stagger>
+      ) : (
       <Stagger className="row">
         <Item className="plan"><p className="n"><Count to={25} /></p><p className="lab">a month, on your own</p></Item>
         <Item className="plan lead"><p className="n"><Count to={49} /></p><p className="lab">a person, for the team</p></Item>
         <Item className="plan"><p className="n"><Count to={69} /></p><p className="lab">a person, when IT gets involved</p></Item>
         <Item className="plan"><p className="n word">Talk to us</p><p className="lab">for the whole company</p></Item>
       </Stagger>
+      )}
       <Reveal className="calc">
         <div className="heads" aria-hidden="true" ref={heads}>
           <AnimatePresence initial={false}>

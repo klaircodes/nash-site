@@ -46,8 +46,22 @@ export const CHATS = [
 ];
 export const GROUPS = ['Today', 'Yesterday', 'Previous 7 days', 'Previous 30 days'];
 
+/* every chat in the sidebar is a real conversation: one question, one answer, the model that gave it */
+export const SEEDS = {
+  'Connector permissions review': { model: 'GPT 4.1', q: 'Which connectors can the design team reach right now?', a: 'Gmail, Drive and Calendar for everyone on the team. **Google Chat** is admin-only until Lena signs off the scopes, which she said she would do Thursday.' },
+  'Comparing models': { model: 'Claude Sonnet 4.6', q: 'Which model should I use for drafting customer emails?', a: 'For tone, **Claude Sonnet 4.6**. For anything that needs the latest numbers from Drive, GPT 4.1 has been a little more careful about quoting them exactly. Switch mid-thread and the context comes with you.' },
+  'Bug triage — render loop': { model: 'GPT 4.1', q: 'Why does the sidebar re-render on every keystroke?', a: 'The search filter is recreated on each render, so every `Convo` sees a new prop. Wrap the filter in **useMemo** keyed on the query and the list, and the loop goes away.' },
+  'Why .map() returns a new array': { model: 'Gemini 2.5 Pro', q: 'Why does .map() return a new array instead of changing the one I have?', a: 'Because it is meant to be **pure**: the input stays as it was, and the output is a fresh array of the same length. If you want to change the original in place, that is a `for` loop or `forEach`.' },
+  'Voice chat': { model: 'GPT 4.1', q: 'Can I just talk to you instead of typing?', a: 'Yes. Tap the **waveform** in the composer and speak; I answer out loud and the transcript lands here so you can search it later.' },
+  'Q3 roadmap draft': { model: 'Claude Sonnet 4.6', q: 'Turn my notes into a Q3 roadmap draft, three priorities max.', a: 'Three it is: ship the **mobile app**, cut onboarding to under a day, open two enterprise pilots. I kept the dates from your notes and flagged the one that clashes with the security review.' },
+  'Pricing research': { model: 'GPT 4.1', q: 'What do the last five deals in Drive say people actually paid per seat?', a: 'Between **$38 and $52** a seat a month, median $47. Two of the five had a spend cap written in, which is worth keeping in the Team plan.' },
+  'Competitor teardown': { model: 'Grok 4', q: 'Tear down how the three main competitors handle team billing.', a: 'All three bill per seat; only one has a **spend cap** per person, and none let you switch models mid-conversation. That last gap is the one to lead with.' },
+  'Naming a design pattern': { model: 'Claude Sonnet 4.6', q: 'What do we call the composer that opens to reveal its tools?', a: 'An **accordion composer**. Collapsed it is one clean row; the plus opens it and the tools sit inline. That is the name in the design doc already.' },
+  'Resume review': { model: 'GPT 4.1', q: 'Read the resume in my Drive and tell me what is missing.', a: 'It reads well. What is missing is **numbers**: the two launches have no outcomes next to them. Add users, revenue or time saved and the rest holds up.' },
+};
+
 export const ASKS = [
-  { ph: 3, q: 'What did Priya say about the launch date?', model: 'Claude Sonnet 5', a: 'Thursday the 24th. She moved it from the 17th in her reply to Tom on Monday.' },
+  { ph: 3, q: 'What did Claire say about the launch date?', model: 'Claude Sonnet 5', a: 'Thursday the 24th. She moved it from the 17th in her reply to Tom on Monday.' },
   { ph: 7, q: 'Summarise the Q3 plan in the shared drive.', model: 'GPT 4.1', a: 'Three priorities: ship the mobile app, cut onboarding to under a day, open two enterprise pilots.' },
   { ph: 1, q: 'What am I walking into on Monday?', model: 'Gemini 2.5 Pro', a: 'Four meetings, one that matters: the security review at 11 with Lena’s team.' },
   { ph: 9, q: 'Compare SOC 2 and ISO 27001 for a 40-person company.', model: 'Claude Sonnet 5', a: 'SOC 2 first. It is what US customers ask for and most controls carry over.' },
@@ -60,7 +74,7 @@ export const ASKS = [
 
 /* the hero sequence: one ask, one answer, with the words that matter marked */
 export const SEQUENCE = [
-  { ask: 'What did Priya say about the launch date?', model: 'Claude Sonnet 5',
+  { ask: 'What did Claire say about the launch date?', model: 'Claude Sonnet 5',
     reply: 'Thursday the **24th**. She moved it from the 17th in her reply to Tom on Monday, because of the App Store review window.' },
   { ask: 'What am I walking into on Monday?', model: 'Gemini 2.5 Pro',
     reply: 'Four meetings, one that matters: the **security review at 11** with Lena’s team. You still owe them the data-flow diagram.' },

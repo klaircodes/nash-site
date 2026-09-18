@@ -614,3 +614,86 @@ input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.comp
 .kcap.right::before{left:-34%;right:-8%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 62% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 62% 50%,#000 30%,transparent 100%)}
 .kcap.left::before{left:-8%;right:-34%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 38% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 38% 50%,#000 30%,transparent 100%)}
 @media(max-width:760px){.kcap::before,.kcap.left::before,.kcap.right::before{left:-6%;right:-6%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%)}}
+
+/* no blur fields behind captions any more: the picture itself pulls focus while a caption is up */
+.kcap::before,.kcap::after,.kcap .kblur,.kcap.right::before,.kcap.left::before{display:none}
+
+/* the hero composer grows with the message; the row of controls sits under the text once it wraps */
+.composer .field{height:auto;min-height:38px;box-sizing:border-box}
+.composer.multi .crow{align-items:flex-end}
+.composer.multi .field{padding:12px 4px 10px}
+.composer.multi .plus{order:0}
+.composer.multi .model{order:1;margin-left:auto}
+.composer.multi .circ{order:2}
+.composer.multi .send{order:3}
+
+/* the screen as a surface in space: it leans toward what the camera looks at and drifts a little on wide shots */
+.player .screenbox{perspective:1800px}
+.player .screen,.player .screenshadow{backface-visibility:hidden;will-change:transform}
+.player .screenshadow{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 40px 90px rgba(0,0,0,.6),0 12px 30px rgba(0,0,0,.4)}
+
+/* the frame is fixed; the picture inside it is the thing in space */
+.player .screenbox{perspective:none}
+.player .screen,.player .screenshadow{will-change:auto}
+.cam3d{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transform-style:flat}
+.appframe .cam3d{transform:none!important}
+
+/* a white ground travels with the picture, well past its edges, so a lean never shows anything but the app's own ground */
+.cam3d::before{content:"";position:absolute;inset:-25%;background:var(--app);z-index:-1}
+
+/* ── the conversation, from Messages/ui/MessageRender.tsx: a bubble on the right, the model's name and its text on the left,
+      and a row of actions under each that shows when the pointer is on the turn ── */
+.nashapp .landingcol.chatting{justify-content:flex-start}
+.nashapp .msgs{width:100%;max-width:768px;box-sizing:border-box;padding:56px 16px 20px;display:flex;flex-direction:column;gap:24px;flex:1 0 auto}
+@media (min-width:1280px){.nashapp .msgs{max-width:896px}}
+.nashapp .turn{display:flex;flex-direction:column;align-items:flex-start}
+.nashapp .turn.user{align-items:flex-end}
+.nashapp .bubble{width:fit-content;max-width:76%;border-radius:18px;background:var(--surface-secondary);padding:16px 18px 13px;font-size:14px;line-height:1.55;color:var(--text-primary);white-space:pre-wrap}
+.nashapp .mmodel{font-size:12.5px;font-weight:500;line-height:19px;color:var(--text-secondary-alt);padding-bottom:9px;user-select:none}
+.nashapp .mtext{font-size:14px;line-height:1.6;color:var(--text-primary);max-width:100%}
+.nashapp .mtext strong{font-weight:500}
+.nashapp .thinking{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--text-primary);vertical-align:-1px;animation:nashpulse 1.25s ease-in-out infinite}
+@keyframes nashpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.55}}
+.nashapp .hoverrow{margin-top:12px;display:flex;gap:4px;opacity:0;transition:opacity var(--hover) var(--nash-ease)}
+.nashapp .turn:hover .hoverrow,.nashapp .turn:focus-within .hoverrow,.nashapp .turn.hovered .hoverrow{opacity:1}
+@media(hover:none){.nashapp .hoverrow{opacity:1}}
+.nashapp .hbtn{width:28px;height:28px;border-radius:7px;border:0;background:none;padding:0;color:var(--text-secondary-alt);display:grid;place-items:center;cursor:pointer;transition:color var(--hover) var(--nash-ease),background var(--hover) var(--nash-ease)}
+.nashapp .hbtn:hover,.nashapp .hbtn.on{color:var(--text-primary)}
+.nashapp .hbtn:hover{background:var(--surface-hover)}
+.nashapp .hbtn svg{width:15px;height:15px}
+@media (max-width:768px){.nashapp .msgs{padding:16px 12px 12px;gap:18px}.nashapp .bubble{max-width:88%}}
+
+/* in Try the header is taller and sits over the content, so the thread starts below it */
+.appframe .nashapp .msgs{padding-top:116px}
+@media (max-width:768px){.appframe .nashapp .msgs{padding-top:16px}}
+/* a caption that sits in the gap between two turns: left, wide, one line each */
+.kcap.leftwide{left:5%;right:auto;width:62%;top:29%;align-items:flex-start;text-align:left}
+.kcap.leftwide .kl{font-size:clamp(20px,2.6vw,36px)}
+.kcap.leftwide .kl.big{font-size:clamp(36px,5.2vw,72px);white-space:nowrap}
+@media(max-width:760px){.kcap.leftwide{left:0;right:0;width:auto;align-items:center;text-align:center;top:6%}.kcap.leftwide .kl.big{white-space:normal}}
+
+/* the composer stays put; the conversation scrolls behind it */
+.nashapp .landingcol.chatting{overflow:hidden}
+.nashapp .msgs{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+
+/* pricing cards on the pricing page: the lead card carries the accent, its tag is amber */
+.tiers{margin-top:8px}
+.tier{position:relative;display:flex;flex-direction:column}
+.tier ul{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;flex:1}
+.tier .pop{background:var(--amber);color:#131211;padding:4px 9px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
+.tier .b{margin-top:26px;font-family:var(--f);font-size:14px;font-weight:500;cursor:pointer;transition:.16s var(--e)}
+.tier .b:hover{background:var(--app);border-color:var(--t1);transform:none;box-shadow:none}
+.tier.lead .b{background:var(--accent);border-color:var(--accent);color:#fff}
+.tier.lead .b:hover{background:var(--accent-pressed);border-color:var(--accent-pressed);opacity:1}
+.tier:hover{transform:none;box-shadow:none}
+.ptable .hot{background:none}
+
+.tier li{text-align:left}
+.tier ul{width:100%}
+
+/* the lead tag rides the top edge of its card */
+.tier .pop{top:-13px;right:auto;left:50%;transform:translateX(-50%);white-space:nowrap}
+.tiers{padding-top:14px}
+
+/* inside the film, a dim or a scrim spills well past the app's edges, so a lean never shows white beside it */
+.player .nashapp .mscrim,.player .nashapp .navmask,.player .nashapp .flyveil{inset:-40%}

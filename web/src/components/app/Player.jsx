@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useMotionValue, useTransform, useMotionValueEvent, animate } from 'motion/react';
+import { AnimatePresence, motion, useMotionValue, useTransform, animate } from 'motion/react';
 import NashApp from './NashApp.jsx';
 import Director, { Kinetic } from './Director.jsx';
 import { ModeSwitch } from '../site/SiteNav.jsx';
@@ -22,6 +22,10 @@ export default function Player({ mode, setMode, curtain }) {
   const width = useTransform(prog, (v) => `${v * 100}%`);
   const cam = { z: useMotionValue(1), x: useMotionValue(0), y: useMotionValue(0) };
   const cur = { x: useMotionValue(700), y: useMotionValue(420) };
+  const capT = useMotionValue(0);
+  const tilt = { rx: useMotionValue(0), ry: useMotionValue(0) };
+  const focus = useMotionValue(0);
+  const soft = useTransform(focus, (v) => (v > 0.02 ? `blur(${v.toFixed(2)}px)` : 'none'));
   const onScenes = useCallback((list) => { setScenes(list); setI((n) => (n < list.length ? n : 0)); }, []);
   const [cap, setCap] = useState(null);
   const seekRef = useRef(null);
@@ -76,15 +80,18 @@ export default function Player({ mode, setMode, curtain }) {
           <div className="screenshadow" aria-hidden="true" />
           <div className="screen" ref={frame} style={leaving ? { position: 'fixed', ...leaving, borderRadius: 14 } : entering ? { position: 'fixed', ...entering, borderRadius: 0, zIndex: 3 } : undefined}
             onClick={player ? (e) => { if (!e.target.closest('.hdr, .mobilenav')) toTry(); } : undefined}>
-            <motion.div className="camera" style={{ scale: cam.z, x: cam.x, y: cam.y, transformOrigin: '0 0' }}>
-              <NashApp mode={mode} setMode={switchMode} rootRef={root} framed={player} api={api} />
-              <Director active={filming} playing={playing} api={api} root={root} frame={frame} cam={cam} cur={cur} i={i} setI={setI} prog={prog} onScenes={onScenes} onCap={onCap} seekRef={seekRef} />
+            {/* a focus pull: while a caption is up the whole picture goes a touch soft, then comes back; the clock drives it */}
+            <motion.div className="cam3d" style={{ rotateX: tilt.rx, rotateY: tilt.ry, transformPerspective: 1400 }}>
+              <motion.div className="camera" style={{ scale: cam.z, x: cam.x, y: cam.y, transformOrigin: '0 0', filter: soft }}>
+                <NashApp mode={mode} setMode={switchMode} rootRef={root} framed={player} api={api} />
+                <Director active={filming} playing={playing} api={api} root={root} frame={frame} cam={cam} cur={cur} tilt={tilt} i={i} setI={setI} prog={prog} onScenes={onScenes} onCap={onCap} seekRef={seekRef} capT={capT} focus={focus} />
+              </motion.div>
             </motion.div>
             <AnimatePresence>
               {filming && cap && (
                 <motion.div key={cap.key} className={`kcap ${cap.pos} ${cap.tone}`} aria-live="polite" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.18 } }} transition={{ duration: 0.25, ease }}>
                   <i className="kblur" aria-hidden="true" />
-                  <Kinetic text={cap.text} />
+                  <Kinetic text={cap.text} capT={capT} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -118,11 +125,10 @@ export default function Player({ mode, setMode, curtain }) {
 
 /* the clock subscribes to time on its own, so the rest of the player is not redrawn every frame */
 function Clock({ prog, scenes, i }) {
-  const [t, setT] = useState('0:00');
   const before = scenes.slice(0, i).reduce((n, s) => n + s.dur, 0);
   const total = scenes.reduce((n, s) => n + s.dur, 0) / 1000;
-  useMotionValueEvent(prog, 'change', (v) => setT(fmt((before + v * (scenes[i]?.dur || 0)) / 1000)));
-  return <span className="ptime">{t} / {fmt(total)}</span>;
+  const t = useTransform(prog, (v) => fmt((before + v * (scenes[i]?.dur || 0)) / 1000));
+  return <span className="ptime"><motion.span>{t}</motion.span> / {fmt(total)}</span>;
 }
 
 /* a quiet mark in the corner while the film is paused */

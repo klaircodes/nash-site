@@ -1,26 +1,30 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useSignIn } from '../../App.jsx';
 import { ModeSwitch } from '../site/SiteNav.jsx';
 import { I, TempIcon, WaveIcon, ServerIcon, PlusMinus } from '../../icons.jsx';
-import { FOLDERS, CHATS, GROUPS, CONNECTORS } from '../../data.js';
+import { FOLDERS, CHATS, GROUPS, CONNECTORS, SEEDS } from '../../data.js';
 import ModelPicker from './ModelPicker.jsx';
 import Flyout from './Flyouts.jsx';
+import Thread, { answerFor, ModelName } from './Thread.jsx';
 import { ease, dur } from '../../motion.js';
 
 const greeting = () => {
   const d = new Date(), h = d.getHours(), we = d.getDay() === 0 || d.getDay() === 6;
   return h < 5 ? 'Happy late night' : h < 12 ? (we ? 'Happy weekend' : 'Good morning') : h < 17 ? 'Good afternoon' : 'Good evening';
 };
-const ASKS = ['Ask anything…', 'What did Priya say about the launch date?', 'Summarise the Q3 plan in the shared drive.', 'What am I walking into on Monday?', 'Catch me up on #launch since Thursday.'];
+const ASKS = ['Ask anything…', 'What did Claire say about the launch date?', 'Summarise the Q3 plan in the shared drive.', 'What am I walking into on Monday?', 'Catch me up on #launch since Thursday.'];
 const isPhone = () => window.matchMedia('(max-width: 768px)').matches;
 
+/* the seeded conversations behind every chat in the sidebar */
+const seedThreads = () => Object.fromEntries(Object.entries(SEEDS).map(([title, s]) => [title, { id: title, messages: [{ id: 1, user: true, text: s.q }, { id: 2, user: false, text: s.a, model: s.model, streaming: false, count: s.a.split(' ').length }] }]));
+
 /* ── Conversations/Convo.tsx ── */
-function Convo({ title, pinned, onPin, inFolder, hidden, signIn }) {
+function Convo({ title, pinned, onPin, inFolder, hidden, signIn, onOpen, on }) {
   if (hidden) return null;
   return (
-    <div className="convo" role="button" tabIndex={0} onClick={() => signIn('', 'Sign in to open your chats')}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); signIn('', 'Sign in to open your chats'); } }}>
+    <div className={`convo${on ? ' active' : ''}`} role="button" tabIndex={0} aria-current={on ? 'page' : undefined} onClick={onOpen}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
       <div className="clink"><div className="ctitle">{title}</div></div>
       {!inFolder && (
         <button className={`cpin${pinned ? ' on' : ''}`} type="button" aria-label={pinned ? 'Unpin' : 'Pin'} aria-pressed={pinned}
@@ -36,7 +40,7 @@ function Convo({ title, pinned, onPin, inFolder, hidden, signIn }) {
 }
 
 /* ── Nav.tsx: NewChat, OrgSwitcher, SearchBar, NavControlLinks, FoldersList, Conversations, AccountSettings ── */
-function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind, onNewChat, signIn, chats, setChats }) {
+const Sidebar = memo(function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind, onNewChat, signIn, chats, setChats, active, onOpen }) {
   const [q, setQ] = useState('');
   const [chatsOpen, setChatsOpen] = useState(true);
   const [foldersOpen, setFoldersOpen] = useState(true);
@@ -76,7 +80,7 @@ function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind,
             <button className="sclear" type="button" aria-label="Clear search" tabIndex={q ? 0 : -1} onClick={() => setQ('')}><I name="x" size={16} /></button>
           </div>
           <div className="sp14" />
-          <a className="navrow active" href="#/" onClick={(e) => { e.preventDefault(); onNewChat(); }}><I name="plus" size={16} /> New Chat</a>
+          <a className={`navrow${active ? '' : ' active'}`} href="#/" onClick={(e) => { e.preventDefault(); onNewChat(); }}><I name="plus" size={16} /> New Chat</a>
           <div className="navscroll">
             <div className="navlinks">
               <button className="navrow" type="button" onClick={() => signIn('', 'Sign in to open Bookmarks')}><I name="bookmark" size={16} /> Bookmarks</button>
@@ -107,7 +111,7 @@ function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind,
                           <button className="fchev" type="button" aria-label={f.label} aria-expanded={isOpen} onClick={(e) => { e.stopPropagation(); tog(); }}><I name="chevron-right" size={16} /></button>
                         </div>
                         <div className="fold"><div className="fchats">
-                          {f.chats.map((t) => <div key={t} className="fchat"><Convo title={t} inFolder signIn={signIn} /></div>)}
+                          {f.chats.map((t) => <div key={t} className="fchat"><Convo title={t} inFolder signIn={signIn} onOpen={() => onOpen(t)} on={active === t} /></div>)}
                         </div></div>
                       </div>
                     );
@@ -121,7 +125,7 @@ function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind,
                     <AnimatePresence initial={false}>
                       {rows.map((c) => (
                         <motion.div key={c.title} layout transition={{ duration: dur.move, ease }}>
-                          <Convo title={c.title} pinned={c.pinned} onPin={() => pin(c.title)} signIn={signIn} />
+                          <Convo title={c.title} pinned={c.pinned} onPin={() => pin(c.title)} signIn={signIn} onOpen={() => onOpen(c.id)} on={active === c.id} />
                         </motion.div>
                       ))}
                     </AnimatePresence>
@@ -141,10 +145,10 @@ function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind,
       </nav></div>
     </div>
   );
-}
+});
 
 /* ── ChatForm.tsx ── */
-function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTools, temp, setTemp, image, setImage, openFly, flyKind, signIn, connected }) {
+const Composer = memo(function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTools, temp, setTemp, image, setImage, openFly, flyKind, signIn, connected, onSend }) {
   const ta = useRef(null);
   const mcpRef = useRef(null);
   const [multi, setMulti] = useState(false);
@@ -155,7 +159,7 @@ function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTool
   }, []);
   useEffect(grow, [text, grow]);
   useEffect(() => { window.addEventListener('resize', grow); return () => window.removeEventListener('resize', grow); }, [grow]);
-  const send = () => { if (text.trim()) signIn(text.trim()); };
+  const send = () => { const q = text.trim(); if (!q) return; setText(''); onSend(q); };
 
   return (
     <div className="formcol">
@@ -171,7 +175,7 @@ function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTool
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }} />
             <button className="modelpick" type="button" aria-haspopup="dialog" aria-expanded={pickerOpen} aria-label="Select a model" onClick={(e) => { e.stopPropagation(); openPicker(); }}>
-              <span className="mname">{model}</span><I name="chevron-down" size={14} />
+              <ModelName name={model} className="mname" settle="var(--text-secondary)" /><I name="chevron-down" size={14} />
             </button>
             <button className="mic" type="button" aria-label="Dictate a message" onClick={() => signIn('', 'Sign in to dictate')}><I name="mic" size={17} /></button>
             <button className="send" type="button" aria-label="Send message" disabled={!text.trim()} onClick={(e) => { e.stopPropagation(); send(); }}><I name="arrow-up" size={17} /></button>
@@ -195,7 +199,7 @@ function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTool
       <div className="disclaimer" role="note">Nash can make mistakes. Please double-check responses.</div>
     </div>
   );
-}
+});
 
 export default function NashApp({ mode, setMode, rootRef, framed = false, api }) {
   const signIn = useSignIn();
@@ -203,8 +207,16 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
   const root = rootRef || own;
   const [collapsed, setCollapsed] = useState(false);
   const [drawer, setDrawer] = useState(false);
-  const [chats, setChats] = useState(CHATS);
+  const [chats, setChats] = useState(() => CHATS.map((c) => ({ ...c, id: c.title })));
+  const [threads, setThreads] = useState(seedThreads);
+  const [active, setActive] = useState(null);
+  const activeRef = useRef(null);
+  activeRef.current = active;
+  const messages = (active && threads[active]?.messages) || [];
+  const openChat = useCallback((id) => { stopStream(); setActive(id); activeRef.current = id; setDrawer(false); setText(''); }, []);
   const [text, setText] = useState('');
+  const streamTimer = useRef(null);
+  const modelRef = useRef(null);
   const [tools, setTools] = useState(true);
   const [temp, setTemp] = useState(false);
   const [image, setImage] = useState(false);
@@ -213,9 +225,33 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
   const [pickerOpen, setPickerOpen] = useState(false);
   const [fly, setFly] = useState(null); // { kind, anchor }
   const [servers, setServers] = useState(CONNECTORS.map((c) => ({ ...c, on: true })));
-  const [placeholder, setPlaceholder] = useState(ASKS[0]);
   const greet = useMemo(greeting, []);
   const pickerApi = useRef(null);
+  modelRef.current = model;
+
+  /* signed out, the conversation is a rehearsal: the question goes up, the answer comes back word by word */
+  const stopStream = () => { clearInterval(streamTimer.current); streamTimer.current = null; };
+  const setMessages = (fn) => setThreads((t) => { const id = activeRef.current; if (!id) return t; const th = t[id] || { id, messages: [] }; const ms = fn(th.messages); return ms === th.messages ? t : { ...t, [id]: { ...th, messages: ms } }; });
+  const setLast = (fn) => setMessages((l) => { const k = l.length - 1; if (k < 0 || l[k].user) return l; const next = fn(l[k]); return next === l[k] ? l : [...l.slice(0, k), next]; });
+  /* a message in a new chat makes the chat: it takes its title from the question and lands under Today */
+  const ensureChat = (q) => {
+    if (activeRef.current) return activeRef.current;
+    const id = `c${Date.now()}`; activeRef.current = id; setActive(id);
+    setChats((l) => [{ id, title: q.length > 30 ? `${q.slice(0, 29).trimEnd()}…` : q, group: 'Today', pinned: false }, ...l]);
+    return id;
+  };
+  const ask = useCallback((q, opts = {}) => {
+    stopStream(); ensureChat(q);
+    const a = answerFor(q); const total = a.split(' ').length; const id = Date.now();
+    /* an answer still arriving lands in full before the next question goes up */
+    setMessages((l) => [...l.map((m) => (m.streaming ? { ...m, streaming: false, count: m.text.split(' ').length } : m)), { id, user: true, text: q }, { id: id + 1, user: false, text: a, model: opts.model || modelRef.current.name, streaming: true, count: 0 }]);
+    if (!opts.manual) {
+      let n = 0; const t0 = performance.now();
+      streamTimer.current = setInterval(() => { const dt = performance.now() - t0; if (dt < 700) return; n = Math.min(total, Math.floor((dt - 700) / 60)); setLast((m) => ({ ...m, count: n, streaming: n < total })); if (n >= total) stopStream(); }, 40);
+    }
+  }, []);
+  const regenerate = useCallback((m) => { const list = (activeRef.current && threads[activeRef.current]?.messages) || []; const q = [...list].reverse().find((x) => x.user && x.id < m.id); setMessages((l) => l.filter((x) => x.id !== m.id && x.id !== q?.id)); if (q) setTimeout(() => ask(q.text), 30); }, [threads, ask]);
+  useEffect(() => () => stopStream(), []);
   const [settled, setSettled] = useState(false);
   useEffect(() => { const t = setTimeout(() => setSettled(true), 900); return () => clearTimeout(t); }, []);
 
@@ -230,24 +266,31 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
       openFly: (kind) => { const el = root.current?.querySelector(kind === 'mcp' ? '.rbtn.mcp' : kind === 'org' ? '.orgbtn' : kind === 'acct' ? '.account' : '.navrow.more'); if (el) setFly({ kind, anchor: el }); },
       closeFly: () => setFly(null),
       setDrawer,
+      ask: (q) => ask(q, { manual: true }),
+      ensure: (q) => { if (activeRef.current && threads[activeRef.current]?.messages?.length) return; ensureChat(q); setMessages((l) => { if (l.length) return l; const a = answerFor(q); return [{ id: 1, user: true, text: q }, { id: 2, user: false, text: a, model: 'GPT 4.1', streaming: false, count: a.split(' ').length }]; }); },
+      setLastModel: (name) => setLast((m) => (m.model === name ? m : { ...m, model: name })),
+      stream: (p) => setLast((m) => { const total = m.text.split(' ').length; const n = Math.max(0, Math.min(total, Math.round(p * total))); const st = p < 1; return m.count === n && m.streaming === st ? m : { ...m, count: n, streaming: st }; }),
+      hoverLast: (on) => setMessages((l) => (l.length && !!l[l.length - 1].hover === !!on ? l : l.map((m, k) => (k === l.length - 1 ? { ...m, hover: on } : m)))),
       toggleServer: (name) => setServers((l) => l.map((s) => (s.name === name ? { ...s, on: !s.on } : s))),
-      reset: () => { setText(''); setFly(null); setPickerOpen(false); setDrawer(false); setModel({ name: 'GPT 4.1', ep: 'openai' }); setServers((l) => l.map((s) => ({ ...s, on: true }))); },
+      reset: () => { stopStream(); setActive(null); activeRef.current = null; setThreads(seedThreads()); setChats(CHATS.map((c) => ({ ...c, id: c.title }))); setText(''); setFly(null); setPickerOpen(false); setDrawer(false); setModel({ name: 'GPT 4.1', ep: 'openai' }); setServers((l) => l.map((s) => ({ ...s, on: true }))); },
     };
     return () => { api.current = null; };
-  }, [api]);
+  }, [api, threads]);
 
-  /* placeholder cycles through real asks while the box is empty */
+  /* placeholder cycles through real asks while the box is empty; it is written straight to the field so nothing redraws */
+  const textRef = useRef(text); textRef.current = text;
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let ai = 0, typing = null;
+    const ta = () => root.current?.querySelector('.ccard textarea');
     const tick = setInterval(() => {
-      if (text || temp || document.activeElement?.tagName === 'TEXTAREA') return;
+      if (textRef.current || temp || document.activeElement?.tagName === 'TEXTAREA') return;
       ai = (ai + 1) % ASKS.length; const t = ASKS[ai]; let k = 0;
       clearInterval(typing);
-      typing = setInterval(() => { setPlaceholder(t.slice(0, ++k)); if (k >= t.length) clearInterval(typing); }, 28);
+      typing = setInterval(() => { ta()?.setAttribute('placeholder', t.slice(0, ++k)); if (k >= t.length) clearInterval(typing); }, 28);
     }, 4200);
     return () => { clearInterval(tick); clearInterval(typing); };
-  }, [text, temp]);
+  }, [temp]);
 
   const openFly = useCallback((kind, anchor) => setFly((f) => (f?.kind === kind ? null : { kind, anchor })), []);
   const closeFly = useCallback(() => setFly(null), []);
@@ -262,14 +305,16 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [fly, pickerOpen, mode, setMode, framed]);
 
-  const onNewChat = () => { setText(''); setDrawer(false); root.current?.querySelector('textarea')?.focus(); };
+  const onNewChat = useCallback(() => { stopStream(); setActive(null); activeRef.current = null; setText(''); setDrawer(false); root.current?.querySelector('textarea')?.focus(); }, []);
   const connected = servers.filter((s) => s.on).length;
+  const onEdit = useCallback(() => signIn('', 'Sign in to edit messages'), [signIn]);
+  const openPicker = useCallback(() => { setFly(null); setPickerOpen(true); }, []);
 
   return (
     <div ref={root} className={`nashapp${mode === 'tour' ? ' tourmode' : ''}${framed ? ' framed' : ''}${settled ? '' : ' presettle'}`} aria-label="Nash"
       onPointerDown={(e) => { if (mode === 'tour' && !framed && !e.target.closest('.hdr, .mobilenav, .tcard')) setMode('try'); }}>
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} drawer={drawer} setDrawer={setDrawer}
-        openFly={openFly} flyKind={fly?.kind} onNewChat={onNewChat} signIn={signIn} chats={chats} setChats={setChats} />
+        openFly={openFly} flyKind={fly?.kind} onNewChat={onNewChat} signIn={signIn} chats={chats} setChats={setChats} active={active} onOpen={openChat} />
       <AnimatePresence>{drawer && <motion.div className="navmask" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.32, ease }} onClick={() => setDrawer(false)} />}</AnimatePresence>
       <div className="main">
         <div className="mobilenav">
@@ -284,7 +329,10 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
             <button className="hmenu" type="button" aria-label="More" onClick={() => signIn('', 'Sign in to continue')}><I name="ellipsis" size={18} /></button>
           </div>
         </div>
-        <div className="landingcol">
+        <div className={`landingcol${messages.length ? ' chatting' : ''}`}>
+          {messages.length ? (
+            <Thread messages={messages} model={model.name} signIn={signIn} onRegenerate={regenerate} onEdit={onEdit} />
+          ) : (
           <div className="landing">
             <div className="greetwrap">
               <motion.h1 key={temp ? 't' : 'g'} className="greet" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease }}>
@@ -293,10 +341,10 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
               {temp && <p className="gdesc">This chat won’t be saved to your history.</p>}
             </div>
           </div>
-          <Composer text={text} setText={setText} model={model.name} openPicker={() => { setFly(null); setPickerOpen(true); }} pickerOpen={pickerOpen}
+          )}
+          <Composer text={text} setText={setText} model={model.name} openPicker={openPicker} pickerOpen={pickerOpen}
             tools={tools} setTools={setTools} temp={temp} setTemp={setTemp} image={image} setImage={setImage}
-            openFly={openFly} flyKind={fly?.kind} signIn={signIn} connected={connected} />
-          <PlaceholderSync root={root} text={placeholder} temp={temp} />
+            openFly={openFly} flyKind={fly?.kind} signIn={signIn} connected={connected} onSend={ask} />
         </div>
       </div>
       <Flyout fly={fly} onClose={closeFly} root={root} servers={servers} setServers={setServers} signIn={signIn} />
@@ -305,11 +353,3 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
   );
 }
 
-/* the cycling placeholder is written straight to the textarea so React's value stays untouched */
-function PlaceholderSync({ root, text, temp }) {
-  useEffect(() => {
-    const ta = root.current?.querySelector('.ccard textarea');
-    if (ta && !temp) ta.setAttribute('placeholder', text);
-  }, [root, text, temp]);
-  return null;
-}

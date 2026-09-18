@@ -9,7 +9,7 @@ import { ease } from '../motion.js';
 export default function Home({ mode, setMode, curtain }) {
   const site = mode === 'site';
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="wait">
       <motion.div key={site ? 'site' : 'app'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.28, ease }}>
         {site ? <LearnMore /> : <Player mode={mode} setMode={setMode} curtain={curtain} />}
       </motion.div>

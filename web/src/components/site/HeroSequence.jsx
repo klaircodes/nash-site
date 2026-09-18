@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useSignIn } from '../../App.jsx';
 import { SEQUENCE, modelColor } from '../../data.js';
@@ -39,6 +39,20 @@ export default function HeroSequence() {
 
   const fire = () => { if (value.trim()) signIn(value.trim()); };
 
+  /* the box is the size of the message: it grows line by line, and past one line the model chip drops to its own row */
+  const ta = useRef(null);
+  const grow = useCallback(() => {
+    const el = ta.current; if (!el) return;
+    const box = el.closest('.composer');
+    el.style.height = 'auto';
+    const wraps = el.value.trim() ? el.scrollHeight > 44 : false;
+    box?.classList.toggle('multi', wraps);
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 190)}px`;
+  }, []);
+  useEffect(grow, [value, grow]);
+  useEffect(() => { window.addEventListener('resize', grow); return () => window.removeEventListener('resize', grow); }, [grow]);
+
   return (
     <div className="win bare"><div className="cwrap">
       <div className={`composer${manual ? ' focus' : ''}`}>
@@ -46,7 +60,7 @@ export default function HeroSequence() {
           <button className="cbtn plus" type="button" aria-label="More tools" onClick={() => signIn('', 'Sign in to add to chat')}>
             <svg viewBox="0 0 20 20"><path d="M3.5 10h13"/><path className="bar2" d="M10 3.5v13"/></svg>
           </button>
-          <textarea className={`field${!manual && typed ? ' typing' : ''}`} rows="1" placeholder="Ask anything…" spellCheck="false"
+          <textarea ref={ta} className={`field${!manual && typed ? ' typing' : ''}`} rows="1" placeholder="Ask anything…" spellCheck="false"
             value={value}
             onFocus={() => { setManual(true); setOwn(''); }}
             onChange={(e) => setOwn(e.target.value)}

@@ -30,7 +30,6 @@ const FAQ = [
 
 export default function Pricing() {
   const signIn = useSignIn();
-  const [hot, setHot] = useState(-1);
   const [openQ, setOpenQ] = useState(-1);
   return (
     <div className="page on">
@@ -45,11 +44,11 @@ export default function Pricing() {
       <section><div className="shell">
         <TextReveal as="h2" style={{ maxWidth: '18ch' }}>Everything, side by side.</TextReveal>
         <Reveal className="scrollx">
-          <table className="ptable" onMouseLeave={() => setHot(-1)}>
-            <thead><tr><th />{['Starter', 'Team', 'Business', 'Enterprise'].map((h, k) => <th key={h} className={hot === k + 1 ? 'hot' : ''} onMouseOver={() => setHot(k + 1)}>{h}</th>)}</tr></thead>
+          <table className="ptable">
+            <thead><tr><th />{['Starter', 'Team', 'Business', 'Enterprise'].map((h) => <th key={h}>{h}</th>)}</tr></thead>
             <tbody>
               {ROWS.map(([label, ...cells]) => (
-                <tr key={label}><td>{label}</td>{cells.map((c, k) => <td key={k} className={`c${hot === k + 1 ? ' hot' : ''}`} onMouseOver={() => setHot(k + 1)}>{c}</td>)}</tr>
+                <tr key={label}><td>{label}</td>{cells.map((c, k) => <td key={k} className="c">{c}</td>)}</tr>
               ))}
             </tbody>
           </table>
