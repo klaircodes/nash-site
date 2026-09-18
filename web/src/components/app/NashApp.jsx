@@ -153,12 +153,17 @@ const Sidebar = memo(function Sidebar({ collapsed, setCollapsed, drawer, setDraw
 const Composer = memo(function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTools, temp, setTemp, image, setImage, openFly, flyKind, signIn, connected, onSend }) {
   const ta = useRef(null);
   const mcpRef = useRef(null);
-  /* on a phone the composer is always two rows: the text on top, the controls under it */
-  const [multi, setMulti] = useState(() => isPhone());
+  /* on a phone the composer is always two rows: the text on top, the controls under it. Height and row mode are
+     measured straight off the field: the placeholder is set aside so a long one cannot inflate an empty box */
+  const multi = useRef(isPhone());
   const grow = useCallback(() => {
-    const el = ta.current; if (!el) return;
+    const el = ta.current; if (!el || !el.clientWidth) return;
+    const empty = !el.value.trim(), ph = el.placeholder;
+    if (empty) el.placeholder = '';
     el.style.height = '22px'; const h = el.scrollHeight; el.style.height = `${Math.min(h, 168)}px`;
-    setMulti((was) => (isPhone() ? true : !el.value.trim() ? false : was || h > 30));
+    if (empty) el.placeholder = ph;
+    const m = isPhone() ? true : empty ? false : multi.current || h > 30;
+    if (m !== multi.current) { multi.current = m; el.closest('.ccard')?.classList.toggle('multi', m); }
   }, []);
   useEffect(grow, [text, grow]);
   useEffect(() => { window.addEventListener('resize', grow); return () => window.removeEventListener('resize', grow); }, [grow]);
@@ -167,7 +172,7 @@ const Composer = memo(function Composer({ text, setText, model, openPicker, pick
   return (
     <div className="formcol">
       <div className="cform">
-        <div className={`ccard${multi ? ' multi' : ''}${temp ? ' temp' : ''}`} data-tools={tools ? 'open' : 'closed'}
+        <div className={`ccard${multi.current ? ' multi' : ''}${temp ? ' temp' : ''}`} data-tools={tools ? 'open' : 'closed'}
           onClick={(e) => { if (window.matchMedia('(pointer: coarse)').matches) return; if (e.target.closest('input, textarea, button, [role=dialog], [role=menu]')) return; ta.current?.focus(); }}>
           <div className="crow">
             <button className="tog" type="button" aria-label={tools ? 'Hide tools' : 'Show tools'} aria-expanded={tools}
@@ -337,7 +342,7 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
         </div>
         <div className={`landingcol${messages.length ? ' chatting' : ''}`}>
           {messages.length ? (
-            <Thread messages={messages} model={model.name} signIn={signIn} onRegenerate={regenerate} onEdit={onEdit} />
+            <Thread messages={messages} model={model.name} signIn={signIn} onRegenerate={regenerate} onEdit={onEdit} reserve={framed} />
           ) : (
           <div className="landing">
             <div className="greetwrap">

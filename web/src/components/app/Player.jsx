@@ -28,10 +28,11 @@ export default function Player({ mode, setMode, curtain }) {
   const [cap, setCap] = useState(null);
   const capEl = useRef(null);
   /* on a phone the picture is not zoomed, so a caption goes where there is room: under the last message, over the
-     dim when a sheet is open, low over the drawer, or up top when the app is empty */
+     dim when a sheet is open, low over the drawer, or up top when the app is empty. It is placed once, as it appears,
+     and stays there; a streaming answer already holds its final height, so it cannot push the caption around */
   useEffect(() => {
     if (!cap || !window.matchMedia('(max-width: 760px)').matches) return;
-    const place = () => {
+    const raf = requestAnimationFrame(() => {
       const el = capEl.current, fr = frame.current?.getBoundingClientRect(), app = root.current; if (!el || !fr || !app) return;
       const H = fr.height, h = el.offsetHeight || 120;
       const vis = (n) => n && n.getBoundingClientRect().height > 0;
@@ -41,19 +42,18 @@ export default function Player({ mode, setMode, curtain }) {
       else {
         const turns = [...app.querySelectorAll('.msgs .turn')].filter(vis);
         if (turns.length) {
-          const streaming = !!app.querySelector('.msgs .mtext.streaming');
-          const below = Math.max(...turns.map((t) => t.getBoundingClientRect().bottom)) - fr.top + 20 + (streaming ? 44 : 0);
-          const ceil = ['.fly', '.ccard'].map((q) => app.querySelector(q)).filter(vis).map((n) => n.getBoundingClientRect().top - fr.top - 16 - h);
-          top = Math.max(H * 0.08, Math.min(below, ...ceil));
+          const below = Math.max(...turns.map((t) => t.getBoundingClientRect().bottom)) - fr.top + 20;
+          /* on a short screen it may rather sit over the composer than over the words it is about */
+          const ceil = ['.fly'].map((q) => app.querySelector(q)).filter(vis).map((n) => n.getBoundingClientRect().top - fr.top - 16 - h);
+          top = Math.max(H * 0.08, Math.min(below, H - h - 12, ...ceil));
         }
       }
-      /* once placed, a caption only ever moves down, so a streaming answer nudges it rather than shakes it */
-      const cur = parseFloat(el.style.getPropertyValue('--cap-top'));
-      if (!Number.isNaN(cur) && top < cur) top = cur;
       el.style.setProperty('--cap-top', `${Math.round(top)}px`);
-    };
-    place(); const t = setInterval(place, 150);
-    return () => clearInterval(t);
+      /* when it does sit on the composer, the placeholder steps aside for it */
+      const card = app.querySelector('.ccard');
+      if (card && top + h > card.getBoundingClientRect().top - fr.top) app.classList.add('capover');
+    });
+    return () => { cancelAnimationFrame(raf); root.current?.classList.remove('capover'); };
   }, [cap]);
   const seekRef = useRef(null);
   const onCap = useCallback((c) => setCap(c), []);

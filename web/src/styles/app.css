@@ -337,3 +337,8 @@
 .nashapp .disclaimer{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
 .nashapp .mpanel{height:min(560px,78vh)}
 }
+.nashapp .mtext.reserved{position:relative}
+.nashapp .mtext .msizer{display:block;visibility:hidden}
+.nashapp .mtext.reserved .mlive{position:absolute;inset:0}
+.nashapp .crow textarea::placeholder{transition:color .2s var(--e)}
+.nashapp.capover .crow textarea::placeholder{color:transparent}

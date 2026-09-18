@@ -42,7 +42,7 @@ function Act({ name, title, onClick, className, size = 15 }) {
 
 /* Messages/ui/MessageRender.tsx: a user turn is a bubble on the right; an agent turn is the model's name, then the text,
    then a row of actions that shows on hover. */
-export default memo(function Thread({ messages, model, signIn, onRegenerate, onEdit }) {
+export default memo(function Thread({ messages, model, signIn, onRegenerate, onEdit, reserve = false }) {
   const end = useRef(null);
   const [copied, setCopied] = useState(null);
   const [fb, setFb] = useState({});
@@ -65,8 +65,9 @@ export default memo(function Thread({ messages, model, signIn, onRegenerate, onE
           ) : (
             <>
               <div className="mmodel"><ModelName name={m.model || model} /></div>
-              <div className={`mtext${m.streaming ? ' streaming' : ''}`}>
-                {m.count === 0 && m.streaming ? <span className="thinking" aria-label="Thinking" /> : <Rich text={m.text} count={m.streaming ? m.count : null} />}
+              <div className={`mtext${m.streaming ? ' streaming' : ''}${m.streaming && reserve ? ' reserved' : ''}`}>
+                {m.streaming && reserve && <span className="msizer" aria-hidden="true"><Rich text={m.text} /></span>}
+                <span className="mlive">{m.count === 0 && m.streaming ? <span className="thinking" aria-label="Thinking" /> : <Rich text={m.text} count={m.streaming ? m.count : null} />}</span>
               </div>
               {!m.streaming && (
                 <div className="hoverrow">
