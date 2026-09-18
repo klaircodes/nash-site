@@ -22,7 +22,7 @@ export const SCENES = [
     acts: [[600, 'move', '.rbtn.mcp', 0.5, 0.5], [1200, 'click'], [1250, 'openFly', 'mcp'], [1700, 'cam', '.fly.mcpp', 1.3], [2700, 'move', '.mcprow|Google Calendar|.sw', 0.5, 0.5], [3400, 'click'], [3450, 'toggle', 'Google Calendar'], [5000, 'click'], [5050, 'toggle', 'Google Calendar'], [6300, 'closeFly'], [6400, 'cam', '.trow', 1.5]] },
   { key: 'team', title: 'Bring the team', blurb: 'One workspace, one bill', dur: 7400, pos: 'right', cam: { sel: '.orgbtn', zoom: 1.35 },
     caps: [[300, 'One workspace. / **One bill.**'], [3000, 'A spend cap / **per person.**'], [5300, '**Bring** / **the team.**']],
-    acts: [[600, 'move', '.orgbtn', 0.5, 0.5], [1200, 'click'], [1250, 'openFly', 'org'], [1700, 'cam', '.fly.org', 1.35], [2700, 'move', '.fly.org .orgrow:nth-of-type(2)', 0.5, 0.5], [5600, 'closeFly'], [5700, 'cam', '.orgbtn', 1.35]] },
+    acts: [[100, 'drawer', true], [700, 'cam', '.orgbtn', 1.35], [900, 'move', '.orgbtn', 0.5, 0.5], [1500, 'click'], [1550, 'openFly', 'org'], [2000, 'cam', '.fly.org', 1.35], [3000, 'move', '.fly.org .orgrow:nth-of-type(2)', 0.5, 0.5], [5600, 'closeFly'], [5700, 'cam', '.orgbtn', 1.35], [6900, 'drawer', false]] },
   { key: 'close', title: 'Try it yourself', blurb: 'Your chats stay yours', dur: 4200, pos: 'low', cam: { zoom: 1 },
     caps: [[300, 'Your chats / **stay yours.**'], [2200, '**Try it** / yourself.']],
     acts: [[200, 'reset'], [600, 'move', '.landing', 0.5, 0.62]] },
@@ -67,6 +67,9 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     let x = 0, y = 0, z = zoom;
     if (el) {
       const l = local(el);
+      /* on a phone the picture barely zooms at all: the whole screen is the close-up */
+      const cap = window.matchMedia('(max-width: 768px)').matches ? 1.12 : zoom;
+      z = Math.max(1, Math.min(zoom, cap, (l.W * 0.92) / l.width, (l.H * 0.92) / l.height));
       x = Math.min(0, Math.max(l.W - z * l.W, l.W / 2 - z * (l.left + l.width / 2)));
       y = Math.min(0, Math.max(l.H - z * l.H, l.H / 2 - z * (l.top + l.height / 2)));
     } else z = 1;
@@ -91,6 +94,7 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     else if (op === 'closeFly') A?.closeFly();
     else if (op === 'toggle') A?.toggleServer(args[0]);
     else if (op === 'reset') A?.reset();
+    else if (op === 'drawer') { if (window.matchMedia('(max-width:768px)').matches) A?.setDrawer(args[0]); }
   };
 
   /* which scenes have something to point at, at this size */

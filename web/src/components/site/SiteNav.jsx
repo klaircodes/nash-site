@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useSignIn } from '../../App.jsx';
 import { ease, dur } from '../../motion.js';
 
@@ -32,6 +32,13 @@ export function ModeSwitch({ mode, setMode, id = 'ms', dark = false }) {
 export default function SiteNav({ mode, setMode, showSwitch, dark = false, minimal = false }) {
   const signIn = useSignIn();
   const [stuck, setStuck] = useState(false);
+  /* on phones the pages live behind a menu, so the bar stays three things: mark, switch, menu */
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => { setOpen(false); }, [location.pathname, mode]);
+  useEffect(() => { if (!open) return; const prev = document.body.style.overflow; document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = prev; }; }, [open]);
+  const menuRef = useRef(null);
+  useEffect(() => { if (open) menuRef.current?.focus(); }, [open]);
   useEffect(() => {
     const on = () => setStuck(window.scrollY > 8);
     on(); window.addEventListener('scroll', on, { passive: true });
@@ -46,7 +53,7 @@ export default function SiteNav({ mode, setMode, showSwitch, dark = false, minim
     );
   }
   return (
-    <div className={`navbar${stuck ? ' stuck' : ''}${dark ? ' dark' : ''}`}>
+    <div className={`navbar${stuck ? ' stuck' : ''}${dark ? ' dark' : ''}${open ? ' open' : ''}`}>
       <div className="shell">
         <nav className="nav">
           <Link className="brand" to="/">nash:</Link>
@@ -60,9 +67,56 @@ export default function SiteNav({ mode, setMode, showSwitch, dark = false, minim
           <span className="right">
             <a className="gh" href="https://github.com/Backboard-io/Nash" target="_blank" rel="noopener" aria-label="GitHub">{GH}</a>
             <button className="signin" type="button" onClick={() => signIn('', 'Sign in to Nash')}>Sign in</button>
+            <button ref={menuRef} className={`menubtn${open ? ' on' : ''}`} type="button" aria-label={open ? 'Close menu' : 'Menu'} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+              <i /><i /><i />
+            </button>
           </span>
         </nav>
       </div>
+      <MobileMenu open={open} onClose={() => setOpen(false)} signIn={signIn} />
     </div>
+  );
+}
+
+/* The phone menu: a sheet wipes down from under the bar, the four pages rise out of their own lines,
+   rules draw in under them, and an amber square marks where you are. Tap another page and the square
+   travels there first; then the page changes. */
+const PAGES = [['/', 'Product'], ['/security', 'Security'], ['/pricing', 'Pricing'], ['/about', 'About']];
+function MobileMenu({ open, onClose, signIn }) {
+  const nav = useNavigate();
+  const location = useLocation();
+  const still = useReducedMotion();
+  const [pending, setPending] = useState(null);
+  const [ready, setReady] = useState(false);
+  useEffect(() => { setPending(null); if (!open) { setReady(false); return; } const t = setTimeout(() => setReady(true), still ? 0 : 480); return () => clearTimeout(t); }, [open, still]);
+  useEffect(() => { if (!open) return; const k = (e) => { if (e.key === 'Escape') onClose(); }; window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k); }, [open, onClose]);
+  const cur = pending || location.pathname;
+  const go = (to) => { if (to === location.pathname) return onClose(); setPending(to); setTimeout(() => nav(to), still ? 0 : 260); };
+  const wipe = still
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.15 } }
+    : { initial: { clipPath: 'inset(0px 0px 100% 0px)' }, animate: { clipPath: 'inset(0px 0px 0% 0px)' }, exit: { clipPath: 'inset(0px 0px 100% 0px)', transition: { duration: 0.32, delay: 0.12, ease } }, transition: { duration: 0.42, ease } };
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className={`msheet${ready ? ' ready' : ''}`} role="dialog" aria-modal="true" aria-label="Menu" {...wipe}>
+          <nav className="mlinks">
+            {PAGES.map(([to, label], k) => (
+              <button key={to} type="button" className={`mrow${cur === to ? ' cur' : ''}`} onClick={() => go(to)}>
+                <span className="mmask">
+                  <motion.span className="mtext" initial={still ? false : { y: '110%' }} animate={{ y: 0, transition: { duration: 0.48, delay: 0.12 + k * 0.055, ease } }}
+                    exit={still ? { opacity: 0 } : { y: '-110%', transition: { duration: 0.26, delay: (PAGES.length - 1 - k) * 0.03, ease } }}>{label}</motion.span>
+                </span>
+                {cur === to && <motion.i className="mmark" layoutId="mmark" transition={{ duration: 0.22, ease }} aria-hidden="true" />}
+                <motion.b className="mrule" initial={still ? false : { scaleX: 0 }} animate={{ scaleX: 1, transition: { duration: 0.4, delay: 0.16 + k * 0.055, ease } }} exit={{ opacity: 0, transition: { duration: 0.16 } }} aria-hidden="true" />
+              </button>
+            ))}
+          </nav>
+          <motion.div className="mfoot" initial={still ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0, transition: { duration: 0.36, delay: 0.4, ease } }} exit={{ opacity: 0, transition: { duration: 0.16 } }}>
+            <button className="signin" type="button" onClick={() => { onClose(); signIn('', 'Sign in to Nash'); }}>Sign in</button>
+            <div className="mmeta"><a href="https://github.com/Backboard-io/Nash" target="_blank" rel="noopener">GitHub ↗</a><span>A Backboard.io product</span></div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

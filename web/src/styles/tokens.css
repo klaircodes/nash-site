@@ -481,3 +481,136 @@ body{background:var(--app)}
 
 /* no ring on text fields: the caret is enough. Buttons keep their keyboard ring. */
 input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.composer .field:focus-visible,.ccard textarea:focus-visible{outline:none;box-shadow:none}
+
+/* on phones the composer sits down by the thumb, not floating above a gap */
+@media(max-width:768px){.nashapp .disclaimer{padding-bottom:calc(14px + env(safe-area-inset-bottom))}.nashapp .formcol{padding-bottom:0}}
+
+/* ── phone bar: mark, switch, a menu. The pages, Sign in and GitHub live in the menu. ── */
+.menubtn{display:none;width:36px;height:36px;border:0;background:none;padding:0;cursor:pointer;position:relative;border-radius:50%}
+.menubtn i{position:absolute;left:9px;right:9px;height:1.6px;background:var(--t1);border-radius:2px;transition:transform .26s var(--e),opacity .2s var(--e),top .26s var(--e)}
+.menubtn i:nth-child(1){top:12px}.menubtn i:nth-child(2){top:17px}.menubtn i:nth-child(3){top:22px}
+.menubtn.on i:nth-child(1){top:17px;transform:rotate(45deg)}.menubtn.on i:nth-child(2){opacity:0}.menubtn.on i:nth-child(3){top:17px;transform:rotate(-45deg)}
+.msheet{position:fixed;left:0;right:0;top:56px;bottom:0;background:var(--app);z-index:69;display:flex;flex-direction:column;justify-content:space-between;padding:28px 24px calc(28px + env(safe-area-inset-bottom));font-family:var(--f)}
+.msheet .mlinks{display:flex;flex-direction:column;gap:6px}
+.msheet .mlinks a{display:block;font-size:30px;font-weight:600;letter-spacing:-.8px;line-height:1.25;color:var(--t2);text-decoration:none;padding:8px 0}
+.msheet .mlinks a.act{color:var(--t1)}
+.msheet .mfoot{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.msheet .mfoot .signin{width:100%;height:48px;font-size:15px}
+.msheet .mgh{display:inline-flex;align-items:center;gap:10px;color:var(--t2);text-decoration:none;font-size:14px;font-weight:500}
+.msheet .mgh svg{width:18px;height:18px;fill:currentColor}
+.navbar.open{background:var(--app);-webkit-backdrop-filter:none;backdrop-filter:none}
+@media(max-width:780px){
+  .nav .links,.nav .right .signin,.nav .right .gh{display:none}
+  .menubtn{display:inline-flex}
+  .nav .modeswitch{margin:0 auto}
+  .nav .right{margin-left:0}
+  .nav .modeswitch ~ .right{margin-left:0}
+  .nav .brand{font-size:17px}
+}
+@media(max-width:560px){.nav .modeswitch button{padding:0 11px;font-size:12.5px}}
+
+/* phone app header in Try: toggle and Sign in on the first row, the switch centred on its own row below */
+@media(max-width:768px){
+  .appframe .nashapp .mobilenav{height:auto;flex-wrap:wrap;align-items:center;padding:8px 12px 10px;row-gap:10px}
+  .appframe .nashapp .mobilenav .mnbtn{order:0}
+  .appframe .nashapp .mobilenav .signin{order:1;margin-left:auto}
+  .appframe .nashapp .mobilenav::after{content:"";order:2;flex-basis:100%;height:0}
+  .appframe .nashapp .mobilenav .modeswitch{order:3;margin:0 auto}
+  .appframe .nashapp .hdrmid{position:static;transform:none}
+  .player .ptop{height:88px}
+}
+
+/* ── the phone menu, redesigned: warm ground, type at scale, drawn rules, a travelling amber mark ── */
+.msheet{position:fixed;left:0;right:0;top:56px;bottom:0;background:#F5F4F1;z-index:69;display:flex;flex-direction:column;justify-content:space-between;
+  padding:12px 24px calc(24px + env(safe-area-inset-bottom));font-family:var(--f)}
+.msheet .mlinks{display:flex;flex-direction:column}
+.msheet .mrow{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px;padding:0;border:0;background:none;text-align:left;cursor:pointer;
+  color:var(--t3);font-family:var(--f);font-size:44px;font-weight:500;letter-spacing:-.02em;line-height:1;transition:color .2s var(--e)}
+.msheet .mrow.cur{color:var(--t1)}
+.msheet .mrow:focus-visible{outline:2px solid var(--t1);outline-offset:-4px;border-radius:4px}
+.msheet .mmask{display:block;overflow:hidden;padding:.08em 0 .14em;margin:-.08em 0 -.14em}
+.msheet .mtext{display:block;transition:transform .18s var(--e)}
+.msheet .mrow:active .mtext{transform:translateX(12px)}
+.msheet .mmark{width:8px;height:8px;flex:none;background:var(--amber);border-radius:1px;opacity:0;transition:opacity .2s var(--e)}
+.msheet.ready .mmark{opacity:1}
+.msheet .mrule{position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(19,18,17,.12);transform-origin:left center;display:block}
+.msheet .mfoot{display:flex;flex-direction:column;gap:16px}
+.msheet .mfoot .signin{width:100%;height:56px;font-size:16px}
+.msheet .mmeta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--t3)}
+.msheet .mmeta a{color:var(--t1);text-decoration:none;font-weight:500}
+.navbar.open,.navbar.open.stuck{background:#F5F4F1;border-bottom-color:rgba(19,18,17,.12)}
+/* the hamburger: lines meet in the middle, then turn */
+.menubtn i{transition:top .14s var(--e),transform .18s var(--e) .14s,opacity .12s var(--e)}
+.menubtn.on i{transition:top .14s var(--e),transform .18s var(--e) .14s,opacity .12s var(--e)}
+@media(max-width:380px){.msheet .mrow{font-size:38px;min-height:68px}}
+.msheet .mfoot{align-items:stretch}
+.msheet .mmeta{width:100%}
+/* pages without the switch: the mark left, the menu right, always */
+@media(max-width:780px){.nav .right{margin-left:auto}.nav .modeswitch ~ .right{margin-left:0}}
+
+/* the film on a phone: the screen fills the stage, captions sit high, the bar keeps to the essentials */
+@media(max-width:760px){
+  .player .screenwrap{padding:0 10px}
+  .player .screenbox{max-width:none;max-height:none;height:100%}
+  .player .screen,.player .screenshadow{border-radius:12px}
+  .kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{left:0;right:0;width:auto;align-items:center;text-align:center;top:12%;padding:0 6%}
+  .kcap .kl{font-size:26px}.kcap .kl.big{font-size:44px}
+  .kcap::before,.kcap.left::before,.kcap.right::before{left:0;right:0;top:-30%;bottom:-30%;-webkit-mask-image:radial-gradient(ellipse 46% 48% at 50% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 46% 48% at 50% 50%,#000 40%,transparent 100%)}
+  .pbar{height:64px;padding:0 12px;gap:10px}
+}
+@media(max-width:760px){
+  .kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{top:6%}
+  .kcap .kl{font-size:22px}.kcap .kl.big{font-size:40px}
+}
+
+/* phone film: captions at desktop scale, and the picker drops to a bottom sheet so the caption sits on the dim, not on white */
+@media(max-width:760px){
+  .kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{top:8%;padding:0 5%;gap:.04em}
+  .kcap .kl{font-size:30px}
+  .kcap .kl.big{font-size:58px;line-height:.95}
+  .player .nashapp .mscrim{place-items:end center;padding-bottom:14px;box-sizing:border-box}
+  .player .nashapp .mpanel{height:min(520px,58vh)}
+}
+
+/* the caption blur, softer: a wider field, a gentler fall-off, less blur, so there is no edge to find */
+.kcap::before{left:-14%;right:-14%;top:-70%;bottom:-70%;-webkit-backdrop-filter:blur(11px);backdrop-filter:blur(11px);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
+.kcap.right::before{left:-40%;right:-6%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 60% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 60% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
+.kcap.left::before{left:-6%;right:-40%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 40% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 40% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
+@media(max-width:760px){.kcap::before,.kcap.left::before,.kcap.right::before{left:-4%;right:-4%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}}
+
+/* no hover labels on touch screens: a tap would leave one stuck open */
+@media(hover:none){.pchap .clabel{display:none}}
+
+/* ── the caption blur as three nested fields: faint and wide, then closer, then tight. The blur grows toward the words instead of switching on. ── */
+.kcap::before,.kcap::after,.kcap .kblur{content:"";position:absolute;z-index:-1;pointer-events:none}
+.kcap::before{left:-26%;right:-26%;top:-110%;bottom:-110%;-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%)}
+.kcap::after{left:-14%;right:-14%;top:-70%;bottom:-70%;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%)}
+.kcap .kblur{left:-4%;right:-4%;top:-36%;bottom:-36%;-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%)}
+/* side captions: the fields lean toward the words */
+.kcap.right::before{left:-70%;right:-10%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 64% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 64% 50%,#000 20%,transparent 100%)}
+.kcap.right::after{left:-40%;right:-6%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 62% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 62% 50%,#000 15%,transparent 100%)}
+.kcap.right .kblur{left:-12%;right:-2%;top:-24%;bottom:-24%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 56% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 56% 50%,#000 10%,transparent 100%)}
+.kcap.left::before{left:-10%;right:-70%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 36% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 36% 50%,#000 20%,transparent 100%)}
+.kcap.left::after{left:-6%;right:-40%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 38% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 38% 50%,#000 15%,transparent 100%)}
+.kcap.left .kblur{left:-2%;right:-12%;top:-24%;bottom:-24%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 44% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 44% 50%,#000 10%,transparent 100%)}
+@media(max-width:760px){
+  .kcap::before,.kcap.left::before,.kcap.right::before{left:-8%;right:-8%;top:-80%;bottom:-80%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%)}
+  .kcap::after,.kcap.left::after,.kcap.right::after{left:-4%;right:-4%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%)}
+  .kcap .kblur,.kcap.left .kblur,.kcap.right .kblur{left:0;right:0;top:-24%;bottom:-24%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%)}
+}
+
+/* side fields reach less far across, so the panel the scene is about stays sharp */
+.kcap.right::before{left:-38%}.kcap.right::after{left:-22%}
+.kcap.left::before{right:-38%}.kcap.left::after{right:-22%}
+
+/* one soft gaussian field, small radius, long fall-off. Nothing stacked, nothing that could smear. */
+.kcap::after,.kcap .kblur,.kcap.right::after,.kcap.left::after,.kcap.right .kblur,.kcap.left .kblur{display:none}
+.kcap::before{left:-16%;right:-16%;top:-70%;bottom:-70%;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%)}
+.kcap.right::before{left:-34%;right:-8%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 62% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 62% 50%,#000 30%,transparent 100%)}
+.kcap.left::before{left:-8%;right:-34%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 38% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 38% 50%,#000 30%,transparent 100%)}
+@media(max-width:760px){.kcap::before,.kcap.left::before,.kcap.right::before{left:-6%;right:-6%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%)}}

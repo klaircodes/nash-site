@@ -229,8 +229,9 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
       drill: (v) => pickerApi.current?.drill(v),
       openFly: (kind) => { const el = root.current?.querySelector(kind === 'mcp' ? '.rbtn.mcp' : kind === 'org' ? '.orgbtn' : kind === 'acct' ? '.account' : '.navrow.more'); if (el) setFly({ kind, anchor: el }); },
       closeFly: () => setFly(null),
+      setDrawer,
       toggleServer: (name) => setServers((l) => l.map((s) => (s.name === name ? { ...s, on: !s.on } : s))),
-      reset: () => { setText(''); setFly(null); setPickerOpen(false); setModel({ name: 'GPT 4.1', ep: 'openai' }); setServers((l) => l.map((s) => ({ ...s, on: true }))); },
+      reset: () => { setText(''); setFly(null); setPickerOpen(false); setDrawer(false); setModel({ name: 'GPT 4.1', ep: 'openai' }); setServers((l) => l.map((s) => ({ ...s, on: true }))); },
     };
     return () => { api.current = null; };
   }, [api]);

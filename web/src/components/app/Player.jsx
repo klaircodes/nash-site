@@ -83,6 +83,7 @@ export default function Player({ mode, setMode, curtain }) {
             <AnimatePresence>
               {filming && cap && (
                 <motion.div key={cap.key} className={`kcap ${cap.pos} ${cap.tone}`} aria-live="polite" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.18 } }} transition={{ duration: 0.25, ease }}>
+                  <i className="kblur" aria-hidden="true" />
                   <Kinetic text={cap.text} />
                 </motion.div>
               )}
