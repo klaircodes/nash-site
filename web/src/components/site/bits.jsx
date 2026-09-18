@@ -1,8 +1,9 @@
+import { Fragment } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ease, rise, stagger } from '../../motion.js';
 import { photo } from '../../data.js';
-import { PROVIDER_MARKS, Mark } from './Marks.jsx';
+import { Mark } from './Marks.jsx';
 
 export { ProviderMarks, ToolMarks, Mark } from './Marks.jsx';
 
@@ -25,17 +26,21 @@ export function TextReveal({ as = 'h1', className, style, children, delay = 0, g
   const still = useReducedMotion();
   const text = String(children);
   const chars = by === 'chars';
-  const parts = chars ? text.split('') : text.split(' ');
+  const words = text.split(' ');
   const v = still ? undefined : piece(duration ?? (chars ? 0.55 : 0.8));
   const step = gap ?? (chars ? 0.022 : 0.06);
   const trigger = active === 'now' ? { initial: 'hidden', animate: 'show' } : { initial: 'hidden', whileInView: 'show', viewport: { once, margin: '0px 0px -12% 0px' } };
   return (
     <Tag className={className} style={style} aria-label={text} variants={stagger(step, delay)} {...trigger}>
-      {parts.map((w, k) => (
-        <span key={k} aria-hidden="true" className={chars ? 'cmask-w' : undefined}>
-          {chars && w === ' ' ? ' ' : <span className={chars ? 'cmask' : 'wmask'}><motion.span className="w" variants={v}>{w}</motion.span></span>}
-          {!chars && k < parts.length - 1 && ' '}
-        </span>
+      {words.map((w, k) => (
+        <Fragment key={k}>
+          <span aria-hidden="true" className={chars ? 'cword' : undefined}>
+            {chars
+              ? w.split('').map((ch, c) => <span key={c} className="cmask"><motion.span className="w" variants={v}>{ch}</motion.span></span>)
+              : <span className="wmask"><motion.span className="w" variants={v}>{w}</motion.span></span>}
+          </span>
+          {k < words.length - 1 && ' '}
+        </Fragment>
       ))}
     </Tag>
   );
@@ -57,19 +62,6 @@ export const Item = ({ as = 'div', className, children, style }) => {
 };
 
 /* the provider strip under a hero: every model, on a loop */
-export function ProviderSlider() {
-  const row = (prefix) => PROVIDER_MARKS.map((p) => (
-    <span className="chip" key={`${prefix}${p.name}`}>
-      <Mark svg={p.svg} className="lg" />
-      <span className="n">{p.name}</span><span className="c">{p.count}</span>
-    </span>
-  ));
-  return (
-    <div className="slider">
-      <div className="track">{row('a')}{row('b')}</div>
-    </div>
-  );
-}
 
 export const Photo = ({ n, className }) => (
   <span className={className}><img src={photo(n)} alt="" /></span>

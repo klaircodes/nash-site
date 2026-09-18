@@ -1,4 +1,3 @@
-/* Where Motion drives the movement, the ported CSS transitions step aside. */
 .nashapp .fly{transition:none;opacity:1;transform:none}
 .nashapp .mscrim{transition:none;opacity:1}
 .nashapp .mpanel{transition:none;transform:none}

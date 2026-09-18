@@ -1,10 +1,7 @@
-import marks from './marks.json';
 import gmail from './assets/marks/gmail.svg?raw';
 import drive from './assets/marks/drive.svg?raw';
 import calendar from './assets/marks/calendar.svg?raw';
 import chat from './assets/marks/chat.svg?raw';
-
-export const MARKS = marks;
 
 const M = (name, ...tiers) => ({ name, tiers });
 /* providers and models from librechat.yaml, names as the picker formats them */

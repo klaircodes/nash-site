@@ -1,5 +1,3 @@
-/* Nash product UI — ported from Nash-main/client (light tokens from style.css), scoped to .nashapp */
-  /* ── the product itself: Nash-main/client, light tokens from style.css, scoped ── */
 .nashapp{--brand-purple:#635BFF;--brand-purple-hover:#7B74FF;--brand-purple-pressed:#4F48D9;--text-primary:#131211;--text-secondary:#535250;--text-secondary-alt:#605D59;--text-tertiary:#6A6662;--text-accent:#4F48D9;--surface-active:#E6E5E4;--surface-active-alt:#DFDEDD;--surface-hover:#EEEEED;--surface-overlay:#FFFFFF;--surface-hover-alt:#E6E5E4;--surface-primary:#FFFFFF;--surface-primary-alt:#FCFCFB;--surface-secondary:#EFEFEE;--surface-control:#F6F6F6;--surface-secondary-alt:#E1E0DE;--surface-tertiary:#EFEFEE;--surface-dialog:#FFFFFF;--surface-submit:#635BFF;--surface-submit-hover:#4F48D9;--surface-chat:#FDFDFC;--border-light:#DFDEDD;--border-subtle:#ECECEB;--border-medium:#CCCAC9;--border-control:#87827D;--border-heavy:#A2A1A0;--ring:#635BFF;--nash-ease:cubic-bezier(.16,1,.3,1);--hover:160ms;--swap:260ms;--move:380ms;display:flex;position:relative;height:100%;width:100%;background:var(--surface-primary);color:var(--text-primary);font-family:Poppins,Inter,sans-serif;font-size:14px;line-height:1.5;font-weight:400;-webkit-font-smoothing:antialiased;overflow:hidden;flex-direction:row}
 .nashapp *,.nashapp *::before,.nashapp *::after{box-sizing:border-box}
 .nashapp button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;border-radius:0;height:auto;box-shadow:none;text-align:left}
@@ -8,7 +6,7 @@
 .nashapp h1,.nashapp h2,.nashapp p{margin:0}
 .nashapp svg{flex:0 0 auto;display:block}
 .nashapp [hidden]{display:none!important}
-.nashapp /* ── Nav.tsx ── */
+.nashapp 
 .navwrap{position:relative;flex:0 0 auto;overflow:hidden;border-right:1px solid var(--border-light);box-shadow:none;background:var(--surface-primary-alt);width:clamp(288px,20vw,360px);transition:width 320ms var(--nash-ease)}
 .nashapp .navwrap.collapsed{width:60px}
 .nashapp .rail{position:absolute;left:0;top:0;z-index:0;display:flex;height:100%;width:60px;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 0 0 14px;opacity:0;pointer-events:none;transition:opacity var(--hover) var(--nash-ease)}
@@ -116,7 +114,7 @@
 .nashapp .aname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:500;line-height:18.75px;color:var(--text-primary)}
 .nashapp .aplan{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;line-height:16.5px;color:var(--text-secondary-alt)}
 .nashapp .account > svg{color:var(--text-secondary);flex:0 0 auto}
-.nashapp /* ── Root: the main column,.nashapp Header.tsx,.nashapp ChatView.tsx landing,.nashapp Landing.tsx ── */
+.nashapp 
 .main{position:relative;display:flex;height:100%;min-width:0;max-width:100%;flex:1;flex-direction:column;overflow:hidden;background:var(--surface-primary)}
 .nashapp .mobilenav{display:none}
 .nashapp .hdr{position:absolute;top:0;z-index:10;display:flex;height:52px;width:100%;align-items:center;background:var(--surface-primary);padding:0 22px;font-weight:600;color:var(--text-primary)}
@@ -136,7 +134,7 @@
 .nashapp .formcol{width:100%;max-width:768px;transition:max-width var(--hover) var(--nash-ease);padding-bottom:56px}
 @media (min-width:1280px){.nashapp .formcol{max-width:896px}
 }
-.nashapp /* ── ChatForm.tsx,.nashapp desktop card ── */
+.nashapp 
 .cform{margin:0 auto;display:flex;width:100%;flex-direction:row;gap:12px;max-width:clamp(736px,50vw,900px);padding:0 8px}
 .nashapp .ccard{--surface-active:#F2F1F0;--surface-active-alt:#EAE9E8;--surface-hover:#F2F1F0;--surface-hover-alt:#EAE9E8;position:relative;display:flex;width:100%;flex-direction:column;justify-content:space-between;overflow:hidden;color:var(--text-primary);background:var(--surface-chat);border-radius:20px;box-shadow:inset 0 0 0 1px var(--border-subtle),0 1px 2px rgba(28,24,20,.03),0 10px 28px rgba(28,24,20,.05);
   transition:border-radius 380ms var(--nash-ease),background var(--hover) var(--nash-ease),border-color var(--hover) var(--nash-ease);border:1px solid transparent}
@@ -188,7 +186,7 @@
 .nashapp .mcpcount{position:absolute;right:0;top:0;display:flex;height:14px;min-width:14px;align-items:center;justify-content:center;border-radius:999px;background:var(--brand-purple);padding:0 3px;font-size:10.5px;font-weight:500;line-height:1;color:#fff}
 .nashapp .mcpcount:empty{display:none}
 .nashapp .disclaimer{padding:9px 8px 18px;text-align:center;font-size:10.5px;letter-spacing:.1px;color:var(--text-tertiary)}
-.nashapp /* ── flyouts: .popover-ui / .nash-menu light,.nashapp OrgSwitcher rows,.nashapp More menu,.nashapp MCPSelect panel,.nashapp account menu ── */
+.nashapp 
 .flyveil{position:fixed;inset:0;z-index:120}
 .nashapp .fly{position:fixed;z-index:125;display:flex;flex-direction:column;border-radius:14px;background:#FFFFFF;color:var(--text-primary);padding:6px;
   box-shadow:inset 0 0 0 1px var(--border-subtle),0 1px 2px rgba(28,24,20,.03),0 10px 28px rgba(28,24,20,.06);
@@ -250,7 +248,7 @@
 .nashapp .mcpadd .mt{display:flex;min-width:0;flex:1;flex-direction:column;text-align:left}
 .nashapp .mcpadd .mm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:17px;color:var(--text-tertiary);font-weight:400}
 .nashapp .mcpaddform input::placeholder{color:var(--text-tertiary)}
-.nashapp /* ── DesktopModelModal.tsx ── */
+.nashapp 
 .mscrim{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(28,24,20,.42);opacity:0;transition:opacity 180ms var(--nash-ease)}
 .nashapp .mscrim.on{opacity:1}
 .nashapp .mscrimx{position:absolute;inset:0;height:100%;width:100%;cursor:default;background:transparent}
@@ -306,7 +304,7 @@
 .nashapp .mempty p{font-size:12.5px;line-height:19px;color:var(--text-secondary-alt)}
 .nashapp .mempty button{margin-top:6px;border-radius:8px;padding:8px 12px;font-size:12.5px;font-weight:500;color:var(--brand-purple);transition:background var(--hover) var(--nash-ease)}
 .nashapp .mempty button:hover{background:var(--surface-active)}
-.nashapp /* ── phone: Nav drawer + mask,.nashapp MobileNav bar,.nashapp the small-screen ChatForm ── */
+.nashapp 
 .navmask{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,.5);opacity:0;transition:opacity 320ms var(--nash-ease)}
 .nashapp .navmask.on{opacity:1}
 @media (max-width:768px){.nashapp .navwrap{position:fixed;left:0;top:0;z-index:110;height:100%;width:min(92vw,440px)!important;border-radius:0 20px 20px 0;background:var(--surface-primary-alt);overflow:visible;
@@ -339,4 +337,3 @@
 .nashapp .disclaimer{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
 .nashapp .mpanel{height:min(560px,78vh)}
 }
-

@@ -44,6 +44,7 @@ export default function Pricing() {
       <section><div className="shell">
         <TextReveal as="h2" style={{ maxWidth: '18ch' }}>Everything, side by side.</TextReveal>
         <Reveal className="scrollx">
+          <p className="swipehint" aria-hidden="true">Swipe to compare plans</p>
           <table className="ptable">
             <thead><tr><th />{['Starter', 'Team', 'Business', 'Enterprise'].map((h) => <th key={h}>{h}</th>)}</tr></thead>
             <tbody>

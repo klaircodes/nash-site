@@ -1,23 +1,15 @@
-/* ============================================================
-   Colour, on top of the prototype's monochrome — loaded last so it wins.
-   Greys are the product's warm ramp; the one accent is Nash's brand purple.
-   ============================================================ */
-:root{
-  --accent:#635BFF; --accent-hover:#7B74FF; --accent-pressed:#4F48D9; --on-accent:#FFFFFF;
+:root{--accent:#635BFF; --accent-hover:#7B74FF; --accent-pressed:#4F48D9; --on-accent:#FFFFFF;
   --accent-soft:#EEF0FF; --accent-tint:rgba(99,91,255,.10); --accent-line:rgba(99,91,255,.28);
   --wash:linear-gradient(135deg,#F5F6FF 0%,#FAF9FF 45%,#FFFFFF 100%);
   --wash-deep:linear-gradient(135deg,#635BFF 0%,#7B74FF 55%,#9A8CFF 100%);
   --app:#FFFFFF; --sunken:#FCFCFB; --surface:#EFEFEE; --raised:#E6E5E4;
   --border:#ECECEB; --border-2:#DFDEDD; --border-3:#CCCAC9;
-  --t1:#131211; --t2:#535250; --t3:#605D59; --t4:#6A6662;
-}
+  --t1:#131211; --t2:#535250; --t3:#605D59; --t4:#6A6662;}
 html,body{height:100%}
 #root{min-height:100%}
 body{background:var(--app)}
 ::selection{background:var(--accent-soft);color:var(--t1)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-
-/* primary actions carry the accent */
 .btn.solid,.signin,.gb.solid,.tier.lead .b{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .btn.solid:hover,.signin:hover,.gb.solid:hover,.tier.lead .b:hover{background:var(--accent-pressed);border-color:var(--accent-pressed);opacity:1}
 .btn:hover{background:var(--accent-soft);border-color:var(--accent-line)}
@@ -35,13 +27,9 @@ body{background:var(--app)}
 .tier.lead{border-color:var(--accent-line);box-shadow:0 0 0 4px var(--accent-tint)}
 .tier .pop{background:var(--accent);color:var(--on-accent)}
 .tier li svg{stroke:var(--accent)}
-.ptable .hot{background:var(--accent-soft)}
 .never-list .n .x{color:var(--accent)}
 .dfoot{background:#131211}
 .dword{color:#1E1C1A}
-.dfilters button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-
-/* the Learn more hero sits on a light wash; the composer floats on it */
 .var[data-var="d"] .dh{background:var(--wash)}
 .dsign{border-color:var(--border-2);box-shadow:0 2px 6px rgba(28,24,20,.04),0 22px 56px rgba(99,91,255,.10)}
 .dsign .gb.solid{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -49,8 +37,6 @@ body{background:var(--app)}
 .win.bare .composer{box-shadow:0 2px 6px rgba(28,24,20,.04),0 18px 48px rgba(99,91,255,.10)}
 .win .send{background:var(--accent)}
 .win .send:disabled{background:var(--surface);color:var(--t4)}
-
-/* the hero sequence: the ask lands, the model answers */
 .seq{margin-top:22px;min-height:88px;text-align:left}
 .seq .reply{display:flex;flex-direction:column;gap:6px;max-width:60ch}
 .seq .reply .ml{font-size:12px;color:var(--t4);display:flex;align-items:center;gap:8px}
@@ -60,8 +46,6 @@ body{background:var(--app)}
 .seq .w{display:inline}
 .composer .field.typing{color:var(--t1)}
 .composer .send.armed{background:var(--accent);color:#fff}
-
-/* mode switch and the sign-in prompt */
 .modeswitch{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--surface)}
 .modeswitch button{height:28px;padding:0 13px;border-radius:999px;border:0;background:none;cursor:pointer;white-space:nowrap;
   font-family:var(--f);font-size:12.5px;font-weight:500;color:var(--t3);transition:color .18s var(--e)}
@@ -70,9 +54,9 @@ body{background:var(--app)}
 .modeswitch .msbtn.on{color:var(--t1)}
 .modeswitch .mspill{position:absolute;inset:0;border-radius:999px;background:var(--app);box-shadow:0 1px 2px rgba(28,24,20,.08);z-index:0}
 .nav .modeswitch{margin-left:auto}
-@media(max-width:560px){.nav .modeswitch button{padding:0 9px;font-size:12px}.nav .gh{display:none}}
-
-/* app frame in the page */
+@media(max-width:560px){.nav .modeswitch button{padding:0 9px;font-size:12px}
+.nav .gh{display:none}
+}
 .appframe{position:fixed;inset:0;z-index:65;background:var(--app);display:flex;flex-direction:column}
 .appframe .nashapp{flex:1;min-height:0}
 .nashapp .hdr .signin,.nashapp .mobilenav .signin{background:var(--accent)}
@@ -83,54 +67,23 @@ body{background:var(--app)}
 .nashapp .hdrmid,.nashapp .mobilenav .modeswitch{font-family:inherit}
 .nashapp.tourmode .navwrap,.nashapp.tourmode .landing,.nashapp.tourmode .formcol,.nashapp.tourmode .hmenu{pointer-events:none;user-select:none}
 .nashapp .formcol{padding-bottom:20px}
-
-/* the tour: a spotlight that glides, a card that follows, on the accent */
 .tour{position:fixed;inset:0;z-index:66;pointer-events:none}
-.tspot{position:fixed;box-shadow:0 0 0 200vmax rgba(19,18,17,.44),0 0 0 2px var(--accent-line)}
-.tcard{position:fixed;width:300px;box-sizing:border-box;background:#fff;border:1px solid var(--border-2);border-radius:16px;padding:18px 20px 16px;
-  text-align:left;pointer-events:auto;font-family:var(--f);box-shadow:0 2px 6px rgba(28,24,20,.06),0 18px 44px rgba(28,24,20,.16)}
-.tcard .tk{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);margin:0 0 8px}
-.tcard .tt{font-size:15px;font-weight:600;letter-spacing:-.3px;color:var(--t1);margin:0 0 6px}
-.tcard .td{font-size:13.5px;line-height:1.55;color:var(--t2);font-weight:300;margin:0 0 14px}
-.tcard .ttry{height:30px;padding:0 12px;margin-left:-12px;border-radius:999px;border:0;background:none;color:var(--t3);font-family:var(--f);font-size:13px;font-weight:500;cursor:pointer;transition:.18s var(--e)}
-.tcard .ttry:hover{color:var(--accent);background:var(--accent-soft)}
-.tcard .tp{display:block;height:2px;background:var(--border);border-radius:2px;margin-top:14px;overflow:hidden}
-.tcard .tp i{display:block;height:100%;background:var(--accent)}
-@media(max-width:600px){.tcard{left:16px!important;right:16px;width:auto}}
-
-/* photos in colour now */
 .pho{filter:none!important}
 .pho img,.hd img,.who img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .s7 .heads .hd{overflow:hidden;padding:0}
-
-/* facts: a title and a line, no box */
 .fact .t{font-size:15px;font-weight:500;color:var(--t1);margin-bottom:6px;letter-spacing:-.2px}
 .fact .d{font-size:14px;line-height:1.6;color:var(--t2);font-weight:300}
-
-/* brand marks in their own colours */
 .mark{display:inline-flex;width:18px;height:18px;flex:none;vertical-align:middle}
 .mark svg{width:100%;height:100%;display:block}
 .dh .mk5 svg,.dh .mk4 svg,.mark svg{fill:currentColor;color:var(--t1)}
 .dh .mk5 .mark svg,.dh .mk4 .mark svg{width:100%;height:100%}
 .dh .mk5{gap:14px}
 .mark.lg{width:22px;height:22px}
-.slider .chip .mark{margin-right:8px}
 .nashapp .mcpico span{display:inline-flex;width:18px;height:18px}
 .nashapp .mcpico span svg{width:100%;height:100%;display:block;fill:currentColor}
-
-
-/* the hero wash moves slower than the page; the section keeps a floor colour under it */
 .var[data-var="d"] .dh{position:relative;overflow:hidden;background:var(--app)}
 .var[data-var="d"] .dh .washbg{position:absolute;left:0;right:0;top:-220px;bottom:-40px;background:var(--wash);pointer-events:none}
 .var[data-var="d"] .dh .shell{position:relative;z-index:1}
-
-/* dark mode switch, for the player stage */
-.modeswitch.dark{background:rgba(255,255,255,.08)}
-.modeswitch.dark button{color:rgba(255,255,255,.62)}
-.modeswitch.dark button:hover,.modeswitch.dark .msbtn.on{color:#fff}
-.modeswitch.dark .mspill{background:rgba(255,255,255,.16);box-shadow:none}
-
-/* ── the tour as a film: the product on a dark stage, in a screen ── */
 .player{position:fixed;inset:0;z-index:65;background:#131211;color:#fff;display:flex;flex-direction:column;font-family:var(--f)}
 .ptop{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px;padding:0 24px;flex:none}
 .ptop .brand{color:#fff}
@@ -162,22 +115,15 @@ body{background:var(--app)}
 .ptry:hover{background:#fff;color:#131211;border-color:#fff}
 .ppaused{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(19,18,17,.72);color:#fff;
   display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:67;padding-left:4px;box-sizing:border-box}
-@media(max-width:760px){
-  .ptop{height:52px;padding:0 14px}.ptop .brand{display:none}
-  .player .screenwrap{padding:0 12px}.player .screenbox{max-height:none}.player .screen,.player .screenshadow{border-radius:10px}
-  .pbar{height:64px;padding:0 14px;gap:10px}.pcap,.ptime{display:none}
+@media(max-width:760px){.ptop{height:52px;padding:0 14px}
+.ptop .brand{display:none}
+.player .screenwrap{padding:0 12px}
+.player .screenbox{max-height:none}
+.player .screen,.player .screenshadow{border-radius:10px}
+.pbar{height:64px;padding:0 14px;gap:10px}
+.pcap,.ptime{display:none}
 }
-
-/* the tour lives inside the screen now */
 .tour{position:absolute;inset:0;z-index:66;pointer-events:none}
-.tspot{position:absolute}
-.tcard{position:absolute}
-.tcursor{position:absolute;left:0;top:0;z-index:2;pointer-events:none;margin:-2px 0 0 -2px}
-.tcursor svg{display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
-.tcursor i{position:absolute;left:-7px;top:-7px;width:18px;height:18px;border-radius:50%;border:2px solid var(--accent);display:block}
-@media(prefers-reduced-motion:reduce){.tcursor{display:none}}
-
-/* ── flash: word masks, rolling digits, the calculator's own sweep ── */
 .wmask{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 0 .12em;margin-bottom:-.12em}
 .var[data-var="d"] .dh h1{max-width:17ch}
 .wmask .w{display:inline-block;will-change:transform}
@@ -188,32 +134,23 @@ body{background:var(--app)}
 .roll .strip span{display:block;height:1.1em;line-height:1.1em}
 .calc .trackwrap{position:relative}
 .thumbhint{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--accent);pointer-events:none;opacity:0}
-.btn,.gb,.signin,.ptry,.ttry{transition:transform .16s var(--e),background .16s var(--e),color .16s var(--e),border-color .16s var(--e),opacity .16s var(--e),box-shadow .16s var(--e)}
+.btn,.gb,.signin,.ptry{transition:transform .16s var(--e),background .16s var(--e),color .16s var(--e),border-color .16s var(--e),opacity .16s var(--e),box-shadow .16s var(--e)}
 .btn.solid:hover,.gb.solid:hover,.signin:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(99,91,255,.28)}
 .btn:active,.gb:active,.signin:active,.ptry:active{transform:scale(.97)}
-
-/* the pill floats over every page: no band behind it, the content runs underneath */
 .navbar{position:fixed;left:0;right:0;top:0;background:none}
 .navbar .nav{border-color:var(--border-2);box-shadow:0 1px 2px rgba(22,24,28,.04),0 8px 24px rgba(22,24,28,.06)}
 .navbar.stuck .nav{border-color:var(--border-2);box-shadow:0 1px 2px rgba(22,24,28,.05),0 14px 36px rgba(22,24,28,.12)}
 .pagehead{padding-top:176px}
 .hero{padding-top:calc(80px + 56px)}
-@media(max-width:780px){.pagehead{padding-top:140px}}
+@media(max-width:780px){.pagehead{padding-top:140px}
+}
 .var[data-var="d"] .dh{padding-top:118px}
-
-/* text reveal by characters */
 .cmask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.14em;margin-bottom:-.14em}
 .cmask .w{display:inline-block;will-change:transform}
-.cmask-w{white-space:pre}
-
-/* the curtain out of Tour: stage chrome fades, the screen runs to the edges */
 .player.leaving .ptop,.player.leaving .pbar{opacity:0;transition:opacity .35s var(--e);pointer-events:none}
 .player.leaving .screenshadow{opacity:0}
 .player.leaving .screen{cursor:default}
 .player.leaving .screen .nashapp .hdr{pointer-events:none}
-.player .screen .tour{transition:none}
-
-/* ── the pill nav, given room: taller, set down from the edge, bigger type ── */
 .navbar{padding:20px 0 0}
 .nav{height:60px;padding:0 10px 0 26px;gap:16px}
 .brand{font-size:16px;letter-spacing:-.4px}
@@ -225,28 +162,25 @@ body{background:var(--app)}
 .nav .gh svg{width:18px;height:18px}
 .nav .signin{height:40px;padding:0 20px;font-size:14px}
 .var[data-var="d"] .dh{padding-top:140px}
-@media(max-width:780px){.navbar{padding-top:12px}.nav{height:54px;padding:0 8px 0 18px}.nav .signin{height:36px;padding:0 16px}}
-
-/* ── the bar: no container, the same in Tour, Try and Learn more ── */
+@media(max-width:780px){.navbar{padding-top:12px}
+.nav{height:54px;padding:0 8px 0 18px}
+.nav .signin{height:36px;padding:0 16px}
+}
 .navbar{position:fixed;left:0;right:0;top:0;z-index:70;padding:0;background:none}
 .nav,.navbar .nav,.navbar.stuck .nav{height:64px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;gap:28px;transition:none}
 .navbar.stuck{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.navbar.dark,.navbar.dark.stuck{background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
-.navbar.dark .brand{color:#fff}
-.navbar.dark .nav .links a{color:rgba(255,255,255,.62)}
-.navbar.dark .nav .links a:hover,.navbar.dark .nav .links a.act{color:#fff}
-.navbar.dark .gh{color:rgba(255,255,255,.72)}
-.navbar.dark .gh:hover{color:#fff;background:rgba(255,255,255,.1)}
-.player,.appframe{top:0;padding-top:0}
+.player{top:0;padding-top:0}
 .player .ptop{height:52px;padding:0;justify-content:center}
-/* in Try the switch sits where it sat on the stage: centred on the window, not on the chat column */
 .appframe .nashapp .hdrmid{position:fixed;left:50%;top:9px;transform:translateX(-50%);z-index:20}
 .player .screenwrap{padding:12px 28px 0}
 .var[data-var="d"] .dh{padding-top:124px}
 .pagehead{padding-top:160px}
-@media(max-width:780px){.navbar{padding:0}.nav,.navbar .nav,.navbar.stuck .nav{height:56px;padding:0}.player,.appframe{padding-top:0}.pagehead{padding-top:132px}.var[data-var="d"] .dh{padding-top:100px}}
-
-/* ── the asks strip: thinking dots, answers that arrive, cards that lift ── */
+@media(max-width:780px){.navbar{padding:0}
+.nav,.navbar .nav,.navbar.stuck .nav{height:56px;padding:0}
+.player{padding-top:0}
+.pagehead{padding-top:132px}
+.var[data-var="d"] .dh{padding-top:100px}
+}
 .ditem .a .dots{display:inline-flex;gap:3px;margin-left:8px;vertical-align:middle}
 .ditem .a .dots i{width:4px;height:4px;border-radius:50%;background:var(--accent);animation:dotp 1s infinite ease-in-out}
 .ditem .a .dots i:nth-child(2){animation-delay:.15s}
@@ -256,9 +190,6 @@ body{background:var(--app)}
 .ditem .atext .ghost{visibility:hidden}
 .ditem .atext .w{display:inline-block}
 .ditem{will-change:transform}
-
-/* ── a second colour, complementary to the purple: amber, for marks and highlights, never for actions.
-      Purple = do something. Amber = notice this. Model names wear their maker's colour. ── */
 :root{--amber:#F2B441;--amber-text:#A66E06;--amber-soft:#FFF1D2;--cream:#FFFAF0}
 .seq .reply .ml i{display:none}
 .seq .reply .ml{font-weight:500}
@@ -268,15 +199,7 @@ body{background:var(--app)}
 .calc .thumbhint{background:var(--amber)}
 .s7 .heads .hd.more{background:var(--amber-text)}
 .dsign .t::after{content:"";display:block;width:28px;height:3px;border-radius:2px;background:var(--amber);margin-top:10px}
-
-/* the slim bar for Tour and Try: just the switch, centred */
-.navbar.minimal .nav{justify-content:center}
-.navbar.minimal .modeswitch{margin:0}
-
-/* pricing ground back to the quiet off-white; the cream is gone */
 .s7,.var[data-var="d"] .s7.dpr{background:var(--sunken)}
-
-/* the bar has to hold on the lavender wash: darker type, and a switch that tints whatever it sits on */
 .nav .links a,.nav .gh{color:#4A4744}
 .nav .links a:hover,.nav .gh:hover{color:var(--t1)}
 .nav .links a.act{color:var(--accent)}
@@ -287,48 +210,24 @@ body{background:var(--app)}
 .player .ptop .modeswitch{background:var(--surface)}
 .player .ptop .modeswitch button{color:var(--t3)}
 .player .ptop .modeswitch button:hover,.player .ptop .modeswitch .msbtn.on{color:var(--t1)}
-
-/* the switch, third try: a white capsule with a hairline, the active one in ink. Reads the same on the wash, on white and on the dark stage. */
 .modeswitch,.player .ptop .modeswitch,.nashapp .modeswitch{background:#fff;border:1px solid var(--border-2);padding:3px;box-shadow:0 1px 2px rgba(19,18,17,.04)}
 .modeswitch button,.player .ptop .modeswitch button,.nashapp .modeswitch button{color:var(--t2)}
 .modeswitch button:hover,.player .ptop .modeswitch button:hover{color:var(--t1)}
 .modeswitch .msbtn.on,.player .ptop .modeswitch .msbtn.on,.nashapp .modeswitch .msbtn.on{color:#fff}
 .modeswitch .msbtn.on:hover{color:#fff}
 .modeswitch .mspill{background:var(--t1);box-shadow:none}
-
-/* the dark bar only while it is over something dark; once it frosts on scroll it reads in ink again */
-.navbar.dark.stuck{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.navbar.dark.stuck .brand{color:var(--t1)}
-.navbar.dark.stuck .nav .links a{color:#4A4744}
-.navbar.dark.stuck .nav .links a:hover{color:var(--t1)}
-.navbar.dark.stuck .nav .links a.act{color:var(--accent)}
-.navbar.dark.stuck .gh{color:#4A4744}
-
-/* coming back into Tour: the chrome and the shadow fade in once the screen has settled into its box */
 .player .ptop,.player .pbar{transition:opacity .35s var(--e)}
 .player.entering .ptop,.player.entering .pbar,.player.entering .screenshadow{opacity:0}
-
-/* the wash dissolves into white before the hero ends, and the section after it is white too: no seam */
 .var[data-var="d"] .dh::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(180deg,rgba(255,255,255,0),#fff);pointer-events:none}
 .s7,.var[data-var="d"] .s7.dpr{background:var(--app)}
-
-/* ── the film: a camera over the app, a cursor in it, captions under it ── */
 .camera{position:absolute;inset:0;will-change:transform}
 .camera .nashapp{height:100%;width:100%}
 .fcursor{position:absolute;left:0;top:0;z-index:300;pointer-events:none;margin:-2px 0 0 -2px}
 .fcursor svg{display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
 .fcursor i{position:absolute;left:-8px;top:-8px;width:20px;height:20px;border-radius:50%;border:2px solid var(--accent);display:block}
-.subs{position:absolute;left:0;right:0;bottom:26px;display:flex;justify-content:center;pointer-events:none;z-index:310;padding:0 24px}
-.subs .cap{margin:0;max-width:64%;background:rgba(19,18,17,.84);color:#fff;font-family:var(--f);font-size:18px;line-height:1.35;font-weight:500;letter-spacing:-.2px;
-  padding:11px 18px 12px;border-radius:12px;text-align:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.subs .cap .w{display:inline-block}
-.subs .cap b{color:var(--amber);font-weight:600}
 .nashapp.tourmode .ccard textarea{color:var(--text-primary)}
-@media(max-width:760px){.subs{bottom:14px;padding:0 12px}.subs .cap{max-width:100%;font-size:14.5px;padding:9px 12px}}
-@media(prefers-reduced-motion:reduce){.fcursor{display:none}}
-
-/* ── dynamic captions: big type over the picture, one line huge and purple ── */
-.subs{display:none}
+@media(prefers-reduced-motion:reduce){.fcursor{display:none}
+}
 .kcap{position:absolute;left:0;right:0;top:30%;display:flex;flex-direction:column;align-items:center;gap:.06em;padding:0 5%;pointer-events:none;z-index:310;
   text-align:center;font-family:var(--f);font-weight:700;letter-spacing:-.035em;line-height:1;color:#131211}
 .kcap .kl{display:block;font-size:clamp(26px,3.6vw,50px)}
@@ -338,23 +237,17 @@ body{background:var(--app)}
 .kcap.left{right:auto;left:4%;width:38%;align-items:flex-start;text-align:left;top:22%}
 .kcap.mid{top:26%}
 .kcap.low{top:40%}
-@media(max-width:760px){.kcap,.kcap.left,.kcap.right{left:0;right:0;width:auto;align-items:center;text-align:center;top:18%}.kcap .kl{font-size:24px}.kcap .kl.big{font-size:40px}}
-
-/* behind a caption the picture goes soft, nothing else: a blur that feathers to nothing before the picture's edge */
-.kcap::before{content:"";position:absolute;left:6%;right:6%;top:-40%;bottom:-40%;z-index:-1;pointer-events:none;
-  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  -webkit-mask-image:radial-gradient(ellipse 44% 48% at 50% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 44% 48% at 50% 50%,#000 40%,transparent 100%)}
+@media(max-width:760px){.kcap,.kcap.left,.kcap.right{left:0;right:0;width:auto;align-items:center;text-align:center;top:18%}
+.kcap .kl{font-size:24px}
+.kcap .kl.big{font-size:40px}
+}
 .kcap.right::before{left:-24%;right:0;top:-18%;bottom:-30%;-webkit-mask-image:radial-gradient(ellipse 38% 48% at 62% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 38% 48% at 62% 50%,#000 40%,transparent 100%)}
 .kcap.left::before{left:0;right:-24%;top:-18%;bottom:-30%;-webkit-mask-image:radial-gradient(ellipse 38% 48% at 38% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 38% 48% at 38% 50%,#000 40%,transparent 100%)}
-
-/* side captions sized to the room beside a panel, so they never sit on it */
 .kcap.right,.kcap.left{width:28%;top:8%}
 .kcap.right{right:3%}
 .kcap.left{left:3%}
 .kcap.right .kl,.kcap.left .kl{font-size:clamp(20px,2.6vw,36px)}
 .kcap.right .kl.big,.kcap.left .kl.big{font-size:clamp(36px,5.2vw,72px)}
-
-/* chapters the way a video player has them: hover names the chapter, click seeks inside it */
 .pchap button{position:relative;height:26px}
 .pchap button i{transition:height .15s var(--e),background .15s var(--e)}
 .pchap:hover button i{background:rgba(255,255,255,.26)}
@@ -370,29 +263,19 @@ body{background:var(--app)}
 .pchap button:last-child .clabel{left:auto;right:0;transform:translate(0,4px)}
 .pchap button:last-child:hover .clabel{transform:translate(0,0)}
 .pbar{position:relative;z-index:5}
-
-/* the switch sits a little lower on the stage, and the app header in Try matches it so nothing jumps */
 .player .ptop{height:68px}
 .appframe .nashapp .hdr{height:68px}
 .appframe .nashapp .hdrmid{top:17px}
-
-/* hovers: colour only. No lifting, no glow, no grey fills. */
 .btn.solid:hover,.gb.solid:hover,.signin:hover{transform:none;box-shadow:none;background:var(--accent-pressed);border-color:var(--accent-pressed)}
 .btn:hover,.gb:hover{background:var(--app);border-color:var(--t1);color:var(--t1)}
 .btn.solid:hover{color:var(--on-accent)}
 .gh:hover{background:none;color:var(--t1)}
 .btn:active,.gb:active,.signin:active,.ptry:active{transform:none}
 .nashapp .hdr .signin:hover,.nashapp .mobilenav .signin:hover{background:var(--accent-pressed);opacity:1}
-
-/* a caption over the picker's dim goes light, so it reads on the grey */
 .kcap.light{color:#fff}
 .kcap.light .kl.big{color:#ABA6FF}
-
-/* the chapter bar runs from the title to the clock with nothing spare */
 .pcap{flex:0 0 auto;max-width:200px}
 .pchap{gap:5px}
-
-/* ── one switch, the same everywhere: on the bar, on the stage, in the app header ── */
 .modeswitch,.nav .modeswitch,.player .ptop .modeswitch,.nashapp .modeswitch{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:#fff;border:1px solid var(--border-2);box-shadow:0 1px 2px rgba(19,18,17,.04);margin:0}
 .nav .modeswitch{margin-left:auto}
 .modeswitch button,.nav .modeswitch button,.player .ptop .modeswitch button,.nashapp .modeswitch button{height:32px;padding:0 15px;border-radius:999px;border:0;background:none;cursor:pointer;white-space:nowrap;
@@ -403,57 +286,36 @@ body{background:var(--app)}
 .player .ptop{height:70px}
 .appframe .nashapp .hdr{height:70px}
 .appframe .nashapp .hdrmid{top:15px}
-
-/* the picker's dim goes deeper in the film, so a light caption reads on it */
 .player .nashapp .mscrim.on{background:rgba(19,18,17,.66)}
-
-/* the first moment after the app mounts, nothing slides or unfolds */
 .nashapp.presettle,.nashapp.presettle *{transition:none!important}
-
-/* the switch sits lower still; the app header in Try keeps step */
 .player .ptop{height:100px}
 .appframe .nashapp .hdr{height:100px}
 .appframe .nashapp .hdrmid{top:30px}
 .appframe .nashapp .navwrap.collapsed ~ .main .hdr{padding-left:52px}
-
-/* over the picker the dim goes near-black, so the purple keeps its colour and the white its edge */
 .player .nashapp .mscrim.on{background:rgba(19,18,17,.82)}
 .kcap.light{color:#fff}
 .kcap.light .kl.big{color:#8F89FF}
-
-/* ── the switch, redesigned: three words and a line that slides under the chosen one. No capsule. ── */
 .modeswitch,.nav .modeswitch,.player .ptop .modeswitch,.nashapp .modeswitch{background:none;border:0;padding:0;gap:26px;border-radius:0;box-shadow:none}
 .modeswitch button,.nav .modeswitch button,.player .ptop .modeswitch button,.nashapp .modeswitch button{height:38px;padding:0 2px;border-radius:0;font-size:14px;font-weight:500;color:var(--t3);letter-spacing:-.1px}
 .modeswitch button:hover,.nashapp .modeswitch button:hover{color:var(--t1)}
 .modeswitch .msbtn.on,.nashapp .modeswitch .msbtn.on,.modeswitch .msbtn.on:hover{color:var(--t1)}
 .modeswitch .mspill{inset:auto 0 0 0;height:2px;border-radius:2px;background:var(--t1);box-shadow:none}
-/* on the dark stage, white */
 .player .ptop .modeswitch button{color:rgba(255,255,255,.58)}
 .player .ptop .modeswitch button:hover,.player .ptop .modeswitch .msbtn.on,.player .ptop .modeswitch .msbtn.on:hover{color:#fff}
 .player .ptop .modeswitch .mspill{background:#fff}
-
-/* dark-tone captions: white line, amber big word. Purple has no bite on grey; amber does. */
 .kcap.light .kl.big{color:var(--amber)}
-
-/* the two About paragraphs start on the same line: the sibling margin was pushing the second down */
 .lede-two{align-items:start}
 .lede-two .body + .body{margin-top:0}
-
-/* ── the pill switch, new look: an ink capsule, the chosen one lifts out in white. Same on every ground. ── */
 .modeswitch,.nav .modeswitch,.player .ptop .modeswitch,.nashapp .modeswitch{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:#1B1A19;border:1px solid rgba(255,255,255,.14);box-shadow:none}
 .modeswitch button,.nav .modeswitch button,.player .ptop .modeswitch button,.nashapp .modeswitch button{height:32px;padding:0 16px;border-radius:999px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.62);letter-spacing:0}
 .modeswitch button:hover,.nashapp .modeswitch button:hover,.player .ptop .modeswitch button:hover{color:#fff}
 .modeswitch .msbtn.on,.nashapp .modeswitch .msbtn.on,.player .ptop .modeswitch .msbtn.on,.modeswitch .msbtn.on:hover,.player .ptop .modeswitch .msbtn.on:hover{color:#131211}
 .modeswitch .mspill,.player .ptop .modeswitch .mspill{inset:0;height:auto;border-radius:999px;background:#fff;box-shadow:none}
-
-/* ── the pill switch, take three: a white capsule that reads on any ground, the chosen one in a lavender pill with purple type ── */
 .modeswitch,.nav .modeswitch,.player .ptop .modeswitch,.nashapp .modeswitch{background:#fff;border:1px solid rgba(19,18,17,.12);padding:4px;box-shadow:none}
 .modeswitch button,.nav .modeswitch button,.player .ptop .modeswitch button,.nashapp .modeswitch button{color:var(--t2);font-weight:500}
 .modeswitch button:hover,.nashapp .modeswitch button:hover,.player .ptop .modeswitch button:hover{color:var(--t1)}
 .modeswitch .msbtn.on,.nashapp .modeswitch .msbtn.on,.player .ptop .modeswitch .msbtn.on,.modeswitch .msbtn.on:hover,.player .ptop .modeswitch .msbtn.on:hover{color:var(--accent);font-weight:600}
 .modeswitch .mspill,.player .ptop .modeswitch .mspill{background:var(--accent-soft)}
-
-/* ── the bar, tidied: the product's own wordmark, links beside it, one tight cluster of controls at the right, all one height ── */
 .nav,.navbar .nav,.navbar.stuck .nav{gap:0}
 .nav .brand{font-size:18px;font-weight:600;letter-spacing:-.5px;color:var(--t1)}
 .nav .links{margin:0 0 0 44px;gap:26px}
@@ -466,61 +328,50 @@ body{background:var(--app)}
 .nav .modeswitch ~ .right{margin-left:14px}
 .nav .gh{width:36px;height:36px}
 .nav .signin{height:36px;padding:0 16px;font-size:13.5px}
-
-/* a hairline under the bar */
 .navbar{border-bottom:1px solid rgba(19,18,17,.09)}
 .navbar.stuck{border-bottom-color:rgba(19,18,17,.1)}
-
-/* more air between the bar and the hero */
 .var[data-var="d"] .dh{padding-top:160px}
-@media(max-width:780px){.var[data-var="d"] .dh{padding-top:120px}}
-
-/* the wash begins below the bar and eases in, so the bar sits on white */
+@media(max-width:780px){.var[data-var="d"] .dh{padding-top:120px}
+}
 .var[data-var="d"] .dh .washbg{top:64px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 150px);mask-image:linear-gradient(180deg,transparent 0,#000 150px)}
-@media(max-width:780px){.var[data-var="d"] .dh .washbg{top:56px}}
-
-/* no ring on text fields: the caret is enough. Buttons keep their keyboard ring. */
+@media(max-width:780px){.var[data-var="d"] .dh .washbg{top:56px}
+}
 input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.composer .field:focus-visible,.ccard textarea:focus-visible{outline:none;box-shadow:none}
-
-/* on phones the composer sits down by the thumb, not floating above a gap */
-@media(max-width:768px){.nashapp .disclaimer{padding-bottom:calc(14px + env(safe-area-inset-bottom))}.nashapp .formcol{padding-bottom:0}}
-
-/* ── phone bar: mark, switch, a menu. The pages, Sign in and GitHub live in the menu. ── */
+@media(max-width:768px){.nashapp .disclaimer{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+.nashapp .formcol{padding-bottom:0}
+}
 .menubtn{display:none;width:36px;height:36px;border:0;background:none;padding:0;cursor:pointer;position:relative;border-radius:50%}
 .menubtn i{position:absolute;left:9px;right:9px;height:1.6px;background:var(--t1);border-radius:2px;transition:transform .26s var(--e),opacity .2s var(--e),top .26s var(--e)}
-.menubtn i:nth-child(1){top:12px}.menubtn i:nth-child(2){top:17px}.menubtn i:nth-child(3){top:22px}
-.menubtn.on i:nth-child(1){top:17px;transform:rotate(45deg)}.menubtn.on i:nth-child(2){opacity:0}.menubtn.on i:nth-child(3){top:17px;transform:rotate(-45deg)}
+.menubtn i:nth-child(1){top:12px}
+.menubtn i:nth-child(2){top:17px}
+.menubtn i:nth-child(3){top:22px}
+.menubtn.on i:nth-child(1){top:17px;transform:rotate(45deg)}
+.menubtn.on i:nth-child(2){opacity:0}
+.menubtn.on i:nth-child(3){top:17px;transform:rotate(-45deg)}
 .msheet{position:fixed;left:0;right:0;top:56px;bottom:0;background:var(--app);z-index:69;display:flex;flex-direction:column;justify-content:space-between;padding:28px 24px calc(28px + env(safe-area-inset-bottom));font-family:var(--f)}
 .msheet .mlinks{display:flex;flex-direction:column;gap:6px}
 .msheet .mlinks a{display:block;font-size:30px;font-weight:600;letter-spacing:-.8px;line-height:1.25;color:var(--t2);text-decoration:none;padding:8px 0}
 .msheet .mlinks a.act{color:var(--t1)}
 .msheet .mfoot{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
 .msheet .mfoot .signin{width:100%;height:48px;font-size:15px}
-.msheet .mgh{display:inline-flex;align-items:center;gap:10px;color:var(--t2);text-decoration:none;font-size:14px;font-weight:500}
-.msheet .mgh svg{width:18px;height:18px;fill:currentColor}
 .navbar.open{background:var(--app);-webkit-backdrop-filter:none;backdrop-filter:none}
-@media(max-width:780px){
-  .nav .links,.nav .right .signin,.nav .right .gh{display:none}
-  .menubtn{display:inline-flex}
-  .nav .modeswitch{margin:0 auto}
-  .nav .right{margin-left:0}
-  .nav .modeswitch ~ .right{margin-left:0}
-  .nav .brand{font-size:17px}
+@media(max-width:780px){.nav .links,.nav .right .signin,.nav .right .gh{display:none}
+.menubtn{display:inline-flex}
+.nav .modeswitch{margin:0 auto}
+.nav .right{margin-left:0}
+.nav .modeswitch ~ .right{margin-left:0}
+.nav .brand{font-size:17px}
 }
-@media(max-width:560px){.nav .modeswitch button{padding:0 11px;font-size:12.5px}}
-
-/* phone app header in Try: toggle and Sign in on the first row, the switch centred on its own row below */
-@media(max-width:768px){
-  .appframe .nashapp .mobilenav{height:auto;flex-wrap:wrap;align-items:center;padding:8px 12px 10px;row-gap:10px}
-  .appframe .nashapp .mobilenav .mnbtn{order:0}
-  .appframe .nashapp .mobilenav .signin{order:1;margin-left:auto}
-  .appframe .nashapp .mobilenav::after{content:"";order:2;flex-basis:100%;height:0}
-  .appframe .nashapp .mobilenav .modeswitch{order:3;margin:0 auto}
-  .appframe .nashapp .hdrmid{position:static;transform:none}
-  .player .ptop{height:88px}
+@media(max-width:560px){.nav .modeswitch button{padding:0 11px;font-size:12.5px}
 }
-
-/* ── the phone menu, redesigned: warm ground, type at scale, drawn rules, a travelling amber mark ── */
+@media(max-width:768px){.appframe .nashapp .mobilenav{height:auto;flex-wrap:wrap;align-items:center;padding:8px 12px 10px;row-gap:10px}
+.appframe .nashapp .mobilenav .mnbtn{order:0}
+.appframe .nashapp .mobilenav .signin{order:1;margin-left:auto}
+.appframe .nashapp .mobilenav::after{content:"";order:2;flex-basis:100%;height:0}
+.appframe .nashapp .mobilenav .modeswitch{order:3;margin:0 auto}
+.appframe .nashapp .hdrmid{position:static;transform:none}
+.player .ptop{height:88px}
+}
 .msheet{position:fixed;left:0;right:0;top:56px;bottom:0;background:#F5F4F1;z-index:69;display:flex;flex-direction:column;justify-content:space-between;
   padding:12px 24px calc(24px + env(safe-area-inset-bottom));font-family:var(--f)}
 .msheet .mlinks{display:flex;flex-direction:column}
@@ -539,86 +390,57 @@ input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.comp
 .msheet .mmeta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--t3)}
 .msheet .mmeta a{color:var(--t1);text-decoration:none;font-weight:500}
 .navbar.open,.navbar.open.stuck{background:#F5F4F1;border-bottom-color:rgba(19,18,17,.12)}
-/* the hamburger: lines meet in the middle, then turn */
 .menubtn i{transition:top .14s var(--e),transform .18s var(--e) .14s,opacity .12s var(--e)}
 .menubtn.on i{transition:top .14s var(--e),transform .18s var(--e) .14s,opacity .12s var(--e)}
-@media(max-width:380px){.msheet .mrow{font-size:38px;min-height:68px}}
+@media(max-width:380px){.msheet .mrow{font-size:38px;min-height:68px}
+}
 .msheet .mfoot{align-items:stretch}
 .msheet .mmeta{width:100%}
-/* pages without the switch: the mark left, the menu right, always */
-@media(max-width:780px){.nav .right{margin-left:auto}.nav .modeswitch ~ .right{margin-left:0}}
-
-/* the film on a phone: the screen fills the stage, captions sit high, the bar keeps to the essentials */
-@media(max-width:760px){
-  .player .screenwrap{padding:0 10px}
-  .player .screenbox{max-width:none;max-height:none;height:100%}
-  .player .screen,.player .screenshadow{border-radius:12px}
-  .kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{left:0;right:0;width:auto;align-items:center;text-align:center;top:12%;padding:0 6%}
-  .kcap .kl{font-size:26px}.kcap .kl.big{font-size:44px}
-  .kcap::before,.kcap.left::before,.kcap.right::before{left:0;right:0;top:-30%;bottom:-30%;-webkit-mask-image:radial-gradient(ellipse 46% 48% at 50% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 46% 48% at 50% 50%,#000 40%,transparent 100%)}
-  .pbar{height:64px;padding:0 12px;gap:10px}
+@media(max-width:780px){.nav .right{margin-left:auto}
+.nav .modeswitch ~ .right{margin-left:0}
 }
-@media(max-width:760px){
-  .kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{top:6%}
-  .kcap .kl{font-size:22px}.kcap .kl.big{font-size:40px}
+@media(max-width:760px){.player .screenwrap{padding:0 10px}
+.player .screenbox{max-width:none;max-height:none;height:100%}
+.player .screen,.player .screenshadow{border-radius:12px}
+.kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{left:0;right:0;width:auto;align-items:center;text-align:center;top:12%;padding:0 6%}
+.kcap .kl{font-size:26px}
+.kcap .kl.big{font-size:44px}
+.kcap.left::before,.kcap.right::before{left:0;right:0;top:-30%;bottom:-30%;-webkit-mask-image:radial-gradient(ellipse 46% 48% at 50% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 46% 48% at 50% 50%,#000 40%,transparent 100%)}
+.pbar{height:64px;padding:0 12px;gap:10px}
 }
-
-/* phone film: captions at desktop scale, and the picker drops to a bottom sheet so the caption sits on the dim, not on white */
-@media(max-width:760px){
-  .kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{top:8%;padding:0 5%;gap:.04em}
-  .kcap .kl{font-size:30px}
-  .kcap .kl.big{font-size:58px;line-height:.95}
-  .player .nashapp .mscrim{place-items:end center;padding-bottom:14px;box-sizing:border-box}
-  .player .nashapp .mpanel{height:min(520px,58vh)}
+@media(max-width:760px){.kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{top:6%}
+.kcap .kl{font-size:22px}
+.kcap .kl.big{font-size:40px}
 }
-
-/* the caption blur, softer: a wider field, a gentler fall-off, less blur, so there is no edge to find */
-.kcap::before{left:-14%;right:-14%;top:-70%;bottom:-70%;-webkit-backdrop-filter:blur(11px);backdrop-filter:blur(11px);
-  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
+@media(max-width:760px){.kcap,.kcap.left,.kcap.right,.kcap.mid,.kcap.low{top:8%;padding:0 5%;gap:.04em}
+.kcap .kl{font-size:30px}
+.kcap .kl.big{font-size:58px;line-height:.95}
+.player .nashapp .mscrim{place-items:end center;padding-bottom:14px;box-sizing:border-box}
+.player .nashapp .mpanel{height:min(520px,58vh)}
+}
 .kcap.right::before{left:-40%;right:-6%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 60% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 60% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
 .kcap.left::before{left:-6%;right:-40%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 40% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 40% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
-@media(max-width:760px){.kcap::before,.kcap.left::before,.kcap.right::before{left:-4%;right:-4%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}}
-
-/* no hover labels on touch screens: a tap would leave one stuck open */
-@media(hover:none){.pchap .clabel{display:none}}
-
-/* ── the caption blur as three nested fields: faint and wide, then closer, then tight. The blur grows toward the words instead of switching on. ── */
-.kcap::before,.kcap::after,.kcap .kblur{content:"";position:absolute;z-index:-1;pointer-events:none}
-.kcap::before{left:-26%;right:-26%;top:-110%;bottom:-110%;-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);
-  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%)}
-.kcap::after{left:-14%;right:-14%;top:-70%;bottom:-70%;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
-  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%)}
-.kcap .kblur{left:-4%;right:-4%;top:-36%;bottom:-36%;-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
-  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%)}
-/* side captions: the fields lean toward the words */
+@media(max-width:760px){.kcap.left::before,.kcap.right::before{left:-4%;right:-4%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 8%,rgba(0,0,0,.55) 42%,rgba(0,0,0,.18) 72%,transparent 100%)}
+}
+@media(hover:none){.pchap .clabel{display:none}
+}
 .kcap.right::before{left:-70%;right:-10%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 64% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 64% 50%,#000 20%,transparent 100%)}
 .kcap.right::after{left:-40%;right:-6%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 62% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 62% 50%,#000 15%,transparent 100%)}
-.kcap.right .kblur{left:-12%;right:-2%;top:-24%;bottom:-24%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 56% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 56% 50%,#000 10%,transparent 100%)}
 .kcap.left::before{left:-10%;right:-70%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 36% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 36% 50%,#000 20%,transparent 100%)}
 .kcap.left::after{left:-6%;right:-40%;top:-40%;bottom:-40%;-webkit-mask-image:radial-gradient(ellipse 46% 50% at 38% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 46% 50% at 38% 50%,#000 15%,transparent 100%)}
-.kcap.left .kblur{left:-2%;right:-12%;top:-24%;bottom:-24%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 44% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 44% 50%,#000 10%,transparent 100%)}
-@media(max-width:760px){
-  .kcap::before,.kcap.left::before,.kcap.right::before{left:-8%;right:-8%;top:-80%;bottom:-80%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%)}
-  .kcap::after,.kcap.left::after,.kcap.right::after{left:-4%;right:-4%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%)}
-  .kcap .kblur,.kcap.left .kblur,.kcap.right .kblur{left:0;right:0;top:-24%;bottom:-24%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 10%,transparent 100%)}
+@media(max-width:760px){.kcap.left::before,.kcap.right::before{left:-8%;right:-8%;top:-80%;bottom:-80%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 20%,transparent 100%)}
+.kcap.left::after,.kcap.right::after{left:-4%;right:-4%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 15%,transparent 100%)}
 }
-
-/* side fields reach less far across, so the panel the scene is about stays sharp */
-.kcap.right::before{left:-38%}.kcap.right::after{left:-22%}
-.kcap.left::before{right:-38%}.kcap.left::after{right:-22%}
-
-/* one soft gaussian field, small radius, long fall-off. Nothing stacked, nothing that could smear. */
-.kcap::after,.kcap .kblur,.kcap.right::after,.kcap.left::after,.kcap.right .kblur,.kcap.left .kblur{display:none}
-.kcap::before{left:-16%;right:-16%;top:-70%;bottom:-70%;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%)}
+.kcap.right::before{left:-38%}
+.kcap.right::after{left:-22%}
+.kcap.left::before{right:-38%}
+.kcap.left::after{right:-22%}
+.kcap.right::after,.kcap.left::after{display:none}
 .kcap.right::before{left:-34%;right:-8%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 62% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 62% 50%,#000 30%,transparent 100%)}
 .kcap.left::before{left:-8%;right:-34%;top:-50%;bottom:-50%;-webkit-mask-image:radial-gradient(ellipse 48% 50% at 38% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 48% 50% at 38% 50%,#000 30%,transparent 100%)}
-@media(max-width:760px){.kcap::before,.kcap.left::before,.kcap.right::before{left:-6%;right:-6%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%)}}
-
-/* no blur fields behind captions any more: the picture itself pulls focus while a caption is up */
-.kcap::before,.kcap::after,.kcap .kblur,.kcap.right::before,.kcap.left::before{display:none}
-
-/* the hero composer grows with the message; the row of controls sits under the text once it wraps */
+@media(max-width:760px){.kcap.left::before,.kcap.right::before{left:-6%;right:-6%;top:-60%;bottom:-60%;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 30%,transparent 100%)}
+}
+.kcap.right::before,.kcap.left::before{display:none}
 .composer .field{height:auto;min-height:38px;box-sizing:border-box}
 .composer.multi .crow{align-items:flex-end}
 .composer.multi .field{padding:12px 4px 10px}
@@ -626,26 +448,18 @@ input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.comp
 .composer.multi .model{order:1;margin-left:auto}
 .composer.multi .circ{order:2}
 .composer.multi .send{order:3}
-
-/* the screen as a surface in space: it leans toward what the camera looks at and drifts a little on wide shots */
 .player .screenbox{perspective:1800px}
 .player .screen,.player .screenshadow{backface-visibility:hidden;will-change:transform}
 .player .screenshadow{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 40px 90px rgba(0,0,0,.6),0 12px 30px rgba(0,0,0,.4)}
-
-/* the frame is fixed; the picture inside it is the thing in space */
 .player .screenbox{perspective:none}
 .player .screen,.player .screenshadow{will-change:auto}
 .cam3d{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transform-style:flat}
 .appframe .cam3d{transform:none!important}
-
-/* a white ground travels with the picture, well past its edges, so a lean never shows anything but the app's own ground */
 .cam3d::before{content:"";position:absolute;inset:-25%;background:var(--app);z-index:-1}
-
-/* ── the conversation, from Messages/ui/MessageRender.tsx: a bubble on the right, the model's name and its text on the left,
-      and a row of actions under each that shows when the pointer is on the turn ── */
 .nashapp .landingcol.chatting{justify-content:flex-start}
 .nashapp .msgs{width:100%;max-width:768px;box-sizing:border-box;padding:56px 16px 20px;display:flex;flex-direction:column;gap:24px;flex:1 0 auto}
-@media (min-width:1280px){.nashapp .msgs{max-width:896px}}
+@media (min-width:1280px){.nashapp .msgs{max-width:896px}
+}
 .nashapp .turn{display:flex;flex-direction:column;align-items:flex-start}
 .nashapp .turn.user{align-items:flex-end}
 .nashapp .bubble{width:fit-content;max-width:76%;border-radius:18px;background:var(--surface-secondary);padding:16px 18px 13px;font-size:14px;line-height:1.55;color:var(--text-primary);white-space:pre-wrap}
@@ -656,27 +470,26 @@ input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.comp
 @keyframes nashpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.55}}
 .nashapp .hoverrow{margin-top:12px;display:flex;gap:4px;opacity:0;transition:opacity var(--hover) var(--nash-ease)}
 .nashapp .turn:hover .hoverrow,.nashapp .turn:focus-within .hoverrow,.nashapp .turn.hovered .hoverrow{opacity:1}
-@media(hover:none){.nashapp .hoverrow{opacity:1}}
+@media(hover:none){.nashapp .hoverrow{opacity:1}
+}
 .nashapp .hbtn{width:28px;height:28px;border-radius:7px;border:0;background:none;padding:0;color:var(--text-secondary-alt);display:grid;place-items:center;cursor:pointer;transition:color var(--hover) var(--nash-ease),background var(--hover) var(--nash-ease)}
 .nashapp .hbtn:hover,.nashapp .hbtn.on{color:var(--text-primary)}
 .nashapp .hbtn:hover{background:var(--surface-hover)}
 .nashapp .hbtn svg{width:15px;height:15px}
-@media (max-width:768px){.nashapp .msgs{padding:16px 12px 12px;gap:18px}.nashapp .bubble{max-width:88%}}
-
-/* in Try the header is taller and sits over the content, so the thread starts below it */
+@media (max-width:768px){.nashapp .msgs{padding:16px 12px 12px;gap:18px}
+.nashapp .bubble{max-width:88%}
+}
 .appframe .nashapp .msgs{padding-top:116px}
-@media (max-width:768px){.appframe .nashapp .msgs{padding-top:16px}}
-/* a caption that sits in the gap between two turns: left, wide, one line each */
+@media (max-width:768px){.appframe .nashapp .msgs{padding-top:16px}
+}
 .kcap.leftwide{left:5%;right:auto;width:62%;top:29%;align-items:flex-start;text-align:left}
 .kcap.leftwide .kl{font-size:clamp(20px,2.6vw,36px)}
 .kcap.leftwide .kl.big{font-size:clamp(36px,5.2vw,72px);white-space:nowrap}
-@media(max-width:760px){.kcap.leftwide{left:0;right:0;width:auto;align-items:center;text-align:center;top:6%}.kcap.leftwide .kl.big{white-space:normal}}
-
-/* the composer stays put; the conversation scrolls behind it */
+@media(max-width:760px){.kcap.leftwide{left:0;right:0;width:auto;align-items:center;text-align:center;top:6%}
+.kcap.leftwide .kl.big{white-space:normal}
+}
 .nashapp .landingcol.chatting{overflow:hidden}
 .nashapp .msgs{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
-
-/* pricing cards on the pricing page: the lead card carries the accent, its tag is amber */
 .tiers{margin-top:8px}
 .tier{position:relative;display:flex;flex-direction:column}
 .tier ul{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;flex:1}
@@ -686,14 +499,50 @@ input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,.comp
 .tier.lead .b{background:var(--accent);border-color:var(--accent);color:#fff}
 .tier.lead .b:hover{background:var(--accent-pressed);border-color:var(--accent-pressed);opacity:1}
 .tier:hover{transform:none;box-shadow:none}
-.ptable .hot{background:none}
-
 .tier li{text-align:left}
 .tier ul{width:100%}
-
-/* the lead tag rides the top edge of its card */
 .tier .pop{top:-13px;right:auto;left:50%;transform:translateX(-50%);white-space:nowrap}
 .tiers{padding-top:14px}
-
-/* inside the film, a dim or a scrim spills well past the app's edges, so a lean never shows white beside it */
 .player .nashapp .mscrim,.player .nashapp .navmask,.player .nashapp .flyveil{inset:-40%}
+@media(max-width:760px){.player .screenwrap{padding:0}
+.player .screenbox{max-width:none;max-height:none;height:100%}
+.player .screen,.player .screenshadow{border-radius:0}
+.player .screenshadow{box-shadow:none}
+.player .ptop{height:52px}
+.player .pbar{height:60px}
+}
+@media(max-width:760px){.player .nashapp .mscrim,.player .nashapp .navmask,.player .nashapp .flyveil{inset:0}
+}
+@media(max-width:760px){.kcap[data-phone]{top:var(--cap-top);bottom:auto}
+}
+@media(max-width:760px){.player .ptop{height:72px}
+.appframe .nashapp .mobilenav{height:72px;flex-wrap:nowrap;padding:0 12px;position:relative;align-items:center}
+.appframe .nashapp .mobilenav::after{display:none}
+.appframe .nashapp .mobilenav .modeswitch{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0}
+.appframe .nashapp .mobilenav .mnbtn{order:0}
+.appframe .nashapp .mobilenav .signin{order:1;margin-left:auto;height:32px;padding:0 12px;font-size:12.5px}
+.modeswitch button,.nav .modeswitch button,.player .ptop .modeswitch button,.nashapp .modeswitch button{padding:0 11px;font-size:12.5px;height:30px}
+}
+.cword{display:inline-block;white-space:nowrap}
+.swipehint{display:none}
+@media(max-width:600px){section{padding:56px 0}
+.var[data-var="d"] .s7,.var[data-var="d"] .s7.dpr{padding:56px 0 60px}
+.var[data-var="d"] .dt{padding:48px 0 56px}
+.dfoot{padding-top:48px}
+.s7 .go{margin-top:28px}
+.s7 .rest{margin-top:28px}
+.page h2[style],.dthead h2[style]{max-width:none!important}
+.lede-two .body{font-size:16.5px}
+.dh .dworks{row-gap:8px}
+.ditem{width:270px;flex:0 0 270px}
+.swipehint{display:block;font-size:12px;color:var(--t4);margin:24px 0 -36px;letter-spacing:.02em}
+.ptable{font-size:13.5px;min-width:640px}
+.ptable th,.ptable td{padding:13px 12px}
+.ptable th:first-child,.ptable td:first-child{position:sticky;left:0;background:var(--app);z-index:1;box-shadow:1px 0 0 var(--border)}
+.scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.close .hbtns{flex-direction:column;align-items:center}
+}
+.nashapp .ccard,.nashapp .ccard[data-tools=closed]{border:0}
+@media (max-width:768px){.nashapp .crow{padding:14px 12px 12px;gap:6px}
+.nashapp .ccard.multi .crow textarea{padding:2px 4px 0}
+}

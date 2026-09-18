@@ -3,12 +3,11 @@ import { AnimatePresence, motion, cubicBezier, useTransform } from 'motion/react
 import { ease } from '../../motion.js';
 
 /* The tour as a cut film, run the way a video timeline runs: every value is a function of the clock.
-   Camera and cursor are keyframes, captions have an in and an out, focus follows the captions.
+   Camera and cursor are keyframes, captions have an in and an out.
    Seeking, pausing and looping all fall out of that; nothing is a fire-and-forget animation. */
 const E = cubicBezier(0.16, 1, 0.3, 1);
 const CAM = cubicBezier(0.65, 0, 0.35, 1);
 const CAM_MS = 1500, CUR_MS = 750, TYPE_MS = 38;
-const FOCUS_IN = 380, FOCUS_OUT = 460, SOFT = 2.5;
 
 /* cam: where the camera goes and when. cur: where the cursor goes and when. caps: what is said, from-to.
    acts: things done to the app at a moment. Times in ms from the start of the scene. */
@@ -17,10 +16,10 @@ const FOCUS_IN = 380, FOCUS_OUT = 460, SOFT = 2.5;
    gets its 1.5s plus a beat before anything else happens, and every result on screen is held for a second before the
    cursor moves on. Words stream at about 90ms each. */
 export const SCENES = [
-  { key: 'open', title: 'Welcome', blurb: 'One place for the whole team', dur: 7100, pos: 'low',
+  { key: 'open', title: 'Welcome', blurb: 'One place for the whole team', dur: 5900, pos: 'low',
     cam: [{ at: 0, zoom: 1 }],
     cur: [{ at: 300, sel: '.landing', fx: 0.5, fy: 0.62 }],
-    caps: [{ at: 600, end: 2600, text: 'This is / **Nash.**' }, { at: 4100, end: 6500, text: 'One place for / **your whole team.**' }],
+    caps: [{ at: 500, end: 2300, text: 'This is / **Nash.**' }, { at: 2800, end: 5300, text: 'One place for / **your whole team.**' }],
     acts: [] },
   { key: 'ask', title: 'Ask anything', blurb: 'Type the way you would say it', dur: 9600, pos: 'mid',
     cam: [{ at: 0, sel: '.ccard', zoom: 1.5, rx: 10, ry: -4 }],
@@ -47,10 +46,10 @@ export const SCENES = [
     cur: [{ at: 2100, sel: '.orgbtn' }, { at: 4600, sel: '.fly.org .orgrow:nth-of-type(2)' }],
     caps: [{ at: 800, end: 2800, text: 'One workspace. / **One bill.**' }, { at: 5400, end: 7600, text: 'A spend cap / **per person.**' }, { at: 10200, end: 12200, text: '**Bring** / **the team.**' }],
     acts: [[100, 'drawer', true], [3300, 'click'], [3350, 'openFly', 'org'], [8600, 'closeFly'], [12400, 'drawer', false]] },
-  { key: 'close', title: 'Try it yourself', blurb: 'Your chats stay yours', dur: 7300, pos: 'low',
+  { key: 'close', title: 'Try it yourself', blurb: 'Your chats stay yours', dur: 6100, pos: 'low',
     cam: [{ at: 0, zoom: 1 }],
     cur: [{ at: 600, sel: '.landing', fx: 0.5, fy: 0.62 }],
-    caps: [{ at: 900, end: 2900, text: 'Your chats / **stay yours.**' }, { at: 4300, end: 6500, text: '**Try it** / yourself.' }],
+    caps: [{ at: 700, end: 2700, text: 'Your chats / **stay yours.**' }, { at: 3200, end: 5400, text: '**Try it** / yourself.' }],
     acts: [[200, 'reset']] },
 ];
 
@@ -79,38 +78,22 @@ function find(root, spec) {
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
 const mix = (a, b, p) => a + (b - a) * p;
 
-export default function Director({ active, playing, api, root, frame, cam, cur, tilt, capT, focus, i, setI, prog, onScenes, onCap, seekRef }) {
+export default function Director({ active, playing, api, root, frame, cam, cur, tilt, capT, i, setI, prog, onScenes, onCap, seekRef }) {
   const [scenes, setScenes] = useState([]);
   const [click, setClick] = useState(0);
   const [epoch, setEpoch] = useState(0);
   const pendingFrac = useRef(0);
   const st = useRef(null);
   const lean = useRef({ rx: 0, ry: 0 });
-  const soft = useRef(0);
   const viaSeek = useRef(false);
   /* snap: after a seek the first keyframes land at once, like a video; in the flow they ease from wherever things are */
   const fresh = (elapsed = 0, snap = false) => ({ elapsed, snap, fired: new Set(), typing: null, streaming: null, cycle: null, capKey: null, camK: -1, camFrom: null, camTo: null, camAt: 0, curK: -1, curFrom: null, curTo: null, curAt: 0, tiltFrom: { ...lean.current }, tiltTo: { ...lean.current } });
   const before = (k) => scenes.slice(0, k).reduce((n, s) => n + s.dur, 0);
   const phone = () => window.matchMedia('(max-width: 768px)').matches;
 
-  /* does the caption sit on anything? Sample points along its lines; a hit counts if it is a control, a panel, or carries text of its own. */
-  const overlaps = () => {
-    const box = frame.current?.querySelector('.kcap'); if (!box) return null;
-    const lines = [...box.querySelectorAll('.kl')]; if (!lines.length) return null;
-    const skip = (e) => e.closest('.kcap, .fcursor, .ppaused');
-    const isContent = (e) => !!e.closest('.nashapp') && (e.matches('button, a, input, textarea, svg, img, [role=button], [role=switch], [role=dialog]') || !!e.closest('.mpanel, .fly, .navwrap, .ccard') || [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()));
-    for (const ln of lines) {
-      const r = ln.getBoundingClientRect();
-      for (const fx of [0.08, 0.3, 0.5, 0.7, 0.92]) {
-        const hit = document.elementsFromPoint(r.left + r.width * fx, r.top + r.height / 2).find((e) => !skip(e));
-        if (hit && isContent(hit)) return true;
-      }
-    }
-    return false;
-  };
   /* the surface leans toward what the camera is looking at */
   const tiltFor = (to, kf) => {
-    const k = phone() ? 0.45 : 1;
+    const k = phone() ? 0 : 1;
     if (kf && (kf.rx !== undefined || kf.ry !== undefined)) return { rx: (kf.rx || 0) * k, ry: (kf.ry || 0) * k };
     const fr = frame.current?.getBoundingClientRect(); if (!fr || to.z <= 1.06) return { rx: 0, ry: 0 };
     const cx = (fr.width / 2 - to.x) / to.z, cy = (fr.height / 2 - to.y) / to.z;
@@ -143,7 +126,7 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     if (!kf.sel) { const z = kf.zoom || 1; return { z, x: (fr.width - z * fr.width) / 2, y: (fr.height - z * fr.height) / 2 }; }
     const el = find(root, kf.sel); if (!el) return null;
     const l = local(el); if (!l) return null;
-    const cap = window.matchMedia('(max-width: 768px)').matches ? 1.12 : kf.zoom;
+    const cap = phone() ? 1 : kf.zoom;
     const z = Math.max(1, Math.min(kf.zoom, cap, (l.W * 0.92) / l.width, (l.H * 0.92) / l.height));
     return { z, x: Math.min(0, Math.max(l.W - z * l.W, l.W / 2 - z * (l.left + l.width / 2))), y: Math.min(0, Math.max(l.H - z * l.H, l.H / 2 - z * (l.top + l.height / 2))) };
   };
@@ -166,7 +149,7 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     else if (op === 'closeFly') A?.closeFly();
     else if (op === 'toggle') A?.toggleServer(args[0]);
     else if (op === 'reset') A?.reset();
-    else if (op === 'drawer') { if (window.matchMedia('(max-width:768px)').matches) A?.setDrawer(args[0]); }
+    else if (op === 'drawer') { if (window.matchMedia('(max-width:768px)').matches) { A?.setDrawer(args[0]); A?.fold(args[0]); } }
   };
 
   /* one tick of the timeline: actions that are due, then every continuous value from the clock */
@@ -180,24 +163,18 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     let k = -1; sc.cam.forEach((kf, j) => { if (kf.at <= t) k = j; });
     if (k !== s.camK && k >= 0) { const to = camTarget(sc.cam[k]); if (to) { s.camK = k; s.camFrom = { z: cam.z.get(), x: cam.x.get(), y: cam.y.get() }; s.camTo = to; s.camAt = s.snap ? t - CAM_MS : t; s.tiltFrom = { ...lean.current }; s.tiltTo = tiltFor(to, sc.cam[k]); } }
     /* a slow drift keeps the surface alive even on a wide shot; the lean toward the target rides on top */
-    const drift = phone() ? 0.5 : 1, T = before(i) + t, total = scenes.reduce((n, x) => n + x.dur, 0) || 1, ph = (2 * Math.PI * T) / total;
+    const drift = phone() ? 0 : 1, T = before(i) + t, total = scenes.reduce((n, x) => n + x.dur, 0) || 1, ph = (2 * Math.PI * T) / total;
     const dRx = 1.4 * drift * Math.sin(2 * ph), dRy = 2 * drift * Math.sin(3 * ph + 1.2);
     if (s.camTo) { const p = CAM(clamp01((t - s.camAt) / CAM_MS)); cam.z.set(mix(s.camFrom.z, s.camTo.z, p)); cam.x.set(mix(s.camFrom.x, s.camTo.x, p)); cam.y.set(mix(s.camFrom.y, s.camTo.y, p)); lean.current = { rx: mix(s.tiltFrom.rx, s.tiltTo.rx, p), ry: mix(s.tiltFrom.ry, s.tiltTo.ry, p) }; }
     tilt.rx.set(lean.current.rx + dRx); tilt.ry.set(lean.current.ry + dRy);
     let c = -1; sc.cur.forEach((kf, j) => { if (kf.at <= t) c = j; });
     if (c !== s.curK && c >= 0) { const to = curTarget(sc.cur[c]); if (to) { s.curK = c; s.curFrom = { x: cur.x.get(), y: cur.y.get() }; s.curTo = to; s.curAt = s.snap ? t - CUR_MS : t; } }
     if (s.curTo) { const p = CAM(clamp01((t - s.curAt) / CUR_MS)); cur.x.set(mix(s.curFrom.x, s.curTo.x, p)); cur.y.set(mix(s.curFrom.y, s.curTo.y, p)); }
-    /* captions and focus: a caption has an in and an out; the picture goes soft with it and comes back */
+    /* captions: each has an in and an out */
     const cp = sc.caps.find((x) => x.at <= t && t < x.end);
     const key = cp ? `${sc.key}-${cp.at}` : null;
     if (key !== s.capKey) { s.capKey = key; onCap(cp ? { key, text: cp.text, pos: cp.pos || sc.pos, tone: cp.tone || '' } : null); }
     capT.set(cp ? t - cp.at : 0);
-    /* the picture only goes soft under captions marked for it: the few that have to sit on a panel */
-    const want = cp && cp.soft ? SOFT : 0;
-    soft.current += (want - soft.current) * Math.min(1, 16 / 220);
-    let f = 0;
-    if (cp) f = Math.min(clamp01((t - cp.at) / FOCUS_IN), clamp01((cp.end - t) / FOCUS_OUT));
-    focus.set(E(f) * soft.current);
     prog.set(Math.min(1, t / sc.dur));
     if (s.camK >= 0) s.snap = false;
   };
@@ -224,7 +201,7 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     const sc = scenes[i];
     st.current = fresh(pendingFrac.current * (sc?.dur || 0), viaSeek.current);
     pendingFrac.current = 0;
-    onCap(null); focus.set(0); capT.set(0);
+    onCap(null); capT.set(0);
     prog.set(sc ? st.current.elapsed / sc.dur : 0);
     if (!sc || !active) return;
     if (viaSeek.current || i === 0) { api.current?.reset?.(); viaSeek.current = false; }
@@ -248,15 +225,15 @@ export default function Director({ active, playing, api, root, frame, cam, cur, 
     return () => cancelAnimationFrame(raf);
   }, [active, playing, scenes, i, epoch]);
 
-  /* leaving the film: the camera comes back to wide, focus returns, and anything the film left open closes */
+  /* leaving the film: the camera comes back to wide and anything the film left open closes */
   useEffect(() => {
     if (active) return;
     const from = { z: cam.z.get(), x: cam.x.get(), y: cam.y.get() }; const t0 = performance.now(); let raf;
     const back = (now) => { const p = E(clamp01((now - t0) / 600)); cam.z.set(mix(from.z, 1, p)); cam.x.set(mix(from.x, 0, p)); cam.y.set(mix(from.y, 0, p)); if (p < 1) raf = requestAnimationFrame(back); };
     raf = requestAnimationFrame(back);
     const tf = { rx: tilt.rx.get(), ry: tilt.ry.get() }; const flat = (now) => { const p = E(clamp01((now - t0) / 500)); tilt.rx.set(mix(tf.rx, 0, p)); tilt.ry.set(mix(tf.ry, 0, p)); if (p < 1) requestAnimationFrame(flat); }; requestAnimationFrame(flat);
-    lean.current = { rx: 0, ry: 0 }; soft.current = 0;
-    focus.set(0); onCap(null); api.current?.closePicker?.(); api.current?.closeFly?.();
+    lean.current = { rx: 0, ry: 0 };
+    onCap(null); api.current?.closePicker?.(); api.current?.closeFly?.();
     return () => cancelAnimationFrame(raf);
   }, [active]);
 

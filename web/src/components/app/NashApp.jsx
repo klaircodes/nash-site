@@ -40,10 +40,12 @@ function Convo({ title, pinned, onPin, inFolder, hidden, signIn, onOpen, on }) {
 }
 
 /* ── Nav.tsx: NewChat, OrgSwitcher, SearchBar, NavControlLinks, FoldersList, Conversations, AccountSettings ── */
-const Sidebar = memo(function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind, onNewChat, signIn, chats, setChats, active, onOpen }) {
+const Sidebar = memo(function Sidebar({ collapsed, setCollapsed, drawer, setDrawer, openFly, flyKind, onNewChat, signIn, chats, setChats, active, onOpen, fold }) {
   const [q, setQ] = useState('');
   const [chatsOpen, setChatsOpen] = useState(true);
   const [foldersOpen, setFoldersOpen] = useState(true);
+  /* the film can fold the lists away, so a phone's drawer has room under them */
+  useEffect(() => { if (fold === undefined) return; setChatsOpen(!fold); setFoldersOpen(!fold); }, [fold]);
   const [open, setOpen] = useState(() => Object.fromEntries(FOLDERS.map((f) => [f.key, f.open])));
   const hit = (t) => !q || t.toLowerCase().includes(q.toLowerCase());
   const groups = useMemo(() => {
@@ -151,11 +153,12 @@ const Sidebar = memo(function Sidebar({ collapsed, setCollapsed, drawer, setDraw
 const Composer = memo(function Composer({ text, setText, model, openPicker, pickerOpen, tools, setTools, temp, setTemp, image, setImage, openFly, flyKind, signIn, connected, onSend }) {
   const ta = useRef(null);
   const mcpRef = useRef(null);
-  const [multi, setMulti] = useState(false);
+  /* on a phone the composer is always two rows: the text on top, the controls under it */
+  const [multi, setMulti] = useState(() => isPhone());
   const grow = useCallback(() => {
     const el = ta.current; if (!el) return;
     el.style.height = '22px'; const h = el.scrollHeight; el.style.height = `${Math.min(h, 168)}px`;
-    setMulti((was) => (!el.value.trim() ? false : was || h > 30));
+    setMulti((was) => (isPhone() ? true : !el.value.trim() ? false : was || h > 30));
   }, []);
   useEffect(grow, [text, grow]);
   useEffect(() => { window.addEventListener('resize', grow); return () => window.removeEventListener('resize', grow); }, [grow]);
@@ -207,6 +210,7 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
   const root = rootRef || own;
   const [collapsed, setCollapsed] = useState(false);
   const [drawer, setDrawer] = useState(false);
+  const [fold, setFold] = useState(undefined);
   const [chats, setChats] = useState(() => CHATS.map((c) => ({ ...c, id: c.title })));
   const [threads, setThreads] = useState(seedThreads);
   const [active, setActive] = useState(null);
@@ -217,7 +221,8 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
   const [text, setText] = useState('');
   const streamTimer = useRef(null);
   const modelRef = useRef(null);
-  const [tools, setTools] = useState(true);
+  /* the tools row is open by default on desktop; on a phone there is no row, so the toggle reads as a plus */
+  const [tools, setTools] = useState(() => !isPhone());
   const [temp, setTemp] = useState(false);
   const [image, setImage] = useState(false);
   const [model, setModel] = useState({ name: 'GPT 4.1', ep: 'openai' });
@@ -266,13 +271,14 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
       openFly: (kind) => { const el = root.current?.querySelector(kind === 'mcp' ? '.rbtn.mcp' : kind === 'org' ? '.orgbtn' : kind === 'acct' ? '.account' : '.navrow.more'); if (el) setFly({ kind, anchor: el }); },
       closeFly: () => setFly(null),
       setDrawer,
+      fold: (v) => setFold(v),
       ask: (q) => ask(q, { manual: true }),
       ensure: (q) => { if (activeRef.current && threads[activeRef.current]?.messages?.length) return; ensureChat(q); setMessages((l) => { if (l.length) return l; const a = answerFor(q); return [{ id: 1, user: true, text: q }, { id: 2, user: false, text: a, model: 'GPT 4.1', streaming: false, count: a.split(' ').length }]; }); },
       setLastModel: (name) => setLast((m) => (m.model === name ? m : { ...m, model: name })),
       stream: (p) => setLast((m) => { const total = m.text.split(' ').length; const n = Math.max(0, Math.min(total, Math.round(p * total))); const st = p < 1; return m.count === n && m.streaming === st ? m : { ...m, count: n, streaming: st }; }),
       hoverLast: (on) => setMessages((l) => (l.length && !!l[l.length - 1].hover === !!on ? l : l.map((m, k) => (k === l.length - 1 ? { ...m, hover: on } : m)))),
       toggleServer: (name) => setServers((l) => l.map((s) => (s.name === name ? { ...s, on: !s.on } : s))),
-      reset: () => { stopStream(); setActive(null); activeRef.current = null; setThreads(seedThreads()); setChats(CHATS.map((c) => ({ ...c, id: c.title }))); setText(''); setFly(null); setPickerOpen(false); setDrawer(false); setModel({ name: 'GPT 4.1', ep: 'openai' }); setServers((l) => l.map((s) => ({ ...s, on: true }))); },
+      reset: () => { stopStream(); setFold((f) => (f === undefined ? undefined : false)); setActive(null); activeRef.current = null; setThreads(seedThreads()); setChats(CHATS.map((c) => ({ ...c, id: c.title }))); setText(''); setFly(null); setPickerOpen(false); setDrawer(false); setModel({ name: 'GPT 4.1', ep: 'openai' }); setServers((l) => l.map((s) => ({ ...s, on: true }))); },
     };
     return () => { api.current = null; };
   }, [api, threads]);
@@ -314,7 +320,7 @@ export default function NashApp({ mode, setMode, rootRef, framed = false, api })
     <div ref={root} className={`nashapp${mode === 'tour' ? ' tourmode' : ''}${framed ? ' framed' : ''}${settled ? '' : ' presettle'}`} aria-label="Nash"
       onPointerDown={(e) => { if (mode === 'tour' && !framed && !e.target.closest('.hdr, .mobilenav, .tcard')) setMode('try'); }}>
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} drawer={drawer} setDrawer={setDrawer}
-        openFly={openFly} flyKind={fly?.kind} onNewChat={onNewChat} signIn={signIn} chats={chats} setChats={setChats} active={active} onOpen={openChat} />
+        openFly={openFly} flyKind={fly?.kind} onNewChat={onNewChat} signIn={signIn} chats={chats} setChats={setChats} active={active} onOpen={openChat} fold={fold} />
       <AnimatePresence>{drawer && <motion.div className="navmask" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.32, ease }} onClick={() => setDrawer(false)} />}</AnimatePresence>
       <div className="main">
         <div className="mobilenav">
